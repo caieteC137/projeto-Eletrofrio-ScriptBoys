@@ -1,0 +1,18 @@
+2026-05-08 21:53:02,463 - INFO - Iniciando pipeline
+2026-05-08 21:53:44,561 - INFO - Pipeline finalizado com sucesso
+2026-05-08 21:54:45,902 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-05-08 21:54:45,902 - INFO - [33mPress CTRL+C to quit[0m
+2026-05-08 21:54:45,925 - INFO -  * Restarting with watchdog (windowsapi)
+2026-05-08 21:54:48,125 - WARNING -  * Debugger is active!
+2026-05-08 21:54:48,134 - INFO -  * Debugger PIN: 288-654-262
+2026-05-08 21:54:49,105 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\check_data.py', reloading
+2026-05-08 21:54:49,175 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\check_data.py', reloading
+2026-05-08 21:54:49,179 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\check_data.py', reloading
+2026-05-08 21:54:49,182 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\check_data.py', reloading
+2026-05-08 21:54:49,544 - INFO -  * Restarting with watchdog (windowsapi)
+2026-05-08 21:54:53,045 - WARNING -  * Debugger is active!
+2026-05-08 21:54:53,048 - INFO -  * Debugger PIN: 288-654-262
+2026-05-08 21:55:39,993 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\test2.py', reloading
+2026-05-08 21:55:40,000 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\test2.py', reloading
+2026-05-08 21:55:41,066 - INFO -  * Restarting with watchdog (windowsapi)

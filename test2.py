@@ -3,10 +3,13 @@ import pandas as pd
 import time
 import logging
 import os
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, JSON, MetaData, Table
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
 # ---------------- CONFIG ----------------
 BASE_URL = "https://credenciamento.eletrofrio.com.br:5900/galileo/api/api_hackathon?route=telemetria&dispositivoId="
-OUTPUT_FILE = "telemetria.xlsx"
+DB_URL = "postgresql://user:password@localhost:5432/telemetria_db"
 LOG_FILE = "pipeline.log"
 MAX_RETRY = 3
 SLEEP = 0.5
@@ -24,8 +27,21 @@ headers = {
     "Accept": "application/json"
 }
 
-# schema dinâmico global
-global_schema = set()
+# SQLAlchemy setup
+engine = create_engine(DB_URL)
+Session = sessionmaker(bind=engine)
+Base = declarative_base()
+
+
+class Telemetria(Base):
+    __tablename__ = 'telemetria'
+    id = Column(Integer, primary_key=True)
+    dispositivo_id = Column(Integer)
+    hora = Column(String)
+    dados = Column(JSON)
+
+
+Base.metadata.create_all(engine)
 
 
 def fetch_device(dispositivo_id):
@@ -58,54 +74,30 @@ def normalize(json_data, dispositivo_id):
     labels = json_data.get("labels", [])
     datasets = json_data.get("datasets", [])
 
-    # cria mapa dinâmico
-    mapa = {ds["label"]: ds["values"] for ds in datasets}
-
     linhas = []
 
     for i, hora in enumerate(labels):
         row = {
-            "dispositivoId": dispositivo_id,
-            "hora": hora
+            "dispositivo_id": dispositivo_id,
+            "hora": hora,
+            "dados": {}
         }
 
-        for campo, valores in mapa.items():
+        for ds in datasets:
+            campo = ds["label"]
+            valores = ds["values"]
             valor = valores[i] if i < len(valores) else None
-            row[campo] = valor
-
-            # adiciona ao schema global
-            global_schema.add(campo)
+            row["dados"][campo] = valor
 
         linhas.append(row)
 
     return linhas
 
 
-def load_existing():
-    if os.path.exists(OUTPUT_FILE):
-        return pd.read_excel(OUTPUT_FILE)
-    return pd.DataFrame()
-
-
-def save_data(df):
-    df.to_excel(OUTPUT_FILE, index=False)
-
-
-def align_schema(df):
-    # garante que todas colunas existam
-    for col in global_schema:
-        if col not in df.columns:
-            df[col] = None
-
-    return df
-
-
 def run_pipeline():
     logging.info("Iniciando pipeline")
 
-    df_existing = load_existing()
-
-    all_rows = []
+    session = Session()
 
     for dispositivo_id in range(1, 500):
         print(f"Coletando {dispositivo_id}...")
@@ -114,25 +106,14 @@ def run_pipeline():
 
         if data:
             rows = normalize(data, dispositivo_id)
-            all_rows.extend(rows)
+            for row in rows:
+                telemetria = Telemetria(**row)
+                session.add(telemetria)
 
         time.sleep(SLEEP)
 
-    df_new = pd.DataFrame(all_rows)
-
-    # atualiza schema com dados antigos também
-    if not df_existing.empty:
-        global global_schema
-        global_schema.update(df_existing.columns)
-
-    # alinhar schemas
-    df_existing = align_schema(df_existing)
-    df_new = align_schema(df_new)
-
-    # merge final
-    df_final = pd.concat([df_existing, df_new], ignore_index=True)
-
-    save_data(df_final)
+    session.commit()
+    session.close()
 
     logging.info("Pipeline finalizado com sucesso")
     print("Finalizado!")
