@@ -16,3 +16,80 @@
 2026-05-08 21:55:39,993 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\test2.py', reloading
 2026-05-08 21:55:40,000 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\test2.py', reloading
 2026-05-08 21:55:41,066 - INFO -  * Restarting with watchdog (windowsapi)
+2026-05-10 22:55:20,083 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-05-10 22:55:20,084 - INFO - [33mPress CTRL+C to quit[0m
+2026-05-10 22:55:20,108 - INFO -  * Restarting with watchdog (windowsapi)
+2026-05-10 22:55:22,411 - WARNING -  * Debugger is active!
+2026-05-10 22:55:22,416 - INFO -  * Debugger PIN: 288-654-262
+2026-05-10 22:56:22,844 - INFO - 127.0.0.1 - - [10/May/2026 22:56:22] "GET / HTTP/1.1" 200 -
+2026-05-10 22:56:23,095 - INFO - 127.0.0.1 - - [10/May/2026 22:56:23] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-05-11 19:25:52,082 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-05-11 19:25:52,084 - INFO - [33mPress CTRL+C to quit[0m
+2026-05-11 19:25:52,124 - INFO -  * Restarting with watchdog (windowsapi)
+2026-05-11 19:25:54,061 - WARNING -  * Debugger is active!
+2026-05-11 19:25:54,109 - INFO -  * Debugger PIN: 288-654-262
+2026-05-11 19:26:27,445 - INFO -  * Detected change in 'C:\\Users\\caior\\anaconda3\\Scripts\\pip-script.py', reloading
+2026-05-11 19:26:28,727 - INFO -  * Restarting with watchdog (windowsapi)
+2026-05-11 19:26:31,892 - WARNING -  * Debugger is active!
+2026-05-11 19:26:31,897 - INFO -  * Debugger PIN: 288-654-262
+2026-05-11 19:26:31,993 - INFO - 127.0.0.1 - - [11/May/2026 19:26:31] "GET / HTTP/1.1" 200 -
+2026-05-11 19:26:39,599 - INFO -  * Detected change in 'C:\\Users\\caior\\anaconda3\\Lib\\site-packages\\pip\\_internal\\utils\\logging.py', reloading
+2026-05-11 19:26:39,600 - INFO -  * Detected change in 'C:\\Users\\caior\\anaconda3\\Lib\\site-packages\\pip\\_vendor\\rich\\console.py', reloading
+2026-05-11 19:26:39,601 - INFO -  * Detected change in 'C:\\Users\\caior\\anaconda3\\Lib\\site-packages\\pip\\_vendor\\rich\\_windows_renderer.py', reloading
+2026-05-11 19:26:39,603 - INFO -  * Detected change in 'C:\\Users\\caior\\anaconda3\\Lib\\site-packages\\pip\\_vendor\\rich\\_win32_console.py', reloading
+2026-05-11 19:26:39,603 - INFO -  * Detected change in 'C:\\Users\\caior\\anaconda3\\Lib\\encodings\\cp1252.py', reloading
+2026-05-11 19:26:39,608 - INFO -  * Detected change in 'C:\\Users\\caior\\anaconda3\\Lib\\logging\\__init__.py', reloading
+2026-05-11 19:26:39,609 - INFO -  * Detected change in 'C:\\Users\\caior\\anaconda3\\Lib\\site-packages\\pip\\_internal\\utils\\misc.py', reloading
+2026-05-11 19:26:39,609 - INFO -  * Detected change in 'C:\\Users\\caior\\anaconda3\\Lib\\site-packages\\pip\\_internal\\commands\\show.py', reloading
+2026-05-11 19:26:39,610 - INFO -  * Detected change in 'C:\\Users\\caior\\anaconda3\\Lib\\site-packages\\pip\\_internal\\cli\\base_command.py', reloading
+2026-05-11 19:26:39,611 - INFO -  * Detected change in 'C:\\Users\\caior\\anaconda3\\Lib\\site-packages\\pip\\_internal\\cli\\main.py', reloading
+2026-05-11 19:26:40,318 - INFO -  * Restarting with watchdog (windowsapi)
+2026-05-11 19:26:42,492 - WARNING -  * Debugger is active!
+2026-05-11 19:26:42,495 - INFO -  * Debugger PIN: 288-654-262
+2026-05-11 19:29:42,657 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\test2.py', reloading
+2026-05-11 19:29:42,679 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\test2.py', reloading
+2026-05-11 19:29:42,681 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\app.py', reloading
+2026-05-11 19:29:42,682 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\app.py', reloading
+2026-05-11 19:29:44,264 - INFO -  * Restarting with watchdog (windowsapi)
+2026-05-11 19:29:47,647 - WARNING -  * Debugger is active!
+2026-05-11 19:29:47,692 - INFO -  * Debugger PIN: 288-654-262
+2026-05-11 19:32:28,812 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\test2.py', reloading
+2026-05-11 19:32:28,838 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\test2.py', reloading
+2026-05-11 19:32:29,001 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\app.py', reloading
+2026-05-11 19:32:29,003 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\app.py', reloading
+2026-05-11 19:32:29,004 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\app.py', reloading
+2026-05-11 19:32:30,098 - INFO -  * Restarting with watchdog (windowsapi)
+2026-05-11 19:32:33,169 - WARNING -  * Debugger is active!
+2026-05-11 19:32:33,179 - INFO -  * Debugger PIN: 288-654-262
+2026-05-11 19:33:46,664 - INFO - Iniciando pipeline
+2026-05-11 19:33:53,244 - INFO - Gravado 576 registros até o dispositivo 2
+2026-05-11 19:33:59,562 - INFO - Gravado 576 registros até o dispositivo 4
+2026-05-11 19:34:05,353 - INFO - Gravado 576 registros até o dispositivo 6
+2026-05-11 19:34:11,435 - INFO - Gravado 576 registros até o dispositivo 8
+2026-05-11 19:34:32,459 - WARNING - Erro de conexão dispositivo 10 tentativa 1: HTTPSConnectionPool(host='credenciamento.eletrofrio.com.br', port=5900): Read timed out. (read timeout=10)
+2026-05-11 19:34:35,745 - INFO - Gravado 576 registros até o dispositivo 10
+2026-05-11 19:34:45,529 - INFO - Gravado 576 registros até o dispositivo 12
+2026-05-11 19:34:51,142 - INFO - Gravado 576 registros até o dispositivo 14
+2026-05-11 19:34:57,538 - INFO - Gravado 576 registros até o dispositivo 16
+2026-05-11 19:35:05,044 - INFO - Gravado 576 registros até o dispositivo 18
+2026-05-11 19:35:08,635 - INFO - Gravado 576 registros até o dispositivo 20
+2026-05-11 19:35:15,739 - INFO - Gravado 576 registros até o dispositivo 22
+2026-05-11 19:35:28,946 - WARNING - Erro de conexão dispositivo 24 tentativa 1: HTTPSConnectionPool(host='credenciamento.eletrofrio.com.br', port=5900): Read timed out. (read timeout=10)
+2026-05-11 19:35:31,849 - INFO - Gravado 576 registros até o dispositivo 24
+2026-05-11 19:35:50,563 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-05-11 19:35:50,563 - INFO - [33mPress CTRL+C to quit[0m
+2026-05-11 19:35:50,583 - INFO -  * Restarting with watchdog (windowsapi)
+2026-05-11 19:35:51,654 - WARNING -  * Debugger is active!
+2026-05-11 19:35:51,659 - INFO -  * Debugger PIN: 288-654-262
+2026-05-11 19:36:17,720 - INFO - 127.0.0.1 - - [11/May/2026 19:36:17] "GET / HTTP/1.1" 200 -
+2026-05-11 19:36:17,912 - INFO - 127.0.0.1 - - [11/May/2026 19:36:17] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-05-11 19:36:22,859 - INFO - 127.0.0.1 - - [11/May/2026 19:36:22] "GET / HTTP/1.1" 200 -
+2026-05-11 19:36:24,811 - INFO - 127.0.0.1 - - [11/May/2026 19:36:24] "GET / HTTP/1.1" 200 -
+2026-05-11 19:37:53,144 - INFO - 127.0.0.1 - - [11/May/2026 19:37:53] "GET / HTTP/1.1" 200 -
+2026-05-11 20:13:29,564 - INFO -  * Detected change in 'C:\\Users\\caior\\Desktop\\projeto-jornada\\projeto-Eletrofrio-ScriptBoys\\extracao_unidades.py', reloading
+2026-05-11 20:13:31,563 - INFO -  * Restarting with watchdog (windowsapi)
+2026-05-11 20:13:34,946 - WARNING -  * Debugger is active!
+2026-05-11 20:13:34,999 - INFO -  * Debugger PIN: 288-654-262

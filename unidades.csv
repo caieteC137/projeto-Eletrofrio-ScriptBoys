@@ -1,0 +1,310 @@
+lojaId,ativo,lojaNm,lojaApelido,tpContratoId,tpContratoNm,dtValContrato,contaId,contaNm,cnpj,nrPedido,telefone,dhSinalVida,apiTipo,endereco
+585,True, Cema Patrocínio,,73,Garantia+Monit | Turno 60,2026-11-29 03:00:00+00:00,158,Cema Central Mineira,,232.053.24,,2026-05-11 23:00:00+00:00,,
+736,True, Cooper Jaragua Agua Verde,,30,Monitoramento | Turno 10,2030-12-30 03:00:00+00:00,11,Cooper,,193.008.20,,2026-05-11 23:22:00+00:00,,
+738,True,Abreu de Lima (10),,31,Monit+Manut | Turno 10,2030-12-30 03:00:00+00:00,3,Novo,,097.017.24,,2026-05-11 23:00:00+00:00,,
+713,True,Adição Candeias MG,,49,Garantia+Monit | Turno 40,2026-06-23 03:00:00+00:00,53,Adição,,096.008.24,,2026-05-11 23:00:00+00:00,,
+173,True,Afogados (10),,31,Monit+Manut | Turno 10,2030-03-20 03:00:00+00:00,3,Novo,,097.026.22,,2026-05-11 23:05:00+00:00,,"Estrada dos Remédios - Afogados, Recife - PE"
+740,True,Afonso Pena ,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.034.24,4133987586,2026-05-11 22:58:00+00:00,,
+591,True,Alphaville,,73,Garantia+Monit | Turno 60,2026-12-03 03:00:00+00:00,23,Muffato,,000.036.24,45999772644,2026-05-11 22:38:00+00:00,,
+806,True,Alphaville Salvador BA,,49,Garantia+Monit | Turno 40,2026-11-04 03:00:00+00:00,35,Hiperideal,02212937004496,016.107.25,71999577318,2026-05-11 23:01:00+00:00,,"Avenida Alphaville - Alphaville I, Salvador - BA"
+831,True,Aquilante 11803725,,83,0800 - Sorvete,2027-11-07 03:00:00+00:00,256,Aquilante,,118.037.25,,2026-05-11 22:38:00+00:00,,
+442,True,Araripina (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.034.23,,2026-05-11 22:32:00+00:00,,
+34,True,Arco Verde (30),,5,Monit+Manut | Turno 30,2030-12-31 03:00:00+00:00,3,Novo,,097.116.19,8137717703,2026-05-11 23:00:00+00:00,,
+710,True,ARENA ATACADO - LJ COSMOPOLIS,,66,Garantia+Monit | Turno 50,2026-06-11 03:00:00+00:00,240,SM Caviccholli,,106.011.25,,2026-05-11 23:01:00+00:00,,
+867,True,Armação - BA,,49,Garantia+Monit | Turno 40,2027-02-20 03:00:00+00:00,166,Atakarejo,73849952000158,016.100.25,7134608700,2026-05-11 23:00:00+00:00,,"Avenida Santiago de Compostela - Brotas, Salvador - BA"
+798,True,Assaí Mendanha,,73,Garantia+Monit | Turno 60,2027-02-24 03:00:00+00:00,4,Assaí,,223.043.25,,2026-01-22 16:31:00+00:00,,
+820,True,Assaí Vila Velha [TEST NORM],,73,Garantia+Monit | Turno 60,2027-05-29 03:00:00+00:00,4,Assaí,,223.061.25,,2026-05-11 22:29:00+00:00,,
+737,True,ATACADO CAMPELO ARAGUINA SUL,,49,Garantia+Monit | Turno 40,2026-06-04 03:00:00+00:00,235,PINHEIRO E CARDOSO ,,187.006.23,,2026-04-19 12:00:00+00:00,,
+688,True,ATACADO CAMPELO GUARAI,,49,Garantia+Monit | Turno 40,2026-04-22 03:00:00+00:00,235,PINHEIRO E CARDOSO ,,187.005.23,,2026-05-11 23:21:00+00:00,,
+553,True,Atacado Cotripal,,3,Monitoramento | Turno 30,2030-12-30 03:00:00+00:00,205,Cotripal,91982496004008,195.339.24,,2026-05-11 23:06:00+00:00,,
+760,True,Atacado Vem Loja Alto Lage,,4,Garantia+Monit | Turno 30,2026-07-27 03:00:00+00:00,247,Realmar,3845717005515,011.003.25,2740902005,2026-05-11 23:00:00+00:00,,"Avenida Mário Gurgel - Alto Lage, Cariacica - ES"
+751,True,Bahia Blumenau SC,,49,Garantia+Monit | Turno 40,2026-08-24 03:00:00+00:00,26,Koch,02831172011339,193.011.25,,2026-05-11 23:00:00+00:00,,"Rua Bahia - Do Salto, Blumenau - SC"
+861,True,Barreirinha,,49,Garantia+Monit | Turno 40,2026-07-19 03:00:00+00:00,31,Condor,84909217000109,077.020.25,41999232942,2026-05-11 22:57:00+00:00,,"Avenida Anita Garibaldi - Cabral, Curitiba - PR"
+290,True,Barreiros (10),,31,Monit+Manut | Turno 10,2030-06-23 03:00:00+00:00,3,Novo,,097.057.22,81982098781,2026-05-11 23:18:00+00:00,,"Av. Maria Amália Bezerra de Melo - Itaperibú, Barreiros - PE"
+679,True,Barretos Loja 15,,4,Garantia+Monit | Turno 30,2026-04-16 03:00:00+00:00,69,Savegnago,,118.053.24,,2026-05-11 23:00:00+00:00,,
+718,True,Bate Forte - CD 468 - MT,,73,Garantia+Monit | Turno 60,2026-11-27 03:00:00+00:00,21,SDB,,190.191.24,,2026-05-11 23:02:00+00:00,,
+767,True,Bebedouro - SP,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,69,Savegnago,71322150002618,118.046.22,1733427495,2026-05-11 22:47:00+00:00,,
+19,True,Belo Jardim (10),,31,Monit+Manut | Turno 10,2030-12-17 03:00:00+00:00,3,Novo,,097.066.21,8137717716,2026-05-11 22:57:00+00:00,,
+822,True,Bernardão - LJ 14 (Lagoa Formosa),,49,Garantia+Monit | Turno 40,2026-12-12 03:00:00+00:00,253,Bernardes,,199.063.24,,2026-05-11 23:00:00+00:00,,
+708,True,BH Lagoa Santa Contagem MG,,49,Garantia+Monit | Turno 40,2026-04-24 03:00:00+00:00,8,Supermercado BH,,232.058.24,,2026-05-11 23:00:00+00:00,,
+666,True,Boi Mirim,,64,Monitoramento | Turno 50,2030-02-20 03:00:00+00:00,197,Public,,101.006.16,,2026-05-11 23:20:00+00:00,D,
+3,True,Bongi (30),,5,Monit+Manut | Turno 30,2030-06-23 03:00:00+00:00,3,Novo,,097.066.20,8137717705,2026-05-11 23:10:00+00:00,,
+5,True,Boqueirão,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.028.24,4133868200,2026-05-11 22:55:00+00:00,,
+367,True,Botucatu,,67,Monit+Manut | Turno 50,2030-12-31 03:00:00+00:00,18,Confiança,,196.003.17,,2026-05-11 23:20:00+00:00,D,
+7,True,BR 277,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.034.16,4131233700,2026-05-11 23:00:00+00:00,,
+292,True,Brasmax Genetica,,57,Monitoramento | Turno 40,2030-12-31 03:00:00+00:00,126,GDM,,102.025.22,,2026-05-11 23:00:00+00:00,,
+15,True,Cabo do Santo Agostinho (30),,5,Monit+Manut | Turno 30,2030-04-24 03:00:00+00:00,3,Novo,,097.023.22,8137717700,2026-05-11 23:16:00+00:00,,
+558,True,Cafezal,,73,Garantia+Monit | Turno 60,2026-10-15 03:00:00+00:00,23,Muffato,,000.029.24,,2026-05-11 23:12:00+00:00,,
+762,True,Caledônia Tijucas SC,,49,Garantia+Monit | Turno 40,2026-09-11 03:00:00+00:00,26,Koch,02831172000132,193.010.25,4832638200,2026-05-11 23:00:00+00:00,,"AV Bayer Filho - Centro,  - "
+539,True,Camaragibe (10),,31,Monit+Manut | Turno 10,2030-10-10 03:00:00+00:00,3,Novo,,097.016.24,81985399379,2026-05-11 23:04:00+00:00,,
+865,True,Caminho de Areia,,49,Garantia+Monit | Turno 40,2027-03-06 03:00:00+00:00,166,Atakarejo,73849952000662,016.101.25,7134608700,2026-05-11 23:01:00+00:00,,"Avenida Caminho de Areia - Caminho de Areia, Salvador - BA"
+6,True,Campo de Santana,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.013.19,4131226363,2026-05-11 23:02:00+00:00,,
+860,True,Capela Velha,,49,Garantia+Monit | Turno 40,2026-09-30 03:00:00+00:00,31,Condor,84909217000109,077.026.25,41988231840,2026-05-11 23:01:00+00:00,,"Avenida dos Pinheirais - Capela Velha, Araucária - PR"
+639,True,Carazinho,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,221,ZES,,195.537.24,,2026-05-11 22:26:00+00:00,,
+23,True,Carpina (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.039.19,8137717701,2026-04-09 21:19:00+00:00,,
+172,True,Carpina II (30),,5,Monit+Manut | Turno 30,2030-03-22 03:00:00+00:00,3,Novo,,097.028.22,,2026-05-11 22:55:00+00:00,,
+499,True,CARUARU (30),,4,Garantia+Monit | Turno 30,2026-05-14 03:00:00+00:00,3,Novo,,097.011.24,,2026-05-11 22:45:00+00:00,,
+552,True,Casa Garcia,,30,Monitoramento | Turno 10,2030-12-31 03:00:00+00:00,204,IMAC,,226.084.21,,2026-05-11 23:03:00+00:00,,
+556,True,Cascavel,,73,Garantia+Monit | Turno 60,2026-09-03 03:00:00+00:00,23,Muffato,,000.030.24,,2026-05-11 22:40:00+00:00,,
+795,True,Catu - BA,,49,Garantia+Monit | Turno 40,2026-10-07 03:00:00+00:00,166,Atakarejo,73849952005460,016.102.25,,2026-05-11 23:00:00+00:00,,"Rua Paulinho César - , Catu - BA"
+47,True,CD,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,15,Festval,,191.028.17,41992522212,2026-05-11 22:24:00+00:00,B,
+594,True,CD Cascavel,,65,CONTINUUM | Turno 60,2026-11-18 03:00:00+00:00,23,Muffato,,000.037.24,,2026-05-11 23:12:00+00:00,,
+368,True,CD Curua,,57,Monitoramento | Turno 40,2030-10-24 03:00:00+00:00,13,Avante,24118660,112.001.21,8681169560,2026-05-11 23:02:00+00:00,,
+743,True,CD Feira de Santana,,45,CONTINUUM | Turno 40,2026-06-19 03:00:00+00:00,140,Atacadão,,094.165.23,,2026-05-11 23:05:00+00:00,,
+787,True,CD I Curitiba PR,,45,CONTINUUM | Turno 40,2026-09-29 03:00:00+00:00,31,Condor,76189406000126,077.036.25,,2026-05-11 23:00:00+00:00,,
+632,True,CD Mercadinho São Luis,,69,Monitoramento | Turno 60,2030-12-31 03:00:00+00:00,214,Fartura,,226.087.23,,2026-05-11 23:04:00+00:00,,
+841,True,CD Moreno (30),,28,CONTINUUM | Turno 30,2027-01-14 03:00:00+00:00,3,Novo,,097.094.25,,2026-05-11 23:02:00+00:00,,
+287,True,CD Moreno (30),,28,CONTINUUM | Turno 30,2043-03-30 03:00:00+00:00,3,Novo,,097.115.22,,2026-05-11 22:38:00+00:00,,
+870,True,CD Nagumo Bonsucesso SP,,49,Garantia+Monit | Turno 40,2027-03-13 03:00:00+00:00,261,Mixter,07705530000427,223.075.25,1120854485,2026-05-11 23:02:00+00:00,,"Avenida Amâncio Gaiolli - Água Chata, Guarulhos - SP"
+749,True,CD Pecem,,28,CONTINUUM | Turno 30,2026-08-13 03:00:00+00:00,246,Fracht Log,24802301000105,226.020.24,,2026-05-11 23:00:00+00:00,,"CE-155 - Pecem, São Gonçalo do Amarante - CE"
+811,True,CD Petisco,,45,CONTINUUM | Turno 40,2026-10-15 03:00:00+00:00,242,Petisco,,226.108.20,,2026-05-11 23:05:00+00:00,,
+836,True,CD Polo JK,,61,CONTINUUM | Turno 50,2026-12-21 03:00:00+00:00,42,Dia a dia,,093.039.25,,2026-05-11 23:00:00+00:00,,
+872,True,CD Rossi Guarulhos SP,,61,CONTINUUM | Turno 50,2027-03-16 03:00:00+00:00,262,Supermercado Rossi New,09525900001875,223.066.25,1130190326,2026-05-11 23:00:00+00:00,,"Avenida Manoel Albuquerque Ribeiro - Perobal, Arujá - SP"
+46,True,CD Santa Lucia,,3,Monitoramento | Turno 30,2030-05-10 03:00:00+00:00,14,MA Silva e Silva,,112.003.21,,2026-05-11 22:17:00+00:00,,
+272,True,CD São José ,,3,Monitoramento | Turno 30,2030-01-12 03:00:00+00:00,2,Jacomar,,077.124.22,4133868200,2026-05-11 23:10:00+00:00,,
+753,True,CD São Jose dos Pinhais PR,,28,CONTINUUM | Turno 30,2026-08-21 03:00:00+00:00,2,Jacomar,78413325000860,077.062.24,4131348600,2026-05-11 23:00:00+00:00,,
+748,True,Ceilandia Centro,,32,Garantia+Monit | Turno 10,2026-08-07 03:00:00+00:00,222,Primor SM,,093.010.25,,2026-05-11 23:00:00+00:00,,
+617,True,Central de Panificação,,57,Monitoramento | Turno 40,2027-09-18 03:00:00+00:00,31,Condor,,077.014.24,,2026-05-11 22:36:00+00:00,,
+667,True,Cestto Protásio Porto Alegre RS,,49,Garantia+Monit | Turno 40,2027-03-19 03:00:00+00:00,196,CIA ZAFFARI,93015006003139,087.032.24,,2026-05-11 22:53:00+00:00,,
+812,True,Cestto Viamão Porto alegre RS,,49,Garantia+Monit | Turno 40,2026-11-04 03:00:00+00:00,196,CIA ZAFFARI,,087.009.25,,2026-05-11 23:00:00+00:00,,"Rodovia Tapir Rocha - Viamopólis, Viamão - RS"
+782,True,Cidade de Deus ,,32,Garantia+Monit | Turno 10,2026-10-06 03:00:00+00:00,59,Mercantil Nova Era,04240370003504,018.003.25,,2026-05-11 23:00:00+00:00,,"Rua Francisca Mendes - Cidade de Deus, Manaus - AM"
+741,True,Cocaia,,66,Garantia+Monit | Turno 50,2026-07-15 03:00:00+00:00,245,Supermercado X,,223.005.25,,2026-05-11 23:02:00+00:00,,
+35,True,Colônia,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.015.11,4132113870,2026-05-11 22:52:00+00:00,,
+62,True,Comper 102 - Campo Grande - MSN,,75,Monit+Manut | Turno 60,2030-12-31 03:00:00+00:00,21,SDB,,190.023.21,67991811381,2026-05-11 22:54:00+00:00,,
+537,True,Comper 103 - Alzira Santana - MT,,73,Garantia+Monit | Turno 60,2026-09-04 03:00:00+00:00,21,SDB,,190.114.24,,2026-05-11 23:06:00+00:00,,
+60,True,Comper 104 - Cuiabá - MT,,5,Monit+Manut | Turno 30,2030-12-11 03:00:00+00:00,21,SDB,,190.017.21,65993411303,2026-05-11 22:58:00+00:00,,
+64,True,Comper 108 - Rondonópolis - MT,,52,Monit+Manut | Turno 32,2030-12-11 03:00:00+00:00,21,SDB,,190.019.21,66999386532,2026-05-11 22:51:00+00:00,,
+626,True,Comper 11 - Itajaí - SCN,,78,SDB Monitoramento | Turno 30,2030-01-16 03:00:00+00:00,21,SDB,,190.084.24,,2026-05-11 23:07:00+00:00,,
+61,True,Comper 144 - Dourados - MSS,,52,Monit+Manut | Turno 32,2030-12-11 03:00:00+00:00,21,SDB,,190.025.21,67991428143,2026-05-11 22:27:00+00:00,,
+816,True,Comper 148 - Rondonópolis - MT,,73,Garantia+Monit | Turno 60,2027-11-19 03:00:00+00:00,21,SDB,09477652019610,190.061.25,6640046460,2026-05-11 23:00:00+00:00,,"Avenida José Coutinho de Oliveira - Parque Sagrada Família, Rondonópolis - MT"
+684,True,Comper 173 - Cuiabá - MT,,73,Garantia+Monit | Turno 60,2027-05-09 03:00:00+00:00,21,SDB,,190.222.24,,2026-05-11 22:38:00+00:00,,
+785,True,Comper 198 - Irmãos Unidos - SCN,,73,Garantia+Monit | Turno 60,2027-10-03 03:00:00+00:00,21,SDB,05621540000530,190.081.25,4733691102,2026-05-11 23:00:00+00:00,,"AV Falcão - Bombas , Bombinhas - SC"
+63,True,Comper 245 - Campo Grande - MSN,,69,Monitoramento | Turno 60,2030-12-31 03:00:00+00:00,21,SDB,,190.001.21,,2026-05-11 22:45:00+00:00,,
+625,True,Comper 82 - Jardim Itália - MT,,73,Garantia+Monit | Turno 60,2026-10-10 03:00:00+00:00,21,SDB,,190.185.24,,2026-05-11 23:01:00+00:00,,
+567,True,Comper 88 - Nova CPA - MT,,73,Garantia+Monit | Turno 60,2026-11-03 03:00:00+00:00,21,SDB,,190.183.24,,2026-05-11 23:00:00+00:00,,"Rua São José do Rio Preto - Morada da Serra, Cuiabá - MT"
+874,True,COMPER 99 ,,5,Monit+Manut | Turno 30,2029-12-22 03:00:00+00:00,21,SDB,,190.005.17,,2026-05-11 23:00:00+00:00,,
+498,True,Confresa,,69,Monitoramento | Turno 60,2030-05-29 03:00:00+00:00,195,Machadão,,024.012.23,,2026-05-11 23:00:00+00:00,,
+729,True,Cooper CD Blumenal,,30,Monitoramento | Turno 10,2030-07-14 03:00:00+00:00,11,Cooper,,193.007.22,,2026-05-11 23:00:00+00:00,,
+40,True,Cooper Itoupava Norte,,30,Monitoramento | Turno 10,2030-09-10 03:00:00+00:00,11,Cooper,null,193.015.21,47988595038,2026-05-11 22:45:00+00:00,,"Rua Dois de Setembro - Itoupava Norte, Blumenau - SC"
+758,True,Cooper Jaraguá Centro,,30,Monitoramento | Turno 10,2030-12-31 03:00:00+00:00,11,Cooper,,241.100.25,,2026-05-11 22:52:00+00:00,,
+754,True,Cooper Loja Garcia,,30,Monitoramento | Turno 10,2030-12-31 03:00:00+00:00,11,Cooper,,241.101.25,,2026-05-11 23:20:00+00:00,D,
+778,True,Cooper Nações,,30,Monitoramento | Turno 10,2030-12-31 03:00:00+00:00,11,Cooper,,241.105.25,,2026-05-11 23:20:00+00:00,D,"Avenida Manoel Simão - Nações, Indaial - SC"
+643,True,Cooper OMINO,,30,Monitoramento | Turno 10,2030-04-30 03:00:00+00:00,11,Cooper,,193.054.23,,2026-05-11 23:00:00+00:00,,
+739,True,Cooper Timbó,,30,Monitoramento | Turno 10,2030-10-30 03:00:00+00:00,11,Cooper,,193.007.19,,2026-04-16 06:06:00+00:00,,"Rua João Wiest Júnior - Água Verde, Jaraguá do Sul - SC"
+769,True,Cooper Vila Nova,,30,Monitoramento | Turno 10,2030-12-31 03:00:00+00:00,11,Cooper,,193.002.14,,2026-05-11 22:37:00+00:00,,
+863,True,COSTAAZUL BARCELOS GRUSSAÍ 12103725,,83,0800 - Sorvete,2027-02-02 03:00:00+00:00,207,Barcelos,,121.037.25,,2026-05-11 23:00:00+00:00,,
+4,True,Costeira,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.030.13,4132995600,2026-05-11 22:56:00+00:00,,
+883,True,Cristo Rei.,,57,Monitoramento | Turno 40,2028-01-01 03:00:00+00:00,31,Condor,,077.101.20,,2026-05-11 23:03:00+00:00,,
+521,True,Cupecê,,64,Monitoramento | Turno 50,2030-11-13 03:00:00+00:00,197,Public,,101.007.23,,2026-05-11 22:29:00+00:00,B,
+879,True,Curado (10),,32,Garantia+Monit | Turno 10,2027-11-25 03:00:00+00:00,3,Novo,,097.004.25,,2026-05-11 23:01:00+00:00,,"Rodovia BR-232 - Curado, Jaboatão dos Guararapes - PE"
+51,True,Danilenko,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.066.22,4131372400,2026-05-11 23:10:00+00:00,,
+881,True,Derosso,,57,Monitoramento | Turno 40,2027-12-16 03:00:00+00:00,31,Condor,,077.036.18,,2026-05-11 23:04:00+00:00,,
+704,True,Dinamica Distribuidora,,49,Garantia+Monit | Turno 40,2026-06-16 03:00:00+00:00,238,Dinamica,,011.049.24,27998284552,2026-05-11 23:11:00+00:00,,
+14,True,Dois Irmãos (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.119.20,8137717700,2026-05-11 22:52:00+00:00,,
+481,True,DOIS UNIDOS (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.032.23,,2026-05-11 23:18:00+00:00,,
+817,True,Dom Pedro 1 ,,48,Garantia+Monit | Turno 32,2026-11-17 03:00:00+00:00,206,Irmãos Gonçalves,,182.003.25,,2026-05-11 23:01:00+00:00,,
+482,True,Emporio Bom Gosto,,64,Monitoramento | Turno 50,2030-12-31 03:00:00+00:00,186,E P Arantes,,230.014.21,,2026-05-11 22:52:00+00:00,,
+859,True,Ernesto Viléla,,49,Garantia+Monit | Turno 40,2026-05-27 03:00:00+00:00,31,Condor,29261270000138,077.003.25,42999603243,2026-05-11 23:00:00+00:00,,"AV Ernesto Vilela - Nova Russia, Ponta Grossa - PR"
+12,True,Escada (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.118.20,8137717713,2026-05-11 23:05:00+00:00,,
+799,True,Extrabom - Serra Sede - ES,,4,Garantia+Monit | Turno 30,2026-09-12 03:00:00+00:00,247,Realmar,03845717001285,011.027.25,2732982337,2026-05-11 23:00:00+00:00,,"Rua Cassiano Castello - Serra Centro, Serra - ES"
+9,True,Fazenda,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.058.19,4131612100,2026-05-11 22:55:00+00:00,,
+763,True,Feira III - BA,,49,Garantia+Monit | Turno 40,2026-08-25 03:00:00+00:00,166,Atakarejo,73849952001634,016.103.25,7134608700,2026-05-11 23:00:00+00:00,,
+393,True,Forrock (30),,5,Monit+Manut | Turno 30,2030-10-20 03:00:00+00:00,3,Novo,,097.027.23,,2026-05-11 23:00:00+00:00,,
+777,True,Fort 130 - SCS,,5,Monit+Manut | Turno 30,2050-02-01 03:00:00+00:00,21,SDB,,190.011.19,,2026-05-11 23:05:00+00:00,,
+94,True,Fort 145 - Florianópolis - SCS,,5,Monit+Manut | Turno 30,2031-02-24 03:00:00+00:00,21,SDB,null,190.027.21,null,2026-05-11 23:13:00+00:00,,
+731,True,Fort 160 - Kobrasol - SCS,,5,Monit+Manut | Turno 30,2026-07-23 03:00:00+00:00,21,SDB,,190.003.16,4838780064,2026-05-11 23:09:00+00:00,,
+750,True,Fort 170 - Vila Celia - MSN,,5,Monit+Manut | Turno 30,2030-09-06 03:00:00+00:00,21,SDB,09477652004264,190.006.17,,2026-05-11 22:56:00+00:00,,"Rua São Borja - Vila Célia, Campo Grande - MS"
+815,True,Fort 214 - Irmãos Unidos Camboriú - SCN,,73,Garantia+Monit | Turno 60,2027-11-17 03:00:00+00:00,21,SDB,05621540000297,190.083.25,47920035839,2026-05-11 22:57:00+00:00,,"Rua José Francisco Bernardes - Centro, Camboriú - SC"
+535,True,Fort 250 - Joinville Sul - SCN,,73,Garantia+Monit | Turno 60,2026-09-15 03:00:00+00:00,21,SDB,,190.194.23,,2026-05-11 22:57:00+00:00,,
+536,True,Fort 255 - Rio do sul - SCN,,73,Garantia+Monit | Turno 60,2026-09-09 03:00:00+00:00,21,SDB,,190.195.23,,2026-05-11 23:17:00+00:00,,
+735,True,Fort 290 - Biguaçu - SCS,,5,Monit+Manut | Turno 30,2029-12-05 03:00:00+00:00,21,SDB,,190.006.19,,2026-05-11 22:37:00+00:00,,
+783,True,Fort 310 - Itajaí - SCN,,73,Garantia+Monit | Turno 60,2027-10-07 03:00:00+00:00,21,SDB,09477652009576,190.011.25,,2026-05-11 23:00:00+00:00,,"Avenida Coronel Marcos Konder - Centro, Itajaí - SC"
+730,True,Fort 379 - Florianópolis - SCS,,73,Garantia+Monit | Turno 60,2027-01-23 03:00:00+00:00,21,SDB,,190.288.24,,2026-01-14 15:00:00+00:00,,
+807,True,Fort 395 - São francisco do sul - SCN,,73,Garantia+Monit | Turno 60,2027-11-11 03:00:00+00:00,21,SDB,09477652010230,190.227.24,67992529429,2026-05-11 23:00:00+00:00,,"Rua Binot Paulmier de Gonneville - Acarai,  - "
+877,True,Fort 400 - São Bento do sul - SCS,,73,Garantia+Monit | Turno 60,2028-04-05 03:00:00+00:00,21,SDB,09477652022599,190.096.25,,2026-05-11 23:06:00+00:00,,"Acesso Deputado Genésio Tureck - Cruzeiro, São Bento do Sul - SC"
+655,True,Fort 410 - Rio Tavares - SCS,,73,Garantia+Monit | Turno 60,2027-02-12 03:00:00+00:00,21,SDB,,190.196.23,,2026-05-11 23:06:00+00:00,,
+664,True,Fort 420 - Penha - SCN,,73,Garantia+Monit | Turno 60,2027-03-10 03:00:00+00:00,21,SDB,,190.283.24,,2026-05-11 23:00:00+00:00,,
+789,True,Fort 425 - Lar Fabiano - SCN,,73,Garantia+Monit | Turno 60,2027-10-07 03:00:00+00:00,21,SDB,09477652013921,190.095.25,,2026-05-11 23:01:00+00:00,,"Rua José Darcy da Silva - Ressacada, Itajaí - SC"
+672,True,Fort 445 - Novo Hamburgo - SCS,,73,Garantia+Monit | Turno 60,2027-03-12 03:00:00+00:00,21,SDB,,190.197.23,,2026-04-23 11:18:00+00:00,,
+744,True,Fort 468 - CD Ponte Nova - MT,,73,Garantia+Monit | Turno 60,2027-08-13 03:00:00+00:00,21,SDB,,190.007.25,,2026-05-11 23:00:00+00:00,,
+572,True,Fort 585 - São Bernardo do campo - SP,,73,Garantia+Monit | Turno 60,2026-11-20 03:00:00+00:00,21,SDB,,190.198.23,,2026-05-11 23:00:00+00:00,,
+333,True,Fort 590 - Santos - SP,,75,Monit+Manut | Turno 60,2030-12-31 03:00:00+00:00,21,SDB,,190.073.23,,2026-05-11 22:53:00+00:00,,
+878,True,Fort 72 - Jardim Tijuca Campo Grande - MSS,,73,Garantia+Monit | Turno 60,2028-04-07 03:00:00+00:00,21,SDB,09477652001320,190.003.26,,2026-05-11 23:01:00+00:00,,"Avenida Doutor Gunter Hans - Jardim Tijuca, Campo Grande - MS"
+573,True,Fort 825 - São Vicente - SCN,,73,Garantia+Monit | Turno 60,2026-11-15 03:00:00+00:00,21,SDB,,190.217.24,67992144965,2026-05-11 23:08:00+00:00,,
+888,True,Fort 880 - Interlagos - SP,,73,Garantia+Monit | Turno 60,2028-05-04 03:00:00+00:00,21,SDB,09477652022165,190.143.25,,2026-05-11 23:02:00+00:00,,"Avenida das Nações Unidas - Várzea de Baixo, São Paulo - SP"
+569,True,Fort 885 - Sta Cruz do Sul - SCS,,73,Garantia+Monit | Turno 60,2026-11-25 03:00:00+00:00,21,SDB,,190.218.24,67992144965,2026-05-11 23:08:00+00:00,,
+698,True,Fort 90 - Cuiabá - MT,,73,Garantia+Monit | Turno 60,2026-08-21 03:00:00+00:00,21,SDB,9477652000143,190.108.24,,2026-05-11 23:00:00+00:00,,
+564,True,Fort 905 - Vila Nova Joinville - SCN,,73,Garantia+Monit | Turno 60,2026-11-13 03:00:00+00:00,21,SDB,,190.199.23,,2026-05-11 22:30:00+00:00,,
+742,True,Fort 945 - Gravataí - SCS,,73,Garantia+Monit | Turno 60,2027-07-31 03:00:00+00:00,21,SDB,,190.200.23,,2026-05-11 23:00:00+00:00,,
+571,True,Fort 960 - Lages - SCS,,73,Garantia+Monit | Turno 60,2026-11-19 03:00:00+00:00,21,SDB,,190.219.24,67992144965,2026-05-11 23:00:00+00:00,,
+772,True,Freguesia RJ,,49,Garantia+Monit | Turno 40,2026-09-22 03:00:00+00:00,192,Casafruti,51011145001362,011.078.24,,2026-05-11 23:00:00+00:00,,
+561,True,Ganchinho,,3,Monitoramento | Turno 30,2030-11-15 03:00:00+00:00,2,Jacomar,,077.031.24,4133868200,2026-05-11 22:40:00+00:00,,
+20,True,Goiana (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.115.20,8137717707,2026-05-11 23:16:00+00:00,,
+706,True,Goytacazes RJ,,49,Garantia+Monit | Turno 40,2026-06-03 03:00:00+00:00,192,Casafruti,,011.076.24,,2026-05-11 23:00:00+00:00,,
+22,True,Gravatá (30),,5,Monit+Manut | Turno 30,2030-12-31 03:00:00+00:00,3,Novo,,097.116.20,8137717711,2026-05-11 23:10:00+00:00,,
+752,True,Guaira PR,,73,Garantia+Monit | Turno 60,2027-08-15 03:00:00+00:00,23,Muffato,76430438015527,000.008.25,,2026-05-11 23:00:00+00:00,,
+805,True,Guarapiranga - SP,,66,Garantia+Monit | Turno 50,2026-10-30 03:00:00+00:00,234,SM Ayumi,,101.017.25,,2026-05-11 23:02:00+00:00,,"Avenida Guarapiranga - Jardim Figueira Grande, São Paulo - SP"
+686,True,Guarujá - Enseada,,66,Garantia+Monit | Turno 50,2026-05-04 03:00:00+00:00,43,Mercadão,,101.025.24,,2026-02-03 15:52:00+00:00,,
+590,True,Guarujá - SP,,73,Garantia+Monit | Turno 60,2026-05-31 03:00:00+00:00,4,Assaí,,223.074.24,1333286199,2026-05-11 22:45:00+00:00,,"Rua Valdomiro Macário - Conceiçãozinha, Guarujá - SP"
+31,True,Guatupê,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.004.16,4131346100,2026-05-11 22:49:00+00:00,,
+791,True,Guriri São Mateus ES,,32,Garantia+Monit | Turno 10,2026-10-09 03:00:00+00:00,120,Casagrande,27473669002010,011.050.25,2737613536,2026-05-11 23:00:00+00:00,,"Rodovia Othovarino Duarte Santos - Guriri Norte, São Mateus - ES"
+864,True,GY POJUCA,,83,0800 - Sorvete,2026-04-22 03:00:00+00:00,259,Arcovita,,097.035.25,,2026-05-11 23:00:00+00:00,,
+781,True,H16 Areião Taubate - SP,,66,Garantia+Monit | Turno 50,2027-03-22 03:00:00+00:00,218,Shibata,,223.025.25,,2026-05-11 23:00:00+00:00,,
+504,True,Higienópolis ,,66,Garantia+Monit | Turno 50,2026-06-02 03:00:00+00:00,142,SM Mambo,,062.002.24,,2026-05-11 23:07:00+00:00,,
+792,True,Hiper Jacob - Braço do Norte SC,,49,Garantia+Monit | Turno 40,2026-10-24 03:00:00+00:00,26,Koch,02831172011681,193.025.25,4832638282,2026-05-11 23:00:00+00:00,,"Rua Jacob Batista Uliano - Centro, Braço do Norte - SC"
+801,True,Hiper loja 09 Itapema - SC,,49,Garantia+Monit | Turno 40,2026-10-28 03:00:00+00:00,26,Koch,02831172000990,193.051.24,4732680523,2026-05-11 23:00:00+00:00,,"Av Marginal Oeste - Casa Branca, Itapema - SC"
+715,True,Hiper Matriz Tijucas SC,,49,Garantia+Monit | Turno 40,2026-06-18 03:00:00+00:00,26,Koch,,193.050.24,,2026-05-11 23:00:00+00:00,,
+692,True,Icarai RJ,,49,Garantia+Monit | Turno 40,2026-05-18 03:00:00+00:00,192,Casafruti,,011.077.24,,2026-05-11 23:00:00+00:00,,
+732,True,IG23 - PVH - F50,,4,Garantia+Monit | Turno 30,2026-07-17 03:00:00+00:00,206,Irmãos Gonçalves,,182.002.25,,2026-05-11 23:06:00+00:00,,
+887,True,Igarassu (10),,32,Garantia+Monit | Turno 10,2028-04-16 03:00:00+00:00,3,Novo,,097.003.25,8137717708,2026-05-11 23:00:00+00:00,,
+885,True,IMIGRANTES ( PORTO VELHO - RO ),,4,Garantia+Monit | Turno 30,2027-04-15 03:00:00+00:00,94,Meta Supermercado,,182.016.25,,2026-05-11 23:00:00+00:00,,
+850,True,Inativos,,38,Inativos,2021-01-01 03:00:00+00:00,185,Inativos,,MINAS - BH,,2026-02-26 22:43:00+00:00,,
+804,True,Indaiatuba - SP,,4,Garantia+Monit | Turno 30,2026-10-27 03:00:00+00:00,69,Savegnago,71322150009205,118.039.25,,2026-05-11 23:00:00+00:00,,"Avenida Francisco de Paula Leite - Jardim Nely, Indaiatuba - SP"
+725,True,Itabaiana,,49,Garantia+Monit | Turno 40,2026-07-07 03:00:00+00:00,166,Atakarejo,,016.115.24,,2026-05-11 23:00:00+00:00,,
+809,True,Itaqua Industrial,,73,Garantia+Monit | Turno 60,2027-06-08 03:00:00+00:00,4,Assaí,,223.089.24,,2026-05-11 22:40:00+00:00,,
+871,True,Itaquaquecetuba SP,,66,Garantia+Monit | Turno 50,2027-02-17 03:00:00+00:00,245,Supermercado X,,223.070.25,,2026-05-11 23:20:00+00:00,D,"Rua Sebastião Ferreira dos Santos - Centro, Itaquaquecetuba - SP"
+13,True,Jaboatão dos Guararapes (30),,5,Monit+Manut | Turno 30,2030-08-31 03:00:00+00:00,3,Novo,,097.024.22,8137717700,2026-05-11 23:08:00+00:00,,
+766,True,Jardim Italia - Mococa -SP,,66,Garantia+Monit | Turno 50,2026-09-04 03:00:00+00:00,51,SM Pierim ,52504024000858,118.041.23,1936569766,2026-05-11 22:30:00+00:00,,
+687,True,Jardim São Luis SP,,66,Garantia+Monit | Turno 50,2026-07-24 03:00:00+00:00,234,SM Ayumi,,101.037.24,11920909605,2026-05-11 23:01:00+00:00,,"Av Maria Coelho Aguiar - Jardim São Luis, São Paulo - SP"
+486,True,Joanin,,64,Monitoramento | Turno 50,2030-05-23 03:00:00+00:00,106,Coml. Oswaldo Cruz,,202.018.21,,2026-05-11 23:05:00+00:00,,
+579,True,João Pessoa ,,30,Monitoramento | Turno 10,2030-10-25 03:00:00+00:00,6,Nordestão,,241.035.24,,2026-05-11 23:14:00+00:00,,
+868,True,Komprão Benvenutti - SC,,49,Garantia+Monit | Turno 40,2027-03-04 03:00:00+00:00,26,Koch,02831172000132,193.046.24,,2026-05-11 23:01:00+00:00,,"AV Bayer Filho - Centro, Tijucas - "
+695,True,Komprão Cassol,,49,Garantia+Monit | Turno 40,2026-06-01 03:00:00+00:00,26,Koch,,193.048.24,,2026-05-11 23:00:00+00:00,,
+773,True,Komprão Dirceu - SC,,49,Garantia+Monit | Turno 40,2026-09-14 03:00:00+00:00,26,Koch,2831172000132,193.043.24,4832638200,2026-05-11 23:00:00+00:00,,
+843,True,Komprão Lepper Joinville,,49,Garantia+Monit | Turno 40,2027-01-26 03:00:00+00:00,26,Koch,,193.024.25,,2026-05-11 23:00:00+00:00,,"Rua Tuiuti - Aventureiro, Joinville - SC"
+691,True,Komprão Marcos Biguaçu,,49,Garantia+Monit | Turno 40,2026-05-19 03:00:00+00:00,26,Koch,,193.012.24,,2026-05-11 23:00:00+00:00,,
+722,True,Komprão Meneguel Tubarão SC,,49,Garantia+Monit | Turno 40,2026-06-30 03:00:00+00:00,26,Koch,,193.047.24,,2026-05-11 23:00:00+00:00,,
+786,True,Komprão Olivia - São José SC,,49,Garantia+Monit | Turno 40,2026-10-08 03:00:00+00:00,26,Koch,02831172000132,193.044.24,,2026-05-11 23:00:00+00:00,,"Rua Araçari - Forquilhas, São José - SC"
+814,True,Komprão Oxford - SC,,49,Garantia+Monit | Turno 40,2026-11-24 03:00:00+00:00,26,Koch,02831172000132,193.049.24,4733058045,2026-05-11 23:00:00+00:00,,"Rua Francisco Pauli - Oxford, São Bento do Sul - SC"
+694,True,Komprão Rodeio,,49,Garantia+Monit | Turno 40,2026-05-11 03:00:00+00:00,26,Koch,,193.045.24,,2026-05-11 23:00:00+00:00,,
+28,True,Lagoa Nova,,30,Monitoramento | Turno 10,2030-12-31 03:00:00+00:00,6,Nordestão,,097.086.20,8436154803,2026-05-11 22:56:00+00:00,B,
+148,True,Leme Loja 52,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,69,Savegnago,71322150006443,118.011.22,null,2026-05-11 22:51:00+00:00,,
+823,True,LEVE ALIMENTOS ,,4,Garantia+Monit | Turno 30,2026-11-23 03:00:00+00:00,254,Leve ,,203.005.25,,2026-05-11 23:02:00+00:00,,
+24,True,Limoeiro (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.117.20,8137717712,2026-05-11 22:30:00+00:00,,
+712,True,LJ14 Hiper Itapema SC,,49,Garantia+Monit | Turno 40,2026-04-24 03:00:00+00:00,26,Koch,,193.052.24,,2026-05-11 23:00:00+00:00,,
+880,True,Loja 02 - Araranguá SC,,32,Garantia+Monit | Turno 10,2027-04-09 03:00:00+00:00,145,Giassi e cia,,115.021.25,4835215400,2026-05-11 23:01:00+00:00,,"Avenida Presidente João Goulart - Cidade Alta, Araranguá - SC"
+697,True,Loja 08 - Forquilhinha SC,,32,Garantia+Monit | Turno 10,2026-05-29 03:00:00+00:00,145,Giassi e cia,,115.022.24,48992237387,2026-05-11 23:00:00+00:00,,"Rodovia Gabriel Arns - Centro, Forquilhinha - SC"
+513,True,Loja 101 Fortaleza - CE,,57,Monitoramento | Turno 40,2030-07-23 03:00:00+00:00,199,Empório do pão,11163965000111,226.077.23,8532674848,2026-05-11 23:00:00+00:00,,
+833,True,Loja 13 - Tubarão SC,,32,Garantia+Monit | Turno 10,2026-12-07 03:00:00+00:00,145,Giassi e cia,,115.008.25,4836313600,2026-05-11 23:00:00+00:00,,"Rua Altamiro Guimarães - Oficinas, Tubarão - SC"
+828,True,Loja 18 - Florianópolis SC,,32,Garantia+Monit | Turno 10,2026-11-17 03:00:00+00:00,145,Giassi e cia,,115.007.25,4837713100,2026-05-11 23:00:00+00:00,,"Rodovia José Carlos Daux - Saco Grande, Florianópolis - SC"
+829,True,LOJA BAIRRO TIBERY,,32,Garantia+Monit | Turno 10,2026-11-22 03:00:00+00:00,215,Super MN,,199.055.24,,2026-05-11 23:00:00+00:00,,
+48,True,Loja Boiçucanga - SP,,64,Monitoramento | Turno 50,2030-12-31 03:00:00+00:00,16,Rede Krill,,230.005.21,,2026-05-11 22:51:00+00:00,,
+175,True,Loja Guarujá - SP,,64,Monitoramento | Turno 50,2030-05-26 03:00:00+00:00,16,Rede Krill,,230.020.22,,2024-11-15 23:47:00+00:00,,
+824,True,Loja Monte Alto,,4,Garantia+Monit | Turno 30,2026-11-25 03:00:00+00:00,69,Savegnago,,118.051.25,,2026-05-11 23:00:00+00:00,,
+844,True,Loja Osasco,,73,Garantia+Monit | Turno 60,2027-01-11 03:00:00+00:00,84,Dia Brasil,03476811081720,243.014.25,1138668431,2026-05-11 23:00:00+00:00,,"Praça Agrícola La Paz Tristante - Industrial Anhangüera, Osasco - SP"
+800,True,Loja Peruíbe - SP,,73,Garantia+Monit | Turno 60,2026-10-31 03:00:00+00:00,16,Rede Krill,21010503002676,230.011.25,,2026-05-11 23:01:00+00:00,,"Rua Avelino Alves Penna Filho - Parque Balneário Oasis, Peruíbe - SP"
+770,True,Loja Taubate - SP,,66,Garantia+Monit | Turno 50,2026-08-28 03:00:00+00:00,139,Tauste SM,65897910001802,196.006.25,1434051505,2026-02-11 12:00:00+00:00,,
+2,True,Maestro,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.045.17,4131488700,2026-05-11 23:01:00+00:00,,
+797,True,Mairiporã - SP,,66,Garantia+Monit | Turno 50,2026-10-23 03:00:00+00:00,245,Supermercado X,71779813001575,223.030.25,1146523030,2026-05-11 23:00:00+00:00,,"Rua João Evangelista Germano - Capoavinha, Mairiporã - SP"
+485,True,Mansões,,64,Monitoramento | Turno 50,2030-12-31 03:00:00+00:00,187,Dalben,,106.009.13,,2026-05-11 22:26:00+00:00,,
+882,True,Marechal,,57,Monitoramento | Turno 40,2027-12-17 03:00:00+00:00,31,Condor,,077.035.20,,2026-05-11 23:01:00+00:00,,
+16,True,Maria Lacerda,,30,Monitoramento | Turno 10,2030-12-31 03:00:00+00:00,6,Nordestão,,097.068.12,8436154808,2026-05-11 23:12:00+00:00,,
+714,True,Mariano Atacado,,36,Garantia+Monit | Turno 20,2026-06-17 03:00:00+00:00,241,Tudo Casa ,,077.001.25,,2026-05-11 23:00:00+00:00,,
+832,True,Mata de São João,,45,CONTINUUM | Turno 40,2026-11-26 03:00:00+00:00,147,CDP SUPERMERCADOS,,016.216.24,,2026-05-11 23:00:00+00:00,,
+802,True,Max Gaya SP,,73,Garantia+Monit | Turno 60,2027-11-03 03:00:00+00:00,23,Muffato,76430438014806,000.005.25,,2026-05-11 23:00:00+00:00,,"Rua Manuel Gaya - Vila Nova Mazzei, São Paulo - SP"
+818,True,Mercantil Nova Era Centro,,32,Garantia+Monit | Turno 10,2026-11-22 03:00:00+00:00,59,Mercantil Nova Era,,018.020.25,,2026-05-11 23:06:00+00:00,,
+858,True,Merces,,49,Garantia+Monit | Turno 40,2026-11-18 03:00:00+00:00,31,Condor,,077.055.25,,2026-05-11 23:00:00+00:00,,
+723,True,Meta 21 SM- Loja Calama,,4,Garantia+Monit | Turno 30,2026-06-26 03:00:00+00:00,94,Meta Supermercado,23245945000179,182.005.24,6932290235,2026-05-11 23:00:00+00:00,,"Rua Abunã - Embratel, Porto Velho - RO"
+776,True,Moema Pajucara RN,,32,Garantia+Monit | Turno 10,2026-09-18 03:00:00+00:00,6,Nordestão,8030363003520,097.080.25,,2026-05-11 23:01:00+00:00,,
+616,True,Mufatto Patão,,73,Garantia+Monit | Turno 60,2026-11-14 03:00:00+00:00,23,Muffato,,000.031.24,,2026-05-11 23:13:00+00:00,,
+701,True,Mufatto Sawade,,73,Garantia+Monit | Turno 60,2026-10-12 03:00:00+00:00,23,Muffato,,000.033.24,,2026-05-11 22:22:00+00:00,,
+650,True,Muffato CD SAO BERNARDO DO CAMPO ,,73,Garantia+Monit | Turno 60,2027-01-12 03:00:00+00:00,23,Muffato,,000.040.24,,2026-05-11 23:00:00+00:00,,
+709,True,Muffato Olimpia,,73,Garantia+Monit | Turno 60,2027-06-22 03:00:00+00:00,23,Muffato,,000.006.25,,2026-05-11 23:00:00+00:00,,
+612,True,Nabuco,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.060.24,,2026-05-11 22:51:00+00:00,,
+793,True,Niterói,,73,Garantia+Monit | Turno 60,2026-10-30 03:00:00+00:00,4,Assaí,06057223033002,223.045.25,2126256526,2026-05-11 23:00:00+00:00,,"Rua Benjamin Constant - Santana, Niterói - RJ"
+724,True,Nossa Senhora da Glória - BA,,49,Garantia+Monit | Turno 40,2026-06-26 03:00:00+00:00,166,Atakarejo,,016.114.24,7134608700,2026-05-11 23:00:00+00:00,,
+830,True,Nova Era Grande Circular,,32,Garantia+Monit | Turno 10,2026-12-09 03:00:00+00:00,59,Mercantil Nova Era,,018.019.25,,2026-05-11 23:00:00+00:00,,
+819,True,Novo Atacado Garanhuns ,,4,Garantia+Monit | Turno 30,2027-11-24 03:00:00+00:00,3,Novo,,097.018.24,,2026-05-11 23:00:00+00:00,,
+619,True,Novo Atacado Olinda (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.013.24,,2026-05-11 23:12:00+00:00,,
+707,True,Novo Atacarejo Toritama PE (30),,4,Garantia+Monit | Turno 30,2027-06-11 03:00:00+00:00,3,Novo,,097.015.24,,2026-05-11 23:00:00+00:00,,
+54,True,Novo Bezerros (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.025.22,81982200312,2026-05-11 23:15:00+00:00,,
+316,True,Novo Tambasa (10),,31,Monit+Manut | Turno 10,2030-07-24 03:00:00+00:00,3,Novo,,097.018.23,81981083221,2026-05-11 22:35:00+00:00,,
+862,True,NOVO TEMPO - BOA VISTA 01800125,,83,0800 - Sorvete,2026-06-19 03:00:00+00:00,258,Novo Tempo,,018.001.25,,2026-05-11 23:00:00+00:00,,
+66,True,Novo Timbaúba (10),,31,Monit+Manut | Turno 10,2030-12-10 03:00:00+00:00,3,Novo,,097.027.22,,2026-05-11 23:00:00+00:00,,
+403,True,Novo Varzea (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.033.23,,2026-05-11 23:06:00+00:00,,
+757,True,Osasco,,73,Garantia+Monit | Turno 60,2027-03-29 03:00:00+00:00,4,Assaí,,223.088.24,,2026-05-11 22:41:00+00:00,,
+443,True,Ouricuri (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.035.23,,2026-05-11 23:00:00+00:00,,
+813,True,Parque Novo Mundo Loja 23 -SP,,66,Garantia+Monit | Turno 50,2026-11-10 03:00:00+00:00,129,Bem Barato,68480409000196,101.015.24,,2026-05-11 23:01:00+00:00,,"Avenida Tenente Amaro Felicíssimo da Silveira - Parque Novo Mundo, São Paulo - SP"
+761,True,Parque Taquaral Loja 59,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,69,Savegnago,71322150007687,118.022.23,,2026-05-11 23:14:00+00:00,,
+8,True,Parque Verde,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.033.21,4131612200,2026-05-11 22:58:00+00:00,,
+25,True,Paulista (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.114.20,8137717706,2026-05-11 23:09:00+00:00,,
+562,True,Paulista II (30),,5,Monit+Manut | Turno 30,2030-12-31 03:00:00+00:00,3,Novo,,097.014.24,,2026-05-11 22:25:00+00:00,,
+426,True,Paulistão  Barretos Loja 302,,3,Monitoramento | Turno 30,2030-02-05 03:00:00+00:00,69,Savegnago,,118.030.23,,2026-05-11 23:05:00+00:00,,
+282,True,Paulistão Araraquara Loja 301,,3,Monitoramento | Turno 30,2030-08-31 03:00:00+00:00,69,Savegnago,,118.008.23,,2026-05-11 23:07:00+00:00,,
+685,True,Paulistão Campinas Loja 305,,4,Garantia+Monit | Turno 30,2030-12-31 03:00:00+00:00,69,Savegnago,,118.054.24,,2026-05-11 23:00:00+00:00,,
+682,True,Paulistão Ribeirão Preto Loja 306,,4,Garantia+Monit | Turno 30,2026-04-16 03:00:00+00:00,69,Savegnago,,118.052.24,,2026-05-11 23:00:00+00:00,,
+241,True,Pedra de Fogo (30),,5,Monit+Manut | Turno 30,2030-05-26 03:00:00+00:00,3,Novo,,097.029.22,,2026-05-11 23:05:00+00:00,,
+775,True,Pedro Cánario - ES,,32,Garantia+Monit | Turno 10,2026-09-16 03:00:00+00:00,120,Casagrande,27473669003415,011.033.25,2736031001,2026-05-11 23:00:00+00:00,,
+335,True,Pedro Gusso,,3,Monitoramento | Turno 30,2030-10-27 03:00:00+00:00,2,Jacomar,,077.018.23,4131668200,2026-05-11 23:06:00+00:00,,
+27,True,Pimenta Verde Louveira SP,,30,Monitoramento | Turno 10,2030-12-31 03:00:00+00:00,7,IMC,,094.011.19,11971523002,2026-05-11 23:02:00+00:00,,
+1,True,Pinhais,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.044.18,4131324100,2026-05-11 22:23:00+00:00,,
+840,True,Pinhais,,49,Garantia+Monit | Turno 40,2027-01-08 03:00:00+00:00,152,Gold,,077.088.24,,2026-05-11 23:00:00+00:00,,
+582,True,Piracicaba Loja 51,,3,Monitoramento | Turno 30,2030-12-06 03:00:00+00:00,69,Savegnago,,118.031.21,,2026-05-11 23:03:00+00:00,,
+438,True,Piraquara,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.126.22,4130341800,2026-05-11 22:25:00+00:00,,
+640,True,Pivot,,30,Monitoramento | Turno 10,2027-01-28 03:00:00+00:00,222,Primor SM,,093.008.24,,2026-05-11 23:00:00+00:00,,
+747,True,Pojuca - BA,,49,Garantia+Monit | Turno 40,2026-07-29 03:00:00+00:00,166,Atakarejo,,016.113.24,,2026-05-11 23:00:00+00:00,,
+11,True,Ponta Negra Natal RN,,30,Monitoramento | Turno 10,2030-12-31 03:00:00+00:00,6,Nordestão,,097.057.18,8436154809,2025-03-09 20:32:00+00:00,,
+693,True,Poupaki Atacadista Osasco,,66,Garantia+Monit | Turno 50,2026-05-17 03:00:00+00:00,91,Davo Supermercados,,223.004.25,,2026-05-11 23:00:00+00:00,,
+825,True,Radial Leste,,66,Garantia+Monit | Turno 50,2026-11-18 03:00:00+00:00,245,Supermercado X,,223.038.25,,2026-05-11 22:57:00+00:00,,
+483,True,Ribeirão (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.089.23,81988861073,2026-05-11 23:08:00+00:00,,
+622,True,Rio Claro Loja 300,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,69,Savegnago,,118.045.22,,2026-05-11 23:13:00+00:00,,
+856,True,Rio Negro,,49,Garantia+Monit | Turno 40,2026-08-05 03:00:00+00:00,31,Condor,,077.015.25,,2026-05-11 23:00:00+00:00,,
+835,True,Rota do Sol,,32,Garantia+Monit | Turno 10,2027-01-02 03:00:00+00:00,6,Nordestão,,097.102.25,,2026-05-11 23:00:00+00:00,,
+519,True,SALGUEIRO (10),,32,Garantia+Monit | Turno 10,2026-08-12 03:00:00+00:00,3,Novo,,097.012.24,,2026-05-11 22:53:00+00:00,,
+17,True,Santa Cruz (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.117.19,8137717704,2026-05-11 23:11:00+00:00,,
+886,True,Santa Luzia,,49,Garantia+Monit | Turno 40,2026-12-16 03:00:00+00:00,8,Supermercado BH,,232.049.25,,2026-05-11 23:00:00+00:00,,
+855,True,Santana,,49,Garantia+Monit | Turno 40,2026-11-04 03:00:00+00:00,138,Nutriama,,112.004.24,,2026-05-11 23:00:00+00:00,,
+44,True,Santarem,,57,Monitoramento | Turno 40,2030-11-20 03:00:00+00:00,13,Avante,24118660,112.001.19,8681169560,2026-05-11 22:56:00+00:00,,
+803,True,Santo Andre Utinga - SP,,73,Garantia+Monit | Turno 60,2027-05-10 03:00:00+00:00,4,Assaí,,223.090.24,1135760925,2026-05-11 22:32:00+00:00,,"Avenida João Pessoa - Jardim Utinga, Santo André - SP"
+18,True,Santo Antão (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.080.19,8137717702,2026-05-11 23:05:00+00:00,,
+440,True,São Gonçalo,,30,Monitoramento | Turno 10,2030-12-19 03:00:00+00:00,6,Nordestão,,097.099.23,,2026-05-11 22:28:00+00:00,,
+774,True,São Jose Do Rio Preto SP,,75,Monit+Manut | Turno 60,2027-09-10 03:00:00+00:00,23,Muffato,76430438000171,000.009.25,4540095000,2026-05-11 23:00:00+00:00,,
+869,True,São José dos campos,,73,Garantia+Monit | Turno 60,2027-08-19 03:00:00+00:00,4,Assaí,,223.092.24,,2026-05-11 22:28:00+00:00,,
+554,True,São José dos Pinhais,,73,Garantia+Monit | Turno 60,2026-09-30 03:00:00+00:00,23,Muffato,,000.028.24,,2026-05-11 23:00:00+00:00,,
+875,True,São José dos Pinhais,,49,Garantia+Monit | Turno 40,2027-03-10 03:00:00+00:00,31,Condor,,077.101.25,,2026-05-11 22:59:00+00:00,,
+21,True,São Lourenço da Mata (10),,31,Monit+Manut | Turno 10,2030-05-24 03:00:00+00:00,3,Novo,,097.005.22,8137717700,2026-05-11 23:00:00+00:00,,
+36,True,São Marcos,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.084.20,4133823830,2026-05-11 22:52:00+00:00,,
+711,True,São Pedro da Aldeia,,49,Garantia+Monit | Turno 40,2026-06-16 03:00:00+00:00,9,Drift,,011.081.24,,2026-05-11 23:00:00+00:00,,
+497,True,Sapucaia do Sul - RS,,53,Monit+Manut | Turno 40,2030-12-31 03:00:00+00:00,140,Atacadão,,094.144.23,5134528225,2026-05-11 23:00:00+00:00,,
+794,True,Sempre Tem - Barra do Jucu,,49,Garantia+Monit | Turno 40,2026-10-19 03:00:00+00:00,9,Drift,28129260003104,011.024.25,,2026-05-11 23:12:00+00:00,,"Rodovia do Sol - Barra do Jucu, Vila Velha - ES"
+779,True,Sertãozinho loja 05 - SP,,4,Garantia+Monit | Turno 30,2026-08-31 03:00:00+00:00,69,Savegnago,,118.024.25,,2026-05-11 23:00:00+00:00,,
+696,True,Sertãozinho Loja 308,,4,Garantia+Monit | Turno 30,2027-06-01 03:00:00+00:00,69,Savegnago,,118.023.25,,2026-05-11 23:01:00+00:00,,
+358,True,Sertãozinho Loja 60,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,69,Savegnago,,118.012.23,,2026-05-11 23:22:00+00:00,,
+839,True,SIE IND DE CARNES,,45,CONTINUUM | Turno 40,2026-12-17 03:00:00+00:00,124,DB,,018.029.25,,2026-05-11 23:00:00+00:00,,
+728,True,Silves,,32,Garantia+Monit | Turno 10,2026-04-28 03:00:00+00:00,59,Mercantil Nova Era,,018.021.24,,2026-05-11 23:00:00+00:00,,
+315,True,Sítio Cercado,,3,Monitoramento | Turno 30,2030-08-02 03:00:00+00:00,2,Jacomar,,077.125.22,4137787200,2026-05-11 23:11:00+00:00,,
+690,True,SM Atende Mais,,49,Garantia+Monit | Turno 40,2026-04-27 03:00:00+00:00,236,R & J Alimentos,,203.002.24,,2026-05-11 23:12:00+00:00,,
+821,True,SM BARÃO DE COCAIS - MG,,66,Garantia+Monit | Turno 50,2027-11-25 03:00:00+00:00,73,Greenyellow,,232.073.24,,2026-05-11 23:01:00+00:00,,
+796,True,SM Comprebem - RN,,66,Garantia+Monit | Turno 50,2026-10-19 03:00:00+00:00,252,JL de Medeiros & Araujo ,40791980000536,097.132.24,8435211510,2026-05-11 23:00:00+00:00,,"Rua Martins Ferreira - Macau, Macau - RN"
+495,True,SM Crema Lj 01,,64,Monitoramento | Turno 50,2030-12-31 03:00:00+00:00,194,Crema Supermercados,,106.061.23,,2026-05-11 23:04:00+00:00,,
+845,True,SM Diniz - Santa Tereza CE,,73,Garantia+Monit | Turno 60,2027-01-27 03:00:00+00:00,257,Binda,54544480000180,226.064.25,,2026-05-11 23:00:00+00:00,,"Rua José de Alencar - Santa Tereza, Juazeiro do Norte - CE"
+705,True,SM Fonseca,,36,Garantia+Monit | Turno 20,2026-05-12 03:00:00+00:00,239,Fonseca SM LTA,,118.031.24,,2026-02-23 03:17:00+00:00,,
+866,True,SM Krolow - Guaíba RS,,66,Garantia+Monit | Turno 50,2027-03-04 03:00:00+00:00,260,Macro Atacado,10607350000769,213.003.25,,2026-03-25 13:00:00+00:00,,"BR 116 - Altos da Alegria,  - "
+727,True,SM Palmeiras,,73,Garantia+Monit | Turno 60,2026-06-18 03:00:00+00:00,243,João Mussi,,077.095.24,4232527397,2026-05-11 22:39:00+00:00,,"Rua Conceição - Centro, Palmeira - PR"
+842,True,SM Peri - SP,,66,Garantia+Monit | Turno 50,2026-12-12 03:00:00+00:00,224,Trimais ,07947496000154,082.047.25,11997665754,2026-02-08 09:02:00+00:00,,"Avenida Doutor Francisco Ranieri - Lauzane Paulista, São Paulo - SP"
+115,True,SM Piratininga - São Bento do Sapucaí,,67,Monit+Manut | Turno 50,2030-01-03 03:00:00+00:00,46,Merc. Piratininga,null,189.006.22,35984197908,2026-05-11 22:54:00+00:00,,
+780,True,Sm São José Itápolis - SP,,66,Garantia+Monit | Turno 50,2026-09-29 03:00:00+00:00,250,Sm Blentan,53332185000106,118.013.24,1632621336,2026-05-11 23:02:00+00:00,,
+768,True,SM São Sebastião LJ 02,,66,Garantia+Monit | Turno 50,2026-09-10 03:00:00+00:00,249,Botelho,5015082000161,196.505.24,1433725055,2026-05-11 23:00:00+00:00,,
+884,True,Sta Cândida,,49,Garantia+Monit | Turno 40,2027-03-03 03:00:00+00:00,31,Condor,,077.031.25,,2026-05-11 22:59:00+00:00,,
+726,True,SU4 Plataforma,,49,Garantia+Monit | Turno 40,2026-07-08 03:00:00+00:00,166,Atakarejo,,016.116.24,,2026-05-11 23:00:00+00:00,,"Avenida Santiago de Compostela - Brotas, Salvador - BA"
+810,True,Sumaré Jardim Primavera,,73,Garantia+Monit | Turno 60,2027-05-24 03:00:00+00:00,4,Assaí,,223.091.24,,2026-05-11 22:41:00+00:00,,
+699,True,Sumare Loja 58,,3,Monitoramento | Turno 30,2030-06-24 03:00:00+00:00,69,Savegnago,71322150007334,118.047.22,,2026-05-11 23:19:00+00:00,,
+765,True,Super Adega - Guará,,49,Garantia+Monit | Turno 40,2026-09-04 03:00:00+00:00,248,S. A Atacadista,07738069000166,093.032.21,6137734442,2026-05-11 23:00:00+00:00,,"Trecho SIA Trecho 10 - Zona Industrial (Guará), Brasília - DF"
+873,True,Super Maxi - Loja Bairro Marta Helena MG,,32,Garantia+Monit | Turno 10,2027-03-23 03:00:00+00:00,215,Super MN,00944213200030,199.056.24,,2026-05-11 23:01:00+00:00,,"Rua Laíde Virgínia da Costa - Distrito Industrial, Uberlândia - MG"
+26,True,Superfácil Rodoviária,,30,Monitoramento | Turno 10,2030-12-31 03:00:00+00:00,6,Nordestão,,097.038.19,8436154832,2026-05-11 23:00:00+00:00,,
+826,True,Supermercado Três Irmãos ,,66,Garantia+Monit | Turno 50,2026-12-10 03:00:00+00:00,255,Mercearia Esquinão,,237.036.25,,2026-05-11 23:06:00+00:00,,
+827,True,Supermercados LEAL ,,51,Garantia+Monit | Turno 42,2026-12-01 03:00:00+00:00,121,Leal,,199.007.25,,2026-05-11 23:01:00+00:00,,
+65,True,Surubim (10),,31,Monit+Manut | Turno 10,2030-12-31 03:00:00+00:00,3,Novo,,097.058.22,8137717700,2026-05-11 22:24:00+00:00,,
+512,True,Tibiriça Loja 61,,3,Monitoramento | Turno 30,2030-04-15 03:00:00+00:00,69,Savegnago,,118.023.23,,2026-05-11 22:25:00+00:00,,
+615,True,Tirol Natal RN,,30,Monitoramento | Turno 10,2030-12-31 03:00:00+00:00,6,Nordestão,,097.102.24,8436154807,2026-05-11 23:00:00+00:00,,"Avenida Prudente de Morais - Tirol, Natal - RN"
+876,True,Tropicale - Bal Camboriú SC,,49,Garantia+Monit | Turno 40,2027-03-29 03:00:00+00:00,26,Koch,,193.022.25,,2026-05-11 23:01:00+00:00,,"Avenida 5ª Avenida - Vila Real, Balneário Camboriú - SC"
+733,True,Tupi Tijucas SC,,49,Garantia+Monit | Turno 40,2026-07-20 03:00:00+00:00,26,Koch,,193.009.25,,2026-05-11 23:00:00+00:00,,
+10,True,Uberaba,,3,Monitoramento | Turno 30,2030-12-31 03:00:00+00:00,2,Jacomar,,077.029.06,4133718700,2026-05-11 22:56:00+00:00,,
+624,True,Uniforça CD,,69,Monitoramento | Turno 60,2026-12-04 03:00:00+00:00,212,Uniforça,,226.041.23,,2026-05-11 23:16:00+00:00,,
+746,True,Uvaranas(PONTA GROSSA),,73,Garantia+Monit | Turno 60,2026-10-19 03:00:00+00:00,23,Muffato,,000.032.24,,2026-05-11 22:35:00+00:00,,
+533,True,Villefort Loja 41 Lavras MG ,,73,Garantia+Monit | Turno 60,2026-09-15 03:00:00+00:00,158,Cema Central Mineira,,232.046.21,,2026-05-11 23:19:00+00:00,,
+784,True,Villefort Loja 46 Vila Jaragua GO,,73,Garantia+Monit | Turno 60,2026-09-30 03:00:00+00:00,158,Cema Central Mineira,,232.045.21,,2026-05-11 23:00:00+00:00,,
+580,True,Villefort Paracatu,,73,Garantia+Monit | Turno 60,2026-11-20 03:00:00+00:00,158,Cema Central Mineira,,232.051.24,3121917952,2026-05-11 23:00:00+00:00,,
+788,True,Viver Melhor Manaus AM,,32,Garantia+Monit | Turno 10,2026-10-05 03:00:00+00:00,59,Mercantil Nova Era,,018.002.25,,2026-05-11 23:01:00+00:00,,"Avenida Comendador José Cruz - Lago Azul, Manaus - AM"
+759,True,XV de Novembro ,,73,Garantia+Monit | Turno 60,2027-08-26 03:00:00+00:00,23,Muffato,76430438016094,000.020.25,,2026-05-11 23:00:00+00:00,,
+734,True,ZAP FRIOS - SJ RIO PARDO-SP,,66,Garantia+Monit | Turno 50,2026-07-10 03:00:00+00:00,244,Rodrigo Fitzgerald,,118.032.24,,2025-09-20 07:00:00+00:00,,
