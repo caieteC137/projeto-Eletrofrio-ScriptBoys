@@ -1,0 +1,67 @@
+# Plano de Implementação: Serviço de Detecção de Alarmes
+
+Este documento descreve a implementação do serviço automatizado para detecção de alarmes da API Eletrofrio.
+
+## 1. Arquitetura do Serviço
+
+O serviço foi desenvolvido em Python e opera como um daemon (processo contínuo) que realiza polling na API de alarmes.
+
+### Componentes Principais:
+- **`alarm_service.py`**: Script principal que contém a lógica de consulta, comparação e sincronização.
+- **`alarm_state.json`**: Armazenamento temporário (cache local) para persistir o estado dos alarmes entre execuções e detectar mudanças de status.
+- **`alarm_service.log`**: Registro detalhado de todas as execuções, novos alarmes encontrados, alterações de status e falhas de comunicação.
+- **Supabase**: Banco de dados final para armazenamento persistente dos eventos.
+
+## 2. Lógica de Detecção e Deduplicação
+
+Para atender aos requisitos de identificação sem duplicidade, o serviço utiliza o `alarmeId` como chave primária:
+
+1. **Novos Alarmes**: Identificados quando um `alarmeId` retornado pela API não existe no `alarm_state.json`.
+2. **Alterações de Status**: Identificadas comparando os campos `eventoDesc`, `criticidade` e `alarmeDhCad` do alarme atual com a versão armazenada no estado local.
+3. **Deduplicação**: O uso de `upsert` (update if exists, insert otherwise) no Supabase garante que o banco de dados não contenha registros duplicados para o mesmo ID.
+
+## 3. Configuração do Banco de Dados (Supabase)
+
+Para que o serviço funcione corretamente, é necessário criar a tabela `alarmes` no Supabase. Execute o seguinte SQL no editor de consultas do Supabase:
+
+```sql
+CREATE TABLE public.alarmes (
+    "alarmeId" BIGINT PRIMARY KEY,
+    "contaId" INTEGER,
+    "contaNm" TEXT,
+    "lojaId" INTEGER,
+    "lojaNm" TEXT,
+    "nrPedido" TEXT,
+    "dispositivoId" INTEGER,
+    "dispositivoNm" TEXT,
+    "grupoNm" TEXT,
+    "subgrupoNm" TEXT,
+    "alarmeDhCad" TIMESTAMP WITH TIME ZONE,
+    "alarmeDesc" TEXT,
+    "silenciarAte" TIMESTAMP WITH TIME ZONE,
+    "criticidade" TEXT,
+    "ppAbertura" TEXT,
+    "eventoDhCad" TIMESTAMP WITH TIME ZONE,
+    "eventoDesc" TEXT,
+    "eventoUsu" TEXT,
+    "tempo" TEXT,
+    "created_at" TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Habilitar Realtime (opcional)
+ALTER PUBLICATION supabase_realtime ADD TABLE public.alarmes;
+```
+
+## 4. Como Executar
+
+1. Certifique-se de que as dependências foram instaladas:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Verifique se o arquivo `.env` contém as credenciais `SUPABASE_URL` e `SUPABASE_KEY`.
+3. Inicie o serviço:
+   ```bash
+   python alarm_service.py
+   ```
+
+O serviço rodará em segundo plano, verificando a API a cada 60 segundos (configurável no script).

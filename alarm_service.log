@@ -1,0 +1,408 @@
+2026-05-13 22:28:57,296 - INFO - 🚀 Iniciando Serviço de Detecção de Alarmes Eletrofrio...
+2026-05-13 22:28:58,761 - INFO - 🔍 Verificando novos alarmes...
+2026-05-13 22:29:01,648 - INFO - 🔔 NOVO ALARME: ID 4170991 - Loja: Fort 170 - Vila Celia - MSN - Desc: Alarme - OFFLINE[Crítico]
+2026-05-13 22:29:01,648 - INFO - 🔔 NOVO ALARME: ID 4170990 - Loja: Fort 170 - Vila Celia - MSN - Desc: Alarme - OFFLINE[Crítico]
+2026-05-13 22:29:01,648 - INFO - 🔔 NOVO ALARME: ID 4171026 - Loja: Fort 170 - Vila Celia - MSN - Desc: Alarme - Setpoint não atingido em 1 hora de funcionamento (Falta de gás - Válvula suja) [Médio]
+2026-05-13 22:29:01,649 - INFO - 🔔 NOVO ALARME: ID 4171031 - Loja: Carpina II (30) - Desc: Alarme - Alta temperatura do glicol [Crítico]
+2026-05-13 22:29:01,649 - INFO - 🔔 NOVO ALARME: ID 4171185 - Loja: Sertãozinho Loja 60 - Desc: Alarme - Alta temperatura glicol [Critico]
+2026-05-13 22:29:01,649 - INFO - 🔔 NOVO ALARME: ID 4171210 - Loja: Paulistão  Barretos Loja 302 - Desc: Alarme - Alta temperatura - Ambiente [Alto]
+2026-05-13 22:29:01,650 - INFO - 🔔 NOVO ALARME: ID 4171211 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,650 - INFO - 🔔 NOVO ALARME: ID 4171227 - Loja: Novo Atacarejo Toritama PE (30) - Desc: Alarme - Falha INT ou CORESENSE / Falha de óleo [Médio]
+2026-05-13 22:29:01,650 - INFO - 🔔 NOVO ALARME: ID 4171233 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,650 - INFO - 🔔 NOVO ALARME: ID 4171234 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,650 - INFO - 🔔 NOVO ALARME: ID 4171248 - Loja: Afonso Pena  - Desc: Alarme de alta temperatura
+2026-05-13 22:29:01,651 - INFO - 🔔 NOVO ALARME: ID 4171252 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,651 - INFO - 🔔 NOVO ALARME: ID 4171265 - Loja: Sumare Loja 58 - Desc: Alarme - OFFLINE[Crítico]
+2026-05-13 22:29:01,651 - INFO - 🔔 NOVO ALARME: ID 4171268 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,651 - INFO - 🔔 NOVO ALARME: ID 4171272 - Loja: Comper 104 - Cuiabá - MT - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,651 - INFO - 🔔 NOVO ALARME: ID 4171305 - Loja: Pedro Gusso - Desc: Alarme - OFFLINE [Alto]
+2026-05-13 22:29:01,652 - INFO - 🔔 NOVO ALARME: ID 4171306 - Loja: Arco Verde (30) - Desc: Alarme - Alta temperatura [Alto]
+2026-05-13 22:29:01,652 - INFO - 🔔 NOVO ALARME: ID 4171319 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,652 - INFO - 🔔 NOVO ALARME: ID 4171322 - Loja: Pedro Gusso - Desc: Alarme de baixa temperatura - Ambiente
+2026-05-13 22:29:01,652 - INFO - 🔔 NOVO ALARME: ID 4171357 - Loja: Piraquara - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,652 - INFO - 🔔 NOVO ALARME: ID 4171365 - Loja: Sumare Loja 58 - Desc: Alarme - Alta temperatura - Ambiente [Alto]
+2026-05-13 22:29:01,652 - INFO - 🔔 NOVO ALARME: ID 4171388 - Loja: Afonso Pena  - Desc: Baixa pressao succao/ baixa temp.glicol
+2026-05-13 22:29:01,652 - INFO - 🔔 NOVO ALARME: ID 4171391 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,653 - INFO - 🔔 NOVO ALARME: ID 4171394 - Loja: LEVE ALIMENTOS  - Desc: Alarme - Baixa pressão de sucção [Baixo]
+2026-05-13 22:29:01,653 - INFO - 🔔 NOVO ALARME: ID 4171398 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,653 - INFO - 🔔 NOVO ALARME: ID 4171399 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,653 - INFO - 🔔 NOVO ALARME: ID 4171401 - Loja: Sertãozinho Loja 60 - Desc: Alarme - Baixo Superaquecimento [Médio]
+2026-05-13 22:29:01,653 - INFO - 🔔 NOVO ALARME: ID 4171400 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,653 - INFO - 🔔 NOVO ALARME: ID 4171404 - Loja: Meta 21 SM- Loja Calama - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,653 - INFO - 🔔 NOVO ALARME: ID 4171443 - Loja: Uberaba - Desc: Alarme alta temperatura [Alto]
+2026-05-13 22:29:01,653 - INFO - 🔔 NOVO ALARME: ID 4171449 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,654 - INFO - 🔔 NOVO ALARME: ID 4171452 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,654 - INFO - 🔔 NOVO ALARME: ID 4171454 - Loja: Uberaba - Desc: Alarme alta temperatura [Alto]
+2026-05-13 22:29:01,654 - INFO - 🔔 NOVO ALARME: ID 4171070 - Loja: IMIGRANTES ( PORTO VELHO - RO ) - Desc: Alarme de alta temperatura - Ambiente
+2026-05-13 22:29:01,654 - INFO - 🔔 NOVO ALARME: ID 4171459 - Loja: Comper 104 - Cuiabá - MT - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,654 - INFO - 🔔 NOVO ALARME: ID 4171475 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,654 - INFO - 🔔 NOVO ALARME: ID 4171477 - Loja: Meta 21 SM- Loja Calama - Desc: Alarme de alta temperatura - Ambiente
+2026-05-13 22:29:01,654 - INFO - 🔔 NOVO ALARME: ID 4171482 - Loja: Meta 21 SM- Loja Calama - Desc: Alarme - Falha compressor 01 (Térmico, falta de fase ou pressão) [Crítico]
+2026-05-13 22:29:01,654 - INFO - 🔔 NOVO ALARME: ID 4171486 - Loja: Atacado Cotripal - Desc: Alarme - OFFLINE [Alto]
+2026-05-13 22:29:01,654 - INFO - 🔔 NOVO ALARME: ID 4171489 - Loja: Piraquara - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,654 - INFO - 🔔 NOVO ALARME: ID 4171497 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,655 - INFO - 🔔 NOVO ALARME: ID 4171503 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,656 - INFO - 🔔 NOVO ALARME: ID 4171345 - Loja: Bongi (30) - Desc: Falha no Acionamento da Resistência de Degelo [Alto]
+2026-05-13 22:29:01,656 - INFO - 🔔 NOVO ALARME: ID 4171364 - Loja: Parque Verde - Desc: Equipamento desligado (Notificar o Cliente!)
+2026-05-13 22:29:01,657 - INFO - 🔔 NOVO ALARME: ID 4171406 - Loja: Carpina II (30) - Desc: Equipamento desligado (Notificar o Cliente!)
+2026-05-13 22:29:01,657 - INFO - 🔔 NOVO ALARME: ID 4133815 - Loja: Arco Verde (30) - Desc: Alarme - Falha TERMICO Compressor 02 [Médio]
+2026-05-13 22:29:01,658 - INFO - 🔔 NOVO ALARME: ID 4145588 - Loja: Arco Verde (30) - Desc: Alarme - Baixo Superaquecimento [Médio]
+2026-05-13 22:29:01,658 - INFO - 🔔 NOVO ALARME: ID 4149138 - Loja: IMIGRANTES ( PORTO VELHO - RO ) - Desc: Alarme - Módulo 05 [Médio]
+2026-05-13 22:29:01,659 - INFO - 🔔 NOVO ALARME: ID 4149139 - Loja: IMIGRANTES ( PORTO VELHO - RO ) - Desc: Alarme - Módulo 06 [Médio]
+2026-05-13 22:29:01,659 - INFO - 🔔 NOVO ALARME: ID 4147274 - Loja: Extrabom - Serra Sede - ES - Desc: Alarme - OFFLINE[Crítico]
+2026-05-13 22:29:01,659 - INFO - 🔔 NOVO ALARME: ID 4147275 - Loja: Extrabom - Serra Sede - ES - Desc: Alarme - OFFLINE[Crítico]
+2026-05-13 22:29:01,659 - INFO - 🔔 NOVO ALARME: ID 4147273 - Loja: Extrabom - Serra Sede - ES - Desc: Alarme - OFFLINE[Crítico]
+2026-05-13 22:29:01,660 - INFO - 🔔 NOVO ALARME: ID 4150447 - Loja: IMIGRANTES ( PORTO VELHO - RO ) - Desc: Alarme - Alarme anti-congelamento [Médio]
+2026-05-13 22:29:01,661 - INFO - 🔔 NOVO ALARME: ID 4147280 - Loja: Fort 170 - Vila Celia - MSN - Desc: Alarme - Falha bomba 01 [Médio]
+2026-05-13 22:29:01,662 - INFO - 🔔 NOVO ALARME: ID 4160108 - Loja: Fort 170 - Vila Celia - MSN - Desc: Alarme - Falha bomba 02 [Médio]
+2026-05-13 22:29:01,662 - INFO - 🔔 NOVO ALARME: ID 4161970 - Loja: Extrabom - Serra Sede - ES - Desc: Alarme - Nivel de liquido [Crítico]
+2026-05-13 22:29:01,663 - INFO - 🔔 NOVO ALARME: ID 4149671 - Loja: CD Santa Lucia - Desc: Alarme - Falha INT Compressor 01 [Médio]
+2026-05-13 22:29:01,663 - INFO - 🔔 NOVO ALARME: ID 4150408 - Loja: CD Santa Lucia - Desc: Alarme - Nivel de líquido [Médio]
+2026-05-13 22:29:01,663 - INFO - 🔔 NOVO ALARME: ID 4162205 - Loja: CD Santa Lucia - Desc: Alarme - Falha PRESSÃO Compressor 04 [Médio]
+2026-05-13 22:29:01,664 - INFO - 🔔 NOVO ALARME: ID 4162204 - Loja: CD Santa Lucia - Desc: Alarme - Falha TERMICO Compressor 04 [Médio]
+2026-05-13 22:29:01,664 - INFO - 🔔 NOVO ALARME: ID 4160036 - Loja: Campo de Santana - Desc: Sem conexão [Alto]
+2026-05-13 22:29:01,665 - INFO - 🔔 NOVO ALARME: ID 4165151 - Loja: Fort 170 - Vila Celia - MSN - Desc: Alarme - Falha INT Compressor 02 [Médio]
+2026-05-13 22:29:01,666 - INFO - 🔔 NOVO ALARME: ID 4168219 - Loja: Ganchinho - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,666 - INFO - 🔔 NOVO ALARME: ID 4168703 - Loja: Fort 170 - Vila Celia - MSN - Desc: Alarme - Falha INT Compressor 02 [Médio]
+2026-05-13 22:29:01,666 - INFO - 🔔 NOVO ALARME: ID 4168751 - Loja: Paulista II (30) - Desc: Alarme de alta temperatura
+2026-05-13 22:29:01,666 - INFO - 🔔 NOVO ALARME: ID 4169239 - Loja: CD - Desc: Alarme de alta temperatura
+2026-05-13 22:29:01,667 - INFO - 🔔 NOVO ALARME: ID 4169469 - Loja: CD - Desc: Alarme de alta temperatura
+2026-05-13 22:29:01,667 - INFO - 🔔 NOVO ALARME: ID 4169481 - Loja: CD - Desc: Alarme de alta temperatura
+2026-05-13 22:29:01,667 - INFO - 🔔 NOVO ALARME: ID 4169480 - Loja: CD - Desc: Alarme de alta temperatura
+2026-05-13 22:29:01,667 - INFO - 🔔 NOVO ALARME: ID 4169479 - Loja: CD - Desc: Alarme de alta temperatura
+2026-05-13 22:29:01,667 - INFO - 🔔 NOVO ALARME: ID 4166101 - Loja: Colônia - Desc: Alarme de alta temperatura ambiente [Alta]
+2026-05-13 22:29:01,667 - INFO - 🔔 NOVO ALARME: ID 4167809 - Loja: Uberaba - Desc: Alarme - Baixa pressão de sucção [Baixo]
+2026-05-13 22:29:01,668 - INFO - 🔔 NOVO ALARME: ID 4169622 - Loja: Pinhais - Desc: Equipamento desligado (Notificar o Cliente!)
+2026-05-13 22:29:01,668 - INFO - 🔔 NOVO ALARME: ID 4169641 - Loja: Fort 170 - Vila Celia - MSN - Desc: Alarme - Falha TERMICO Compressor 01 [Médio]
+2026-05-13 22:29:01,668 - INFO - 🔔 NOVO ALARME: ID 4169709 - Loja: Fort 170 - Vila Celia - MSN - Desc: Alarme - Falha TERMICO Compressor 02 [Médio]
+2026-05-13 22:29:01,668 - INFO - 🔔 NOVO ALARME: ID 4170093 - Loja: Loja Monte Alto - Desc: Alarme de baixa temperatura [Médio]
+2026-05-13 22:29:01,668 - INFO - 🔔 NOVO ALARME: ID 4170225 - Loja: Comper 104 - Cuiabá - MT - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,668 - INFO - 🔔 NOVO ALARME: ID 4170329 - Loja: Fort 160 - Kobrasol - SCS - Desc: Alarme - Alta temperatura - Ambiente [Alto]
+2026-05-13 22:29:01,669 - INFO - 🔔 NOVO ALARME: ID 4170176 - Loja: Ganchinho - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,669 - INFO - 🔔 NOVO ALARME: ID 4170323 - Loja: BR 277 - Desc: Alarme alta temperatura [Alto]
+2026-05-13 22:29:01,669 - INFO - 🔔 NOVO ALARME: ID 4170383 - Loja: Parque Verde - Desc: Degelo em excesso (Analisar e Notificar o Cliente!)
+2026-05-13 22:29:01,669 - INFO - 🔔 NOVO ALARME: ID 4170384 - Loja: Parque Verde - Desc: Degelo em excesso (Analisar e Notificar o Cliente!)
+2026-05-13 22:29:01,669 - INFO - 🔔 NOVO ALARME: ID 4170385 - Loja: Parque Verde - Desc: Degelo em excesso (Analisar e Notificar o Cliente!)
+2026-05-13 22:29:01,669 - INFO - 🔔 NOVO ALARME: ID 4170432 - Loja: CD Santa Lucia - Desc: Equipamento desligado (Notificar o Cliente!)
+2026-05-13 22:29:01,669 - INFO - 🔔 NOVO ALARME: ID 4170433 - Loja: CD Santa Lucia - Desc: Equipamento desligado (Notificar o Cliente!)
+2026-05-13 22:29:01,669 - INFO - 🔔 NOVO ALARME: ID 4170563 - Loja: Parque Verde - Desc: Degelo em excesso (Analisar e Notificar o Cliente!)
+2026-05-13 22:29:01,669 - INFO - 🔔 NOVO ALARME: ID 4170614 - Loja: Sítio Cercado - Desc: Possível Retorno de Líquido
+2026-05-13 22:29:01,669 - INFO - 🔔 NOVO ALARME: ID 4170561 - Loja: Parque Verde - Desc: Degelo em excesso (Analisar e Notificar o Cliente!)
+2026-05-13 22:29:01,670 - INFO - 🔔 NOVO ALARME: ID 4170562 - Loja: Parque Verde - Desc: Degelo em excesso (Analisar e Notificar o Cliente!)
+2026-05-13 22:29:01,670 - INFO - 🔔 NOVO ALARME: ID 4170566 - Loja: Parque Verde - Desc: Degelo em excesso (Analisar e Notificar o Cliente!)
+2026-05-13 22:29:01,670 - INFO - 🔔 NOVO ALARME: ID 4170570 - Loja: CD - Desc: Alarme de alta temperatura[Alto]
+2026-05-13 22:29:01,670 - INFO - 🔔 NOVO ALARME: ID 4170996 - Loja: CD Santa Lucia - Desc: Alarme - Alarme MOP (alta temperatura de evaporação) [Médio]
+2026-05-13 22:29:01,671 - INFO - 🔔 NOVO ALARME: ID 4170667 - Loja: Boqueirão - Desc: Alarme de baixa temperatura [Médio]
+2026-05-13 22:29:01,671 - INFO - 🔔 NOVO ALARME: ID 4170759 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,671 - INFO - 🔔 NOVO ALARME: ID 4170505 - Loja: LEVE ALIMENTOS  - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,672 - INFO - 🔔 NOVO ALARME: ID 4170506 - Loja: LEVE ALIMENTOS  - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,673 - INFO - 🔔 NOVO ALARME: ID 4170652 - Loja: Tibiriça Loja 61 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,674 - INFO - 🔔 NOVO ALARME: ID 4171083 - Loja: CD Santa Lucia - Desc: Alarme - Alarme MOP (alta temperatura de evaporação) [Médio]
+2026-05-13 22:29:01,674 - INFO - 🔔 NOVO ALARME: ID 4170816 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,675 - INFO - 🔔 NOVO ALARME: ID 4170831 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,675 - INFO - 🔔 NOVO ALARME: ID 4171146 - Loja: CD Santa Lucia - Desc: Alarme - Alarme MOP (alta temperatura de evaporação) [Médio]
+2026-05-13 22:29:01,676 - INFO - 🔔 NOVO ALARME: ID 4171145 - Loja: CD Santa Lucia - Desc: Alarme - Alarme MOP (alta temperatura de evaporação) [Médio]
+2026-05-13 22:29:01,677 - INFO - 🔔 NOVO ALARME: ID 4171162 - Loja: CD Santa Lucia - Desc: Alarme - Alarme MOP (alta temperatura de evaporação) [Médio]
+2026-05-13 22:29:01,677 - INFO - 🔔 NOVO ALARME: ID 4170842 - Loja: Piraquara - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,678 - INFO - 🔔 NOVO ALARME: ID 4170852 - Loja: Tibiriça Loja 61 - Desc: Alarme - Falha INT Compressor 04 [Médio]
+2026-05-13 22:29:01,678 - INFO - 🔔 NOVO ALARME: ID 4170853 - Loja: Tibiriça Loja 61 - Desc: Alarme - Falha PRESSÃO Compressor 04 [Médio]
+2026-05-13 22:29:01,678 - INFO - 🔔 NOVO ALARME: ID 4170854 - Loja: Tibiriça Loja 61 - Desc: Alarme: Falha no compressor 4 (pCO MT)
+2026-05-13 22:29:01,679 - INFO - 🔔 NOVO ALARME: ID 4170863 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,679 - INFO - 🔔 NOVO ALARME: ID 4170862 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,680 - INFO - 🔔 NOVO ALARME: ID 4170864 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,680 - INFO - 🔔 NOVO ALARME: ID 4170865 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,681 - INFO - 🔔 NOVO ALARME: ID 4170867 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,681 - INFO - 🔔 NOVO ALARME: ID 4170866 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,681 - INFO - 🔔 NOVO ALARME: ID 4170874 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,681 - INFO - 🔔 NOVO ALARME: ID 4170899 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,682 - INFO - 🔔 NOVO ALARME: ID 4170901 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,682 - INFO - 🔔 NOVO ALARME: ID 4170903 - Loja: Uberaba - Desc: Alarme alta temperatura [Alto]
+2026-05-13 22:29:01,682 - INFO - 🔔 NOVO ALARME: ID 4170928 - Loja: CD - Desc: OFFLINE
+2026-05-13 22:29:01,683 - INFO - 🔔 NOVO ALARME: ID 4170930 - Loja: CD - Desc: OFFLINE
+2026-05-13 22:29:01,683 - INFO - 🔔 NOVO ALARME: ID 4170929 - Loja: CD - Desc: OFFLINE
+2026-05-13 22:29:01,683 - INFO - 🔔 NOVO ALARME: ID 4170927 - Loja: CD - Desc: OFFLINE
+2026-05-13 22:29:01,684 - INFO - 🔔 NOVO ALARME: ID 4170936 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,684 - INFO - 🔔 NOVO ALARME: ID 4170950 - Loja: Campo de Santana - Desc: Equipamento desligado (Notificar o Cliente!)
+2026-05-13 22:29:01,684 - INFO - 🔔 NOVO ALARME: ID 4170951 - Loja: Campo de Santana - Desc: Equipamento desligado (Notificar o Cliente!)
+2026-05-13 22:29:01,685 - INFO - 🔔 NOVO ALARME: ID 4170955 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,685 - INFO - 🔔 NOVO ALARME: ID 4170954 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,685 - INFO - 🔔 NOVO ALARME: ID 4170957 - Loja: BR 277 - Desc: Degelo em excesso (Analisar e Notificar o Cliente!)
+2026-05-13 22:29:01,685 - INFO - 🔔 NOVO ALARME: ID 4170961 - Loja: Fazenda - Desc: Equipamento desligado (Notificar o Cliente!)
+2026-05-13 22:29:01,686 - INFO - 🔔 NOVO ALARME: ID 4170962 - Loja: Fazenda - Desc: Equipamento desligado (Notificar o Cliente!)
+2026-05-13 22:29:01,686 - INFO - 🔔 NOVO ALARME: ID 4171035 - Loja: Paulistão  Barretos Loja 302 - Desc: Possível Retorno de Líquido
+2026-05-13 22:29:01,687 - INFO - 🔔 NOVO ALARME: ID 4171075 - Loja: Uberaba - Desc: Alarme alta temperatura [Alto]
+2026-05-13 22:29:01,688 - INFO - 🔔 NOVO ALARME: ID 4171102 - Loja: Carazinho - Desc: Alarme - Baixa pressão de condensação [Baixo]
+2026-05-13 22:29:01,689 - INFO - 🔔 NOVO ALARME: ID 4171104 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,690 - INFO - 🔔 NOVO ALARME: ID 4171140 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,692 - INFO - 🔔 NOVO ALARME: ID 4171175 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,692 - INFO - 🔔 NOVO ALARME: ID 4171174 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,693 - INFO - 🔔 NOVO ALARME: ID 4171176 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:29:01,693 - INFO - 🔔 NOVO ALARME: ID 4170944 - Loja: LEVE ALIMENTOS  - Desc: Alarme - Falha compressor 01 (Térmico, falta de fase ou pressão) [Crítico]
+2026-05-13 22:29:03,846 - INFO - HTTP Request: POST https://ntrcvbfsylqupkcehaob.supabase.co/rest/v1/alarmes?on_conflict=alarmeId&columns=%22eventoUsu%22%2C%22lojaNm%22%2C%22grupoNm%22%2C%22contaNm%22%2C%22alarmeDesc%22%2C%22lojaId%22%2C%22subgrupoNm%22%2C%22alarmeDhCad%22%2C%22eventoDhCad%22%2C%22contaId%22%2C%22dispositivoNm%22%2C%22eventoDesc%22%2C%22nrPedido%22%2C%22silenciarAte%22%2C%22dispositivoId%22%2C%22ppAbertura%22%2C%22alarmeId%22%2C%22criticidade%22%2C%22tempo%22 "HTTP/2 404 Not Found"
+2026-05-13 22:29:03,853 - ERROR - ❌ Erro ao sincronizar com Supabase: {'message': "Could not find the table 'public.alarmes' in the schema cache", 'code': 'PGRST205', 'hint': None, 'details': None}
+2026-05-13 22:29:03,867 - INFO - 😴 Aguardando 60 segundos para próxima verificação...
+2026-05-13 22:42:00,268 - INFO - 🚀 Iniciando Serviço de Detecção de Alarmes Eletrofrio...
+2026-05-13 22:42:01,663 - INFO - 🔍 Verificando novos alarmes...
+2026-05-13 22:42:05,331 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171272 - Status: nan
+2026-05-13 22:42:05,331 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171305 - Status: nan
+2026-05-13 22:42:05,331 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171319 - Status: nan
+2026-05-13 22:42:05,332 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171322 - Status: nan
+2026-05-13 22:42:05,332 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171365 - Status: nan
+2026-05-13 22:42:05,333 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171388 - Status: nan
+2026-05-13 22:42:05,333 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171391 - Status: nan
+2026-05-13 22:42:05,333 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171394 - Status: nan
+2026-05-13 22:42:05,334 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171399 - Status: nan
+2026-05-13 22:42:05,334 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171398 - Status: nan
+2026-05-13 22:42:05,334 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171400 - Status: nan
+2026-05-13 22:42:05,335 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171404 - Status: nan
+2026-05-13 22:42:05,335 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171443 - Status: nan
+2026-05-13 22:42:05,335 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171449 - Status: nan
+2026-05-13 22:42:05,335 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171070 - Status: nan
+2026-05-13 22:42:05,335 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171459 - Status: nan
+2026-05-13 22:42:05,335 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171475 - Status: nan
+2026-05-13 22:42:05,335 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171486 - Status: nan
+2026-05-13 22:42:05,335 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171497 - Status: nan
+2026-05-13 22:42:05,335 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171503 - Status: nan
+2026-05-13 22:42:05,335 - INFO - 🔔 NOVO ALARME: ID 4171523 - Loja: Fort 290 - Biguaçu - SCS - Desc: Alarme de alta temperatura - Ambiente
+2026-05-13 22:42:05,337 - INFO - 🔔 NOVO ALARME: ID 4171530 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:42:05,337 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171345 - Status: nan
+2026-05-13 22:42:05,337 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171364 - Status: nan
+2026-05-13 22:42:05,337 - INFO - 🔔 NOVO ALARME: ID 4171537 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:42:05,337 - INFO - 🔔 NOVO ALARME: ID 4171540 - Loja: CD Santa Lucia - Desc: Alarme - Alarme MOP (alta temperatura de evaporação) [Médio]
+2026-05-13 22:42:05,338 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171406 - Status: nan
+2026-05-13 22:42:05,339 - INFO - 🔔 NOVO ALARME: ID 4171545 - Loja: CD Santa Lucia - Desc: Alarme - Alarme MOP (alta temperatura de evaporação) [Médio]
+2026-05-13 22:42:05,339 - INFO - 🔔 NOVO ALARME: ID 4171556 - Loja: Meta 21 SM- Loja Calama - Desc: Alarme - Falha compressor 01 (Térmico, falta de fase ou pressão) [Crítico]
+2026-05-13 22:42:05,339 - INFO - 🔔 NOVO ALARME: ID 4171564 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:42:05,339 - INFO - 🔔 NOVO ALARME: ID 4171566 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:42:05,339 - INFO - 🔔 NOVO ALARME: ID 4171570 - Loja: Sítio Cercado - Desc: L1 Baixo superaquecimento
+2026-05-13 22:42:05,340 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147274 - Status: Em tratativas
+2026-05-13 22:42:05,340 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147275 - Status: Em tratativas
+2026-05-13 22:42:05,340 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147273 - Status: Em tratativas
+2026-05-13 22:42:05,340 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147280 - Status: Em tratativas
+2026-05-13 22:42:05,341 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4166101 - Status: cliente informado
+2026-05-13 22:42:05,341 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4169622 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,341 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170383 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,341 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170384 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,343 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170385 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,343 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170432 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,343 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170433 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,344 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170563 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,344 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170614 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,344 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170561 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,344 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170562 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,344 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170566 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,346 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170950 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,346 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170951 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,348 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170957 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,348 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170961 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,348 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170962 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,349 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171035 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,349 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171185 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,349 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4168703 - Status: Em tratativas
+2026-05-13 22:42:05,349 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171210 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,350 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171211 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,351 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170991 - Status: Em tratativas recorrente
+2026-05-13 22:42:05,351 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170990 - Status: Em tratativas recorrente
+2026-05-13 22:42:05,352 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171026 - Status: Em tratativas recorrente
+2026-05-13 22:42:05,352 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171233 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,352 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171234 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,354 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171248 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,354 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171252 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,355 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171265 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,355 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171268 - Status: Notificado via WhatsApp
+2026-05-13 22:42:05,357 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171227 - Status: Em tratativas
+2026-05-13 22:42:05,410 - ERROR - ❌ Erro ao sincronizar com Supabase: Out of range float values are not JSON compliant: nan
+2026-05-13 22:42:05,415 - INFO - 😴 Aguardando 60 segundos para próxima verificação...
+2026-05-13 22:43:05,419 - INFO - 🔍 Verificando novos alarmes...
+2026-05-13 22:43:08,174 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171272 - Status: nan
+2026-05-13 22:43:08,175 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171305 - Status: nan
+2026-05-13 22:43:08,175 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171319 - Status: nan
+2026-05-13 22:43:08,175 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171322 - Status: nan
+2026-05-13 22:43:08,175 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171365 - Status: nan
+2026-05-13 22:43:08,175 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171388 - Status: nan
+2026-05-13 22:43:08,176 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171391 - Status: nan
+2026-05-13 22:43:08,176 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171394 - Status: nan
+2026-05-13 22:43:08,176 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171399 - Status: nan
+2026-05-13 22:43:08,176 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171398 - Status: nan
+2026-05-13 22:43:08,176 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171400 - Status: nan
+2026-05-13 22:43:08,176 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171404 - Status: nan
+2026-05-13 22:43:08,176 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171443 - Status: nan
+2026-05-13 22:43:08,176 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171449 - Status: nan
+2026-05-13 22:43:08,177 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171070 - Status: nan
+2026-05-13 22:43:08,177 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171459 - Status: nan
+2026-05-13 22:43:08,177 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171475 - Status: nan
+2026-05-13 22:43:08,177 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171486 - Status: nan
+2026-05-13 22:43:08,177 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171497 - Status: nan
+2026-05-13 22:43:08,177 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171503 - Status: nan
+2026-05-13 22:43:08,177 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171523 - Status: nan
+2026-05-13 22:43:08,177 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171530 - Status: nan
+2026-05-13 22:43:08,177 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171345 - Status: nan
+2026-05-13 22:43:08,177 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171364 - Status: nan
+2026-05-13 22:43:08,177 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171537 - Status: nan
+2026-05-13 22:43:08,177 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171540 - Status: nan
+2026-05-13 22:43:08,177 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171406 - Status: nan
+2026-05-13 22:43:08,177 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171556 - Status: nan
+2026-05-13 22:43:08,179 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171564 - Status: nan
+2026-05-13 22:43:08,179 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171566 - Status: nan
+2026-05-13 22:43:08,179 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171570 - Status: nan
+2026-05-13 22:43:08,180 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147274 - Status: Em tratativas
+2026-05-13 22:43:08,180 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147275 - Status: Em tratativas
+2026-05-13 22:43:08,180 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147273 - Status: Em tratativas
+2026-05-13 22:43:08,180 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147280 - Status: Em tratativas
+2026-05-13 22:43:08,181 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4166101 - Status: cliente informado
+2026-05-13 22:43:08,181 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4169622 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,182 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170383 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,182 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170384 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,183 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170385 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,183 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170432 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,184 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170433 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,184 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170563 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,185 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170614 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,185 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170561 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,186 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170562 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,186 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170566 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,186 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170950 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,187 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170951 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,187 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170957 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,188 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170961 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,188 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170962 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,188 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171035 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,189 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171545 - Status: Notificado via WhatsApp
+2026-05-13 22:43:08,198 - ERROR - ❌ Erro ao sincronizar com Supabase: Out of range float values are not JSON compliant: nan
+2026-05-13 22:43:08,209 - INFO - 😴 Aguardando 60 segundos para próxima verificação...
+2026-05-13 22:44:08,210 - INFO - 🔍 Verificando novos alarmes...
+2026-05-13 22:44:16,897 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171272 - Status: nan
+2026-05-13 22:44:16,898 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171305 - Status: nan
+2026-05-13 22:44:16,899 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171319 - Status: nan
+2026-05-13 22:44:16,899 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171322 - Status: nan
+2026-05-13 22:44:16,899 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171365 - Status: nan
+2026-05-13 22:44:16,899 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171388 - Status: nan
+2026-05-13 22:44:16,900 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171391 - Status: nan
+2026-05-13 22:44:16,900 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171394 - Status: nan
+2026-05-13 22:44:16,900 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171399 - Status: nan
+2026-05-13 22:44:16,900 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171398 - Status: nan
+2026-05-13 22:44:16,900 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171400 - Status: nan
+2026-05-13 22:44:16,900 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171404 - Status: nan
+2026-05-13 22:44:16,900 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171443 - Status: nan
+2026-05-13 22:44:16,900 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171449 - Status: nan
+2026-05-13 22:44:16,900 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171070 - Status: nan
+2026-05-13 22:44:16,901 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171459 - Status: nan
+2026-05-13 22:44:16,901 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171475 - Status: nan
+2026-05-13 22:44:16,902 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171486 - Status: nan
+2026-05-13 22:44:16,902 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171497 - Status: nan
+2026-05-13 22:44:16,902 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171503 - Status: nan
+2026-05-13 22:44:16,902 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171523 - Status: nan
+2026-05-13 22:44:16,902 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171530 - Status: nan
+2026-05-13 22:44:16,903 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171345 - Status: nan
+2026-05-13 22:44:16,903 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171364 - Status: nan
+2026-05-13 22:44:16,903 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171537 - Status: nan
+2026-05-13 22:44:16,904 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171540 - Status: nan
+2026-05-13 22:44:16,904 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171406 - Status: nan
+2026-05-13 22:44:16,904 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171556 - Status: nan
+2026-05-13 22:44:16,905 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171564 - Status: nan
+2026-05-13 22:44:16,905 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171566 - Status: nan
+2026-05-13 22:44:16,905 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171570 - Status: nan
+2026-05-13 22:44:16,907 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147274 - Status: Em tratativas
+2026-05-13 22:44:16,908 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147275 - Status: Em tratativas
+2026-05-13 22:44:16,908 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147273 - Status: Em tratativas
+2026-05-13 22:44:16,908 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147280 - Status: Em tratativas
+2026-05-13 22:44:16,909 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4166101 - Status: cliente informado
+2026-05-13 22:44:16,909 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4169622 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,910 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170383 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,910 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170384 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,910 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170385 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,910 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170432 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,912 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170433 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,912 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170563 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,913 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170614 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,913 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170561 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,914 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170562 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,914 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170566 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,914 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170950 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,914 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170951 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,914 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170957 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,915 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170961 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,915 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170962 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,915 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171035 - Status: Notificado via WhatsApp
+2026-05-13 22:44:16,917 - ERROR - ❌ Erro ao sincronizar com Supabase: Out of range float values are not JSON compliant: nan
+2026-05-13 22:44:16,930 - INFO - 😴 Aguardando 60 segundos para próxima verificação...
+2026-05-13 22:44:36,605 - INFO - 🛑 Serviço interrompido pelo usuário.
+2026-05-13 22:46:16,070 - INFO - 🚀 Iniciando Serviço de Detecção de Alarmes Eletrofrio...
+2026-05-13 22:46:16,339 - INFO - 🔍 Verificando novos alarmes...
+2026-05-13 22:46:18,640 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171272 - Status: N/A
+2026-05-13 22:46:18,640 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171305 - Status: N/A
+2026-05-13 22:46:18,641 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171319 - Status: N/A
+2026-05-13 22:46:18,641 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171322 - Status: N/A
+2026-05-13 22:46:18,641 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171365 - Status: N/A
+2026-05-13 22:46:18,641 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171388 - Status: N/A
+2026-05-13 22:46:18,641 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171391 - Status: N/A
+2026-05-13 22:46:18,641 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171394 - Status: N/A
+2026-05-13 22:46:18,641 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171399 - Status: N/A
+2026-05-13 22:46:18,642 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171398 - Status: N/A
+2026-05-13 22:46:18,642 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171400 - Status: N/A
+2026-05-13 22:46:18,642 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171404 - Status: N/A
+2026-05-13 22:46:18,642 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171443 - Status: N/A
+2026-05-13 22:46:18,642 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171449 - Status: N/A
+2026-05-13 22:46:18,642 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171070 - Status: N/A
+2026-05-13 22:46:18,642 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171459 - Status: N/A
+2026-05-13 22:46:18,642 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171475 - Status: N/A
+2026-05-13 22:46:18,642 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171486 - Status: N/A
+2026-05-13 22:46:18,643 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171497 - Status: N/A
+2026-05-13 22:46:18,643 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171503 - Status: N/A
+2026-05-13 22:46:18,643 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171523 - Status: N/A
+2026-05-13 22:46:18,643 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171530 - Status: N/A
+2026-05-13 22:46:18,643 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171345 - Status: N/A
+2026-05-13 22:46:18,644 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171364 - Status: N/A
+2026-05-13 22:46:18,644 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171537 - Status: N/A
+2026-05-13 22:46:18,644 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171406 - Status: N/A
+2026-05-13 22:46:18,644 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171556 - Status: N/A
+2026-05-13 22:46:18,644 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171564 - Status: N/A
+2026-05-13 22:46:18,645 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171566 - Status: N/A
+2026-05-13 22:46:18,645 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171570 - Status: N/A
+2026-05-13 22:46:18,645 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147274 - Status: Em tratativas
+2026-05-13 22:46:18,645 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147275 - Status: Em tratativas
+2026-05-13 22:46:18,645 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147273 - Status: Em tratativas
+2026-05-13 22:46:18,646 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4147280 - Status: Em tratativas
+2026-05-13 22:46:18,646 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4166101 - Status: cliente informado
+2026-05-13 22:46:18,647 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4169622 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,647 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170383 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,647 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170384 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,647 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170385 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,648 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170432 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,649 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170433 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,649 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170563 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,649 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170614 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,649 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170561 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,650 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170562 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,650 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170566 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,650 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170950 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,651 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170951 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,651 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170957 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,651 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170961 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,652 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4170962 - Status: Notificado via WhatsApp
+2026-05-13 22:46:18,652 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171035 - Status: Notificado via WhatsApp
+2026-05-13 22:46:20,344 - INFO - HTTP Request: POST https://ntrcvbfsylqupkcehaob.supabase.co/rest/v1/alarmes?on_conflict=alarmeId&columns=%22contaId%22%2C%22silenciarAte%22%2C%22alarmeId%22%2C%22eventoDhCad%22%2C%22subgrupoNm%22%2C%22dispositivoId%22%2C%22eventoUsu%22%2C%22nrPedido%22%2C%22lojaNm%22%2C%22grupoNm%22%2C%22alarmeDesc%22%2C%22dispositivoNm%22%2C%22criticidade%22%2C%22alarmeDhCad%22%2C%22ppAbertura%22%2C%22tempo%22%2C%22lojaId%22%2C%22eventoDesc%22%2C%22contaNm%22 "HTTP/2 401 Unauthorized"
+2026-05-13 22:46:20,349 - ERROR - ❌ Erro ao sincronizar com Supabase: {'message': 'new row violates row-level security policy for table "alarmes"', 'code': '42501', 'hint': None, 'details': None}
+2026-05-13 22:46:20,353 - INFO - 😴 Aguardando 60 segundos para próxima verificação...
+2026-05-13 22:47:20,356 - INFO - 🔍 Verificando novos alarmes...
+2026-05-13 22:47:22,912 - INFO - 🔄 ALTERAÇÃO DE STATUS: ID 4171305 - Status: Notificado via WhatsApp
+2026-05-13 22:47:23,561 - INFO - HTTP Request: POST https://ntrcvbfsylqupkcehaob.supabase.co/rest/v1/alarmes?on_conflict=alarmeId&columns=%22contaId%22%2C%22silenciarAte%22%2C%22alarmeId%22%2C%22eventoDhCad%22%2C%22subgrupoNm%22%2C%22dispositivoId%22%2C%22eventoUsu%22%2C%22nrPedido%22%2C%22lojaNm%22%2C%22grupoNm%22%2C%22alarmeDesc%22%2C%22dispositivoNm%22%2C%22criticidade%22%2C%22alarmeDhCad%22%2C%22ppAbertura%22%2C%22tempo%22%2C%22lojaId%22%2C%22eventoDesc%22%2C%22contaNm%22 "HTTP/2 401 Unauthorized"
+2026-05-13 22:47:23,565 - ERROR - ❌ Erro ao sincronizar com Supabase: {'message': 'new row violates row-level security policy for table "alarmes"', 'code': '42501', 'hint': None, 'details': None}
+2026-05-13 22:47:23,571 - INFO - 😴 Aguardando 60 segundos para próxima verificação...
+2026-05-13 22:47:39,724 - INFO - 🛑 Serviço interrompido pelo usuário.
+2026-05-13 22:48:02,120 - INFO - 🚀 Iniciando Serviço de Detecção de Alarmes Eletrofrio...
+2026-05-13 22:48:02,312 - INFO - 🔍 Verificando novos alarmes...
+2026-05-13 22:48:05,174 - INFO - 🔔 NOVO ALARME: ID 4171583 - Loja: Piraquara - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:48:05,174 - INFO - 🔔 NOVO ALARME: ID 4171586 - Loja: Sertãozinho Loja 60 - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:48:06,029 - INFO - HTTP Request: POST https://ntrcvbfsylqupkcehaob.supabase.co/rest/v1/alarmes?on_conflict=alarmeId&columns=%22tempo%22%2C%22lojaNm%22%2C%22alarmeDhCad%22%2C%22grupoNm%22%2C%22eventoDesc%22%2C%22contaId%22%2C%22eventoUsu%22%2C%22criticidade%22%2C%22alarmeId%22%2C%22dispositivoId%22%2C%22nrPedido%22%2C%22contaNm%22%2C%22alarmeDesc%22%2C%22subgrupoNm%22%2C%22lojaId%22%2C%22eventoDhCad%22%2C%22ppAbertura%22%2C%22silenciarAte%22%2C%22dispositivoNm%22 "HTTP/2 201 Created"
+2026-05-13 22:48:06,032 - INFO - ✅ Sincronizados 2 eventos com Supabase.
+2026-05-13 22:48:06,036 - INFO - 😴 Aguardando 60 segundos para próxima verificação...
+2026-05-13 22:49:06,062 - INFO - 🔍 Verificando novos alarmes...
+2026-05-13 22:49:10,902 - INFO - 🔔 NOVO ALARME: ID 4171593 - Loja: Comper 104 - Cuiabá - MT - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:49:10,902 - INFO - 🔔 NOVO ALARME: ID 4171598 - Loja: Sítio Cercado - Desc: Alarme - Alta temperatura [Alto]
+2026-05-13 22:49:10,903 - INFO - 🔔 NOVO ALARME: ID 4171600 - Loja: Piraquara - Desc: Alarme de alta temperatura [Alto]
+2026-05-13 22:49:10,904 - INFO - 🔔 NOVO ALARME: ID 4171601 - Loja: Afonso Pena  - Desc: Alarme de alta temperatura
+2026-05-13 22:49:11,649 - INFO - HTTP Request: POST https://ntrcvbfsylqupkcehaob.supabase.co/rest/v1/alarmes?on_conflict=alarmeId&columns=%22tempo%22%2C%22lojaNm%22%2C%22alarmeDhCad%22%2C%22grupoNm%22%2C%22eventoDesc%22%2C%22contaId%22%2C%22eventoUsu%22%2C%22criticidade%22%2C%22alarmeId%22%2C%22dispositivoId%22%2C%22nrPedido%22%2C%22contaNm%22%2C%22alarmeDesc%22%2C%22subgrupoNm%22%2C%22lojaId%22%2C%22eventoDhCad%22%2C%22ppAbertura%22%2C%22silenciarAte%22%2C%22dispositivoNm%22 "HTTP/2 201 Created"
+2026-05-13 22:49:11,663 - INFO - ✅ Sincronizados 4 eventos com Supabase.
+2026-05-13 22:49:11,676 - INFO - 😴 Aguardando 60 segundos para próxima verificação...
+2026-05-13 22:49:37,699 - INFO - 🛑 Serviço interrompido pelo usuário.
