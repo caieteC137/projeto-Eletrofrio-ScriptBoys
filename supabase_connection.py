@@ -1,8 +1,10 @@
 import requests
 import pandas as pd
+# pyrefly: ignore [missing-import]
 from supabase import create_client
+# pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
-import os
+import os 
 
 # ─────────────────────────────────────────────────────────────
 # Carrega variáveis de ambiente
