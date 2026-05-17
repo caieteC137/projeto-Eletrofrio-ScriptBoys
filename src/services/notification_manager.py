@@ -9,7 +9,9 @@ from datetime import datetime, timedelta
 from typing import Optional, Dict, List
 from supabase import create_client
 from dotenv import load_dotenv
-from evolution_client import EvolutionAPIClient
+from integrations.evolution_client import EvolutionAPIClient
+from services import telemetry_service
+from ai import llm_context_builder
 
 load_dotenv()
 
@@ -61,7 +63,7 @@ class NotificationManager:
             self.logger.error(f"❌ Erro ao buscar unidade {loja_id}: {e}")
             return None
     
-    def build_message(self, alarme: Dict, unidade: Dict) -> str:
+    def build_message(self, alarme: Dict, unidade: Dict, analise_ia: str = None) -> str:
         """
         Formata a mensagem de notificação
         
@@ -94,6 +96,8 @@ class NotificationManager:
 
 _Suporte: contato@eletrofrio.com.br_
 """
+            if analise_ia:
+                self.output_message += f"\n🤖 *Análise da IA (Gemini):*\n{analise_ia}\n"
             return self.output_message
             
         except Exception as e:
@@ -297,8 +301,30 @@ _Suporte: contato@eletrofrio.com.br_
             # 3. Formatar telefone
             formatted_phone = self.format_phone(phone)
             
+            # 3.5 Buscar telemetria e análise da IA
+            analise_ia = None
+            try:
+                dispositivo_id = alarme.get("dispositivoId")
+                if dispositivo_id:
+                    self.logger.info(f"🔍 Buscando telemetria para dispositivo {dispositivo_id}...")
+                    telemetry_raw = telemetry_service.fetch_telemetry(dispositivo_id)
+                    telemetry_normalized = telemetry_service.normalize_telemetry(telemetry_raw)
+                    enriched_event = telemetry_service.build_enriched_event(alarme, unidade, telemetry_normalized)
+                    
+                    self.logger.info("🧠 Solicitando análise da IA...")
+                    llm_result = llm_context_builder.build_and_analyze(enriched_event)
+                    analise_ia = llm_result.get("analise_ia")
+                    
+                    if analise_ia and "Erro" in analise_ia:
+                        self.logger.warning(f"⚠️ IA retornou erro ou não foi configurada: {analise_ia}")
+                        # Mantém a notificação sem a IA se der erro de API Key ou falha no LLM
+                        analise_ia = None
+            except Exception as e:
+                self.logger.error(f"❌ Erro ao integrar IA/Telemetria: {e}")
+                analise_ia = None
+            
             # 4. Construir mensagem
-            message = self.build_message(alarme, unidade)
+            message = self.build_message(alarme, unidade, analise_ia)
             if not message:
                 return False
             

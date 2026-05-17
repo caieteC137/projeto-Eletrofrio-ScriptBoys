@@ -1,36 +1,67 @@
-# Projeto Eletrofrio Telemetria
+# Eletrofrio - Sistema Inteligente de Notificação de Alarmes (ScriptBoys)
 
-Este projeto coleta dados de telemetria de dispositivos via API e armazena em um banco PostgreSQL. Inclui uma interface web simples para visualização.
+Este projeto implementa um pipeline automatizado de ponta a ponta para captura, enriquecimento, diagnóstico via IA e notificação via WhatsApp de alarmes gerados pelos sistemas de refrigeração da Eletrofrio.
+
+## Arquitetura do Sistema
+
+O sistema é modular e dividido nas seguintes áreas principais:
+
+* **Escuta de Alarmes (`src/main.py`)**: Serviço contínuo (*polling*) que consome a API da Eletrofrio para detectar novos alarmes ou mudanças de status, evitando duplicações usando um controle de estado local.
+* **Telemetria (`src/services/telemetry_service.py`)**: Ao detectar um alarme crítico, busca a curva histórica de temperatura (telemetria) do dispositivo, calculando médias, máximas e mínimas.
+* **Inteligência Artificial (`src/ai/llm_context_builder.py`)**: Constrói um payload semântico unindo o alarme e a telemetria, e aciona a API do **Google Gemini (gemini-2.5-flash)** para diagnosticar a causa do problema de forma objetiva e rápida.
+* **Mensageria (`src/services/notification_manager.py` & `evolution_client.py`)**: Formata uma mensagem rica em detalhes (incluindo a análise da IA) e a despacha para o gerente responsável via **WhatsApp**, utilizando a Evolution API. Todo o histórico de envio é salvo no banco de dados Supabase.
+
+## Pré-requisitos
+
+- Docker e Docker Compose (para rodar a Evolution API, n8n, Redis e Postgres localmente).
+- Python 3.10+ e ambiente virtual.
+- Chave de API do Supabase e do Google Gemini AI.
 
 ## Configuração
 
-1. Instale o Docker e inicie o Docker Desktop.
-
-2. Execute o container PostgreSQL:
+1. **Variáveis de Ambiente**: 
+   Crie ou edite o arquivo `.env` na raiz do projeto com as seguintes credenciais:
+   ```env
+   SUPABASE_URL=sua_url_supabase
+   SUPABASE_KEY=sua_chave_supabase
+   GEMINI_API_KEY=sua_chave_google_gemini
+   EVOLUTION_API_URL=http://localhost:8080
+   EVOLUTION_API_TOKEN=B6D711FCDE4D4FD5936544120E713976
+   EVOLUTION_INSTANCE=5541997514310
    ```
+
+2. **Subindo a Infraestrutura Local (Docker)**:
+   Inicie os contêineres do banco, mensageria e automação n8n:
+   ```bash
    docker-compose up -d
    ```
 
-3. Instale as dependências Python:
-   ```
+3. **Dependências do Python**:
+   Ative seu ambiente virtual (`.venv/Scripts/activate` no Windows) e instale as bibliotecas:
+   ```bash
    pip install -r requirements.txt
    ```
 
-4. Execute o script de coleta de dados:
-   ```
-   python test2.py
-   ```
+## Execução
 
-5. Execute a aplicação web:
-   ```
-   python app.py
-   ```
+### Rodando o Monitoramento Real
+Para iniciar o serviço que fica escutando alarmes ao vivo da API da Eletrofrio e despachando pelo WhatsApp:
 
-6. Acesse http://localhost:5000 para visualizar os dados.
+```bash
+# Executar a partir da raiz do projeto
+.venv/Scripts/python.exe src/main.py
+```
 
-## Notas
+### Rodando Testes Manuais
+Para validar envios de WhatsApp com dados mockados e testar integrações sem precisar esperar um alarme real acontecer:
 
-- O banco é PostgreSQL rodando em container.
-- Dados são armazenados na tabela 'telemetria' com campos: id, dispositivo_id, hora, dados (JSON).
-- A interface mostra os primeiros 100 registros.
-- Para coletar todos os dispositivos (1-499), execute test2.py. Pode demorar devido ao sleep de 0.5s entre requests.
+```bash
+.venv/Scripts/python.exe tests/test_notifications.py
+```
+
+## Logs e Histórico
+- O log completo de execução fica guardado em `data/alarm_service.log`.
+- O histórico de IDs de alarmes já processados fica em `data/alarm_state.json`.
+
+---
+*Desenvolvido pela equipe ScriptBoys - Hackathon Eletrofrio*

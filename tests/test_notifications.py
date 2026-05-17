@@ -4,7 +4,13 @@ Use para validar a integração sem esperar por alarmes reais
 """
 
 import logging
-from notification_manager import NotificationManager
+import sys
+import os
+
+# Adiciona o diretório raiz ao sys.path para conseguir importar de src
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from src.services.notification_manager import NotificationManager
 
 # Configurar logging
 logging.basicConfig(

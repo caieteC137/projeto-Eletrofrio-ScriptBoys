@@ -6,15 +6,19 @@ import json
 import pandas as pd
 from supabase import create_client
 from dotenv import load_dotenv
-from notification_manager import NotificationManager
+from services.notification_manager import NotificationManager
 
 # ─────────────────────────────────────────────────────────────
 # Configurações
 # ─────────────────────────────────────────────────────────────
 ALARM_API_URL = "https://credenciamento.eletrofrio.com.br:5900/galileo/api/api_hackathon?route=alarmes"
 POLL_INTERVAL = 60  # Intervalo em segundos
-LOG_FILE = "alarm_service.log"
-STATE_FILE = "alarm_state.json"
+
+# Define paths relative to the project root
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+LOG_FILE = os.path.join(DATA_DIR, "alarm_service.log")
+STATE_FILE = os.path.join(DATA_DIR, "alarm_state.json")
 
 # Carrega variáveis de ambiente
 load_dotenv()
