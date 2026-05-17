@@ -6,6 +6,7 @@ import json
 import pandas as pd
 from supabase import create_client
 from dotenv import load_dotenv
+from notification_manager import NotificationManager
 
 # ─────────────────────────────────────────────────────────────
 # Configurações
@@ -37,6 +38,14 @@ def get_supabase_client():
         logging.error("❌ SUPABASE_URL ou SUPABASE_KEY não encontradas no arquivo .env")
         return None
     return create_client(SUPABASE_URL, SUPABASE_KEY)
+
+def get_notification_manager():
+    """Obtém instância do gerenciador de notificações."""
+    try:
+        return NotificationManager()
+    except Exception as e:
+        logging.error(f"❌ Erro ao inicializar NotificationManager: {e}")
+        return None
 
 def load_previous_state():
     """Carrega o estado anterior de um arquivo local para persistência entre reinícios."""
@@ -87,7 +96,7 @@ def clean_data(data):
     
     return df.to_dict(orient="records")
 
-def process_alarms(current_alarms, previous_state, supabase):
+def process_alarms(current_alarms, previous_state, supabase, notification_manager=None):
     """Identifica novos alarmes e alterações de status."""
     if not current_alarms:
         return previous_state
@@ -105,7 +114,13 @@ def process_alarms(current_alarms, previous_state, supabase):
         # Lógica de detecção
         if alarm_id not in previous_state:
             logging.info(f"🔔 NOVO ALARME: ID {alarm_id} - Loja: {alarm.get('lojaNm')} - Desc: {alarm.get('alarmeDesc')}")
+            alarm['status'] = 'novo'  # Preenche status para novo alarme
             new_alarms_to_sync.append(alarm)
+            
+            # 🔔 ENVIAR NOTIFICAÇÃO PARA NOVO ALARME
+            if notification_manager:
+                logging.info(f"📲 Enviando notificação para alarme {alarm_id}...")
+                notification_manager.send_notification(alarm)
         else:
             # Comparação de status/alteração
             prev_alarm = previous_state[alarm_id]
@@ -114,6 +129,7 @@ def process_alarms(current_alarms, previous_state, supabase):
                 alarm.get('criticidade') != prev_alarm.get('criticidade') or
                 alarm.get('alarmeDhCad') != prev_alarm.get('alarmeDhCad')):
                 logging.info(f"🔄 ALTERAÇÃO DE STATUS: ID {alarm_id} - Status: {alarm.get('eventoDesc') or 'N/A'}")
+                alarm['status'] = 'alterado'  # Preenche status para alarme alterado
                 new_alarms_to_sync.append(alarm)
             else:
                 # Alarme duplicado/sem alteração - ignorar
@@ -136,6 +152,7 @@ def main():
     logging.info("🚀 Iniciando Serviço de Detecção de Alarmes Eletrofrio...")
     
     supabase = get_supabase_client()
+    notification_manager = get_notification_manager()
     previous_state = load_previous_state()
     
     try:
@@ -144,7 +161,12 @@ def main():
             current_alarms = fetch_alarms_from_api()
             
             if current_alarms is not None:
-                previous_state = process_alarms(current_alarms, previous_state, supabase)
+                previous_state = process_alarms(
+                    current_alarms,
+                    previous_state,
+                    supabase,
+                    notification_manager
+                )
                 save_state(previous_state)
             
             logging.info(f"😴 Aguardando {POLL_INTERVAL} segundos para próxima verificação...")
