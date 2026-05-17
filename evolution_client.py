@@ -42,7 +42,7 @@ class EvolutionAPIClient:
         
         # Adiciona autenticação se configurada
         if self.api_key:
-            self.headers["Authorization"] = f"Bearer {self.api_key}"
+            self.headers["apikey"] = self.api_key
     
     def send_whatsapp_message(self, phone: str, message: str) -> dict:
         """
@@ -66,8 +66,8 @@ class EvolutionAPIClient:
                 }
             
             # Endpoint para Evolution API local/remota
-            # Padrão: /manager/message/sendText/{instance}
-            url = f"{self.api_url}/manager/message/sendText/{self.instance_name}"
+            # Padrão: /message/sendText/{instance}
+            url = f"{self.api_url}/message/sendText/{self.instance_name}"
             
             self.logger.info(f"🚀 Enviando para {url}")
             
