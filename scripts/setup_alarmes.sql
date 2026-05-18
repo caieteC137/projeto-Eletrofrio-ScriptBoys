@@ -1,0 +1,25 @@
+-- Tabela de alarmes
+create table public.alarmes (
+  "alarmeId" bigint not null,
+  "contaId" integer null,
+  "contaNm" text null,
+  "lojaId" integer null,
+  "lojaNm" text null,
+  "nrPedido" text null,
+  "dispositivoId" integer null,
+  "dispositivoNm" text null,
+  "grupoNm" text null,
+  "subgrupoNm" text null,
+  "alarmeDhCad" timestamp with time zone null,
+  "alarmeDesc" text null,
+  "silenciarAte" timestamp with time zone null,
+  criticidade text null,
+  "ppAbertura" text null,
+  "eventoDhCad" timestamp with time zone null,
+  "eventoDesc" text null,
+  "eventoUsu" text null,
+  tempo text null,
+  created_at timestamp with time zone null default now(),
+  status text null,
+  constraint alarmes_pkey primary key ("alarmeId")
+) TABLESPACE pg_default;
