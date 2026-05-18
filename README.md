@@ -68,5 +68,9 @@ Para validar envios de WhatsApp com dados mockados e testar integrações sem pr
 - O log completo de execução fica guardado em `data/alarm_service.log`.
 - O histórico de IDs de alarmes já processados fica em `data/alarm_state.json`.
 
+## Vídeo para da solução
+
+https://drive.google.com/file/d/1h2QdQ1bInfxxZ_wfyg41suK2zveMdZps/view
+
 ---
 *Desenvolvido pela equipe ScriptBoys - Hackathon Eletrofrio*

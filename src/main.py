@@ -120,11 +120,6 @@ def process_alarms(current_alarms, previous_state, supabase, notification_manage
             logging.info(f"🔔 NOVO ALARME: ID {alarm_id} - Loja: {alarm.get('lojaNm')} - Desc: {alarm.get('alarmeDesc')}")
             alarm['status'] = 'novo'  # Preenche status para novo alarme
             new_alarms_to_sync.append(alarm)
-            
-            # 🔔 ENVIAR NOTIFICAÇÃO PARA NOVO ALARME
-            if notification_manager:
-                logging.info(f"📲 Enviando notificação para alarme {alarm_id}...")
-                notification_manager.send_notification(alarm)
         else:
             # Comparação de status/alteração
             prev_alarm = previous_state[alarm_id]
@@ -149,6 +144,14 @@ def process_alarms(current_alarms, previous_state, supabase, notification_manage
             logging.error(f"❌ Erro ao sincronizar com Supabase: {e}")
             # Em caso de erro na DB, ainda salvamos o estado local para evitar spam de logs de "novos"
             # mas o ideal seria retry.
+            
+    # Após garantir que os alarmes estão no banco, enviamos as notificações
+    if notification_manager:
+        for alarm in new_alarms_to_sync:
+            if alarm.get('status') == 'novo':
+                alarm_id = str(alarm.get('alarmeId'))
+                logging.info(f"📲 Enviando notificação para alarme {alarm_id}...")
+                notification_manager.send_notification(alarm)
     
     return current_state
 
