@@ -27,7 +27,7 @@ O sistema é modular e dividido nas seguintes áreas principais:
    GEMINI_API_KEY=sua_chave_google_gemini
    EVOLUTION_API_URL=http://localhost:8080
    EVOLUTION_API_TOKEN=B6D711FCDE4D4FD5936544120E713976
-   EVOLUTION_INSTANCE=5541997514310
+   EVOLUTION_INSTANCE=55_SEU_NUMERO_COM_DDD  # Ex: 5511999999999
    ```
 
 2. **Subindo a Infraestrutura Local (Docker)**:
@@ -36,7 +36,12 @@ O sistema é modular e dividido nas seguintes áreas principais:
    docker-compose up -d
    ```
 
-3. **Dependências do Python**:
+3. **Conectando o WhatsApp (Evolution API)**:
+   - Acesse a interface ou os endpoints da sua Evolution API (`http://localhost:8080`).
+   - Crie a instância com o **exato mesmo número** definido na variável `EVOLUTION_INSTANCE` no passo 1.
+   - Escaneie o QR Code com o aparelho de celular que será o remetente oficial das notificações.
+
+4. **Dependências do Python**:
    Ative seu ambiente virtual (`.venv/Scripts/activate` no Windows) e instale as bibliotecas:
    ```bash
    pip install -r requirements.txt
