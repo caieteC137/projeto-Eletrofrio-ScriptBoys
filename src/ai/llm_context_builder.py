@@ -5,11 +5,12 @@ from datetime import datetime
 from google import genai
 from dotenv import load_dotenv
 
+# Força o carregamento do .env, sobrescrevendo variáveis do sistema (Powershell) que possam estar com a chave antiga
+load_dotenv(override=True)
+
 # Configuração de log
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-
-load_dotenv()
 
 # Configuração da API do Gemini
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
