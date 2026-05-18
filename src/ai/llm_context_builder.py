@@ -11,8 +11,6 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 
-print(">>> API KEY:", repr(os.getenv("GEMINI_API_KEY")))  # DEBUG
-
 # Configuração da API do Gemini
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if not GEMINI_API_KEY:
@@ -100,7 +98,7 @@ def get_gemini_analysis(semantic_payload):
         return "Erro: API Key não configurada."
 
     try:
-        client = genai.Client(api_key="AIzaSyDCxIhHab79DNIqpwNf4vVX_45TeA7cMdI")
+        client = genai.Client(api_key=GEMINI_API_KEY)
         
         prompt_user = f"Por favor, analise os seguintes dados do alarme:\n\n```json\n{json.dumps(semantic_payload, indent=2, ensure_ascii=False)}\n```"
         

@@ -90,14 +90,16 @@ class NotificationManager:
 
 📍 *Endereço:* {unidade.get('endereco', 'N/A')}
 👤 *Conta:* {unidade.get('contaNm', 'N/A')}
-
+"""
+            if analise_ia:
+                self.output_message += f"\n🤖 *Análise da IA (Gemini):*\n{analise_ia}\n"
+                
+            self.output_message += f"""
 ⚠️ *Ação Necessária:*
 {acao}
 
 _Suporte: contato@eletrofrio.com.br_
 """
-            if analise_ia:
-                self.output_message += f"\n🤖 *Análise da IA (Gemini):*\n{analise_ia}\n"
             return self.output_message
             
         except Exception as e:
