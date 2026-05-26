@@ -1,0 +1,52 @@
+@startuml
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam packageStyle rect
+
+package "Presentation Layer" {
+  [WhatsApp User] as WhatsAppUser
+}
+
+package "Application Layer" {
+  [AlarmService\n(main.py)] as AlarmService
+}
+
+package "Business Logic Layer" {
+  [NotificationManager\n(src/services/notification_manager.py)] as NotificationManager
+  [TelemetryService\n(src/services/telemetry_service.py)] as TelemetryService
+  [LLMContextBuilder\n(src/ai/llm_context_builder.py)] as LLMContextBuilder
+}
+
+package "Integration Layer" {
+  [EvolutionClient\n(src/integrations/evolution_client.py)] as EvolutionClient
+  [SupabaseConnection\n(src/config/supabase_connection.py)] as SupabaseConnection
+}
+
+package "Data Layer" {
+  [Supabase DB] as SupabaseDB
+  [alarm_state.json] as AlarmStateFile
+}
+
+package "External Systems" {
+  [Eletrofrio API] as EletrofrioAPI
+  [Gemini API] as GeminiAPI
+  [Evolution API] as EvolutionAPI
+}
+
+WhatsAppUser --> AlarmService : polling / notification trigger
+AlarmService --> NotificationManager : process new alarms
+AlarmService --> SupabaseConnection : upsert and sync data
+AlarmService --> EletrofrioAPI : poll alarms / unidades
+AlarmService --> AlarmStateFile : read/write state
+
+NotificationManager --> TelemetryService : fetch telemetry
+NotificationManager --> LLMContextBuilder : enrich alarm context
+NotificationManager --> EvolutionClient : send WhatsApp message
+NotificationManager --> SupabaseConnection : log notification status
+
+TelemetryService --> EletrofrioAPI : telemetry endpoints
+LLMContextBuilder --> GeminiAPI : AI analysis
+EvolutionClient --> EvolutionAPI : WhatsApp message API
+SupabaseConnection --> SupabaseDB : database operations
+
+@enduml

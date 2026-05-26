@@ -14,7 +14,7 @@ Sistema automatizado que:
 ## 🏗️ Arquitetura
 
 ```
-alarm_service.py
+main.py
     ↓ (detecta novo alarme)
 notification_manager.py
     ├─ Busca unidade em Supabase
@@ -108,7 +108,7 @@ pip install -r requirements.txt
 ### Iniciar Serviço de Alarmes + Notificações
 
 ```bash
-python alarm_service.py
+python main.py
 ```
 
 O serviço vai:
