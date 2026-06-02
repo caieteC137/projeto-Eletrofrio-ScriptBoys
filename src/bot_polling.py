@@ -31,6 +31,7 @@ if sys.platform == "win32":
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from services import telemetry_service
+from ai import llm_context_builder
 from supabase import create_client
 
 # Carrega .env
@@ -80,26 +81,80 @@ STATE_FILE = os.path.join(
     "bot_polling_state.json",
 )
 
+# Timeout de sessão de conversa (em segundos). Após esse tempo sem interação,
+# a sessão do usuário é descartada para evitar "conversas-fantasma".
+SESSION_TIMEOUT_SECONDS = int(os.getenv("BOT_SESSION_TIMEOUT", str(30 * 60)))
+
+# Palavras-chave que disparam o fluxo guiado de "alarme" a partir do estado idle.
+ALARM_TRIGGER_KEYWORDS = [
+    "alarm", "alarme", "alarmes", "alerta", "alertas",
+    "problema", "problemas", "ocorrencia", "ocorrência",
+    "ajuda", "help", "consultar alarme", "buscar alarme",
+    "ver alarme", "ver alarmes", "abrir alarme", "abrir chamado",
+]
+
+# Comandos aceitos em qualquer estado da conversa.
+RESET_COMMANDS = {"menu", "inicio", "início", "start", "cancelar", "sair", "reset", "0", "parar", "encerrar"}
+BACK_COMMANDS = {"voltar", "back", "<", "anterior"}
+
+
+def _empty_state():
+    return {"last_timestamp": 0, "processed_ids": [], "user_sessions": {}}
+
+
 def load_state():
-    """Carrega último timestamp e IDs processados do disco."""
+    """Carrega último timestamp, IDs processados e sessões de usuário do disco."""
     try:
         if os.path.exists(STATE_FILE):
             with open(STATE_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
-                return int(data.get("last_timestamp", 0)), set(data.get("processed_ids", []))
+                return (
+                    int(data.get("last_timestamp", 0)),
+                    set(data.get("processed_ids", [])),
+                    data.get("user_sessions", {}) or {},
+                )
     except Exception as e:
         logger.warning(f"⚠️ Não foi possível carregar estado: {e}")
-    return 0, set()
+    return 0, set(), {}
 
-def save_state(last_timestamp, processed_ids):
-    """Salva último timestamp e IDs processados (apenas últimos 500)."""
+
+def save_state(last_timestamp, processed_ids, user_sessions):
+    """Salva último timestamp, IDs processados (últimos 500) e sessões de usuário."""
     try:
         os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
         ids_list = list(processed_ids)[-500:]
         with open(STATE_FILE, "w", encoding="utf-8") as f:
-            json.dump({"last_timestamp": last_timestamp, "processed_ids": ids_list}, f)
+            json.dump(
+                {
+                    "last_timestamp": last_timestamp,
+                    "processed_ids": ids_list,
+                    "user_sessions": user_sessions,
+                },
+                f,
+                ensure_ascii=False,
+            )
     except Exception as e:
         logger.warning(f"⚠️ Não foi possível salvar estado: {e}")
+
+
+def purge_expired_sessions(user_sessions, now_ts=None):
+    """Remove sessões que ficaram ociosas além do timeout configurado."""
+    if not user_sessions:
+        return {}
+    now_ts = now_ts or int(time.time())
+    expired = []
+    for phone, session in user_sessions.items():
+        last_updated = session.get("last_updated") or 0
+        try:
+            last_updated = int(last_updated)
+        except (TypeError, ValueError):
+            last_updated = 0
+        if now_ts - last_updated > SESSION_TIMEOUT_SECONDS:
+            expired.append(phone)
+    for phone in expired:
+        logger.info(f"🧹 Sessão expirada descartada para {phone}")
+        user_sessions.pop(phone, None)
+    return user_sessions
 
 # ─────────────────────────────────────────────────────────────
 # Funções de Banco de Dados
@@ -198,6 +253,116 @@ def extract_text(message_data):
 # Funções de Contexto e IA
 # ─────────────────────────────────────────────────────────────
 
+def search_unidades(query):
+    """
+    Busca lojas (unidades) no Supabase por lojaId (exato) ou por nome (parcial).
+    Retorna uma lista (pode ser vazia).
+    """
+    if not supabase or not query:
+        return []
+    query = query.strip()
+    if not query:
+        return []
+
+    try:
+        # 1) Tentativa por ID exato (somente dígitos)
+        if query.isdigit():
+            resp = (
+                supabase.table("unidades")
+                .select("lojaId, lojaNm, contaNm, endereco, telefone, ativo")
+                .eq("lojaId", int(query))
+                .execute()
+            )
+            if resp.data:
+                return resp.data
+
+        # 2) Tentativa por nome (parcial, case-insensitive)
+        resp = (
+            supabase.table("unidades")
+            .select("lojaId, lojaNm, contaNm, endereco, telefone, ativo")
+            .ilike("lojaNm", f"%{query}%")
+            .limit(20)
+            .execute()
+        )
+        return resp.data or []
+    except Exception as e:
+        logger.error(f"⚠️ Erro ao buscar unidades para '{query}': {e}")
+        return []
+
+
+def search_alarmes(query, loja_id):
+    """
+    Busca alarmes no Supabase para uma loja específica.
+    Tenta primeiro pelo alarmeId (exato) e, em seguida, pela descrição (parcial).
+    Retorna uma lista (pode ser vazia).
+    """
+    if not supabase or loja_id is None:
+        return []
+    query = (query or "").strip()
+    if not query:
+        return []
+
+    try:
+        # 1) Tentativa por alarmeId exato
+        if query.isdigit():
+            resp = (
+                supabase.table("alarmes")
+                .select("*")
+                .eq("lojaId", loja_id)
+                .eq("alarmeId", int(query))
+                .execute()
+            )
+            if resp.data:
+                return resp.data
+
+        # 2) Tentativa por descrição (parcial)
+        resp = (
+            supabase.table("alarmes")
+            .select("*")
+            .eq("lojaId", loja_id)
+            .ilike("alarmeDesc", f"%{query}%")
+            .order("alarmeDhCad", desc=True)
+            .limit(20)
+            .execute()
+        )
+        if resp.data:
+            return resp.data
+
+        # 3) Fallback: também tenta casar com o nome do dispositivo
+        resp = (
+            supabase.table("alarmes")
+            .select("*")
+            .eq("lojaId", loja_id)
+            .ilike("dispositivoNm", f"%{query}%")
+            .order("alarmeDhCad", desc=True)
+            .limit(20)
+            .execute()
+        )
+        return resp.data or []
+    except Exception as e:
+        logger.error(f"⚠️ Erro ao buscar alarmes para loja {loja_id} / query '{query}': {e}")
+        return []
+
+
+def format_loja_line(u):
+    """Formata uma loja para exibição em lista numerada."""
+    return (
+        f"  {u.get('lojaId')} — *{u.get('lojaNm')}* "
+        f"({u.get('contaNm') or 'sem conta'})"
+    )
+
+
+def format_alarme_line(a):
+    """Formata um alarme para exibição em lista numerada."""
+    return (
+        f"  {a.get('alarmeId')} — *{a.get('dispositivoNm') or 'dispositivo ?'}*\n"
+        f"     📝 {a.get('alarmeDesc') or 'sem descrição'}\n"
+        f"     🕒 {a.get('alarmeDhCad') or 'data n/d'} | "
+        f"criticidade: *{a.get('criticidade') or 'N/A'}* | "
+        f"status: {a.get('status') or 'novo'}"
+    )
+
+
 def resolve_telemetry_for_query(query, supabase_client):
     """Tenta mapear a pergunta para um dispositivo no banco."""
     if not supabase_client:
@@ -235,10 +400,390 @@ def resolve_telemetry_for_query(query, supabase_client):
         
     return None, None
 
-def build_context_and_respond(message_text):
-    """Busca contexto do Supabase e gera resposta com Gemini."""
+def analyze_alarm_for_user(alarm):
+    """
+    Recebe um alarme (dict do Supabase), busca telemetria do dispositivo e
+    roda a análise do Gemini via llm_context_builder. Retorna o texto pronto
+    para o WhatsApp.
+    """
+    dispositivo_id = alarm.get("dispositivoId")
+    loja_id = alarm.get("lojaId")
+
+    unidade = None
+    if loja_id is not None:
+        try:
+            resp_u = (
+                supabase.table("unidades")
+                .select("lojaId, lojaNm, contaNm, endereco, telefone, cidade")
+                .eq("lojaId", loja_id)
+                .limit(1)
+                .execute()
+            )
+            if resp_u.data:
+                unidade = resp_u.data[0]
+        except Exception as e:
+            logger.warning(f"⚠️ Falha ao buscar unidade para análise de alarme: {e}")
+
+    telemetry_raw = telemetry_service.fetch_telemetry(dispositivo_id) if dispositivo_id else {"status": "missing_dispositivoId"}
+    telemetry_normalized = telemetry_service.normalize_telemetry(telemetry_raw)
+
+    try:
+        enriched = telemetry_service.build_enriched_event(alarm, unidade, telemetry_normalized)
+        llm_result = llm_context_builder.build_and_analyze(enriched)
+        analise_ia = llm_result.get("analise_ia") or ""
+        if analise_ia and "Erro" in analise_ia:
+            analise_ia = ""
+    except Exception as e:
+        logger.error(f"⚠️ Falha no pipeline IA para o alarme {alarm.get('alarmeId')}: {e}")
+        analise_ia = ""
+
+    crit = (alarm.get("criticidade") or "N/A").upper()
+    emoji = "🔴" if crit in ("A", "ALTO", "ALTA", "CRÍTICO", "CRITICO") else "🟠" if crit in ("B", "MÉDIO", "MEDIO") else "🟡"
+
+    lines = [
+        f"{emoji} *ALARME ENCONTRADO*",
+        f"🆔 *ID do Alarme:* {alarm.get('alarmeId')}",
+        f"🏬 *Loja:* {alarm.get('lojaNm') or (unidade or {}).get('lojaNm') or 'N/A'} (ID {alarm.get('lojaId')})",
+        f"🧊 *Dispositivo:* {alarm.get('dispositivoNm') or 'N/A'} (ID {alarm.get('dispositivoId')})",
+        f"📝 *Descrição:* {alarm.get('alarmeDesc') or 'N/A'}",
+        f"⚠️ *Criticidade:* {crit}",
+        f"🕒 *Registrado em:* {alarm.get('alarmeDhCad') or 'N/A'}",
+        f"📌 *Status:* {alarm.get('status') or 'novo'}",
+    ]
+
+    if alarm.get("grupoNm") or alarm.get("subgrupoNm"):
+        lines.append(
+            f"🏷️ *Grupo/Subgrupo:* {alarm.get('grupoNm') or '-'} / {alarm.get('subgrupoNm') or '-'}"
+        )
+
+    if telemetry_normalized.get("status") == "ok":
+        lines.append("")
+        lines.append(f"📡 *Telemetria recente ({dispositivo_id}):*")
+        for label, data in (telemetry_normalized.get("metrics") or {}).items():
+            avg = data.get("avg")
+            avg_str = f"{round(avg, 2)}" if isinstance(avg, (int, float)) else "N/A"
+            lines.append(
+                f"   • {label}: atual *{data.get('latest')}* | "
+                f"máx {data.get('max')} | mín {data.get('min')} | média {avg_str}"
+            )
+    else:
+        lines.append("")
+        lines.append(
+            f"📡 *Telemetria:* indisponível ({telemetry_normalized.get('error') or 'sem dados'})"
+        )
+
+    if analise_ia:
+        lines.append("")
+        lines.append("🤖 *Análise da IA (Gemini):*")
+        lines.append(analise_ia)
+
+    lines.append("")
+    lines.append(
+        "_Para consultar outro alarme, é só me chamar dizendo *alarme*._\n"
+        "_Para encerrar, diga *menu*._"
+    )
+
+    return "\n".join(lines)
+
+
+# ─────────────────────────────────────────────────────────────
+# Máquina de Estados da conversa por usuário
+# ─────────────────────────────────────────────────────────────
+# Estados possíveis:
+#   idle              → nenhuma sessão ativa (cai no Gemini geral)
+#   awaiting_loja     → aguardando o usuário informar a loja
+#   confirming_loja   → usuário precisa escolher entre 2+ lojas candidatas
+#   awaiting_alarm    → loja definida; aguardando o usuário informar o alarme
+#   confirming_alarm  → usuário precisa escolher entre 2+ alarmes candidatos
+
+STEP_IDLE = "idle"
+STEP_AWAITING_LOJA = "awaiting_loja"
+STEP_CONFIRMING_LOJA = "confirming_loja"
+STEP_AWAITING_ALARM = "awaiting_alarm"
+STEP_CONFIRMING_ALARM = "confirming_alarm"
+
+
+def _new_session(step=STEP_IDLE):
+    return {
+        "step": step,
+        "loja": None,
+        "loja_candidates": None,
+        "alarm": None,
+        "alarm_candidates": None,
+        "last_updated": int(time.time()),
+    }
+
+
+def _touch(session):
+    session["last_updated"] = int(time.time())
+    return session
+
+
+def _wants_alarm_flow(text):
+    t = (text or "").lower()
+    return any(k in t for k in ALARM_TRIGGER_KEYWORDS)
+
+
+def _is_reset(text):
+    return (text or "").strip().lower() in RESET_COMMANDS
+
+
+def _is_back(text):
+    return (text or "").strip().lower() in BACK_COMMANDS
+
+
+def _menu_text():
+    return (
+        "👋 *Assistente Eletrofrio*\n\n"
+        "Posso te ajudar com informações sobre *lojas* e *alarmes*.\n"
+        "Me conte o que você precisa. Algumas opções:\n\n"
+        "• Digite *alarme* para iniciar a consulta guiada "
+        "(pergunto a *loja* e depois o *ID do alarme*).\n"
+        "• Faça uma pergunta livre sobre telemetria, temperatura ou status.\n"
+        "• A qualquer momento diga *menu*, *cancelar* ou *voltar*."
+    )
+
+
+def _handle_idle(text, user_sessions, phone):
+    """No estado idle: detecta gatilho de alarme ou responde com o Gemini geral."""
+    if _wants_alarm_flow(text):
+        user_sessions[phone] = _touch(_new_session(step=STEP_AWAITING_LOJA))
+        return (
+            "🔎 *Consulta de Alarme*\n"
+            "Para começar, me informe a *loja* em que você quer consultar o alarme.\n"
+            "Você pode me passar o *ID da loja* (ex: `58`) ou o *nome* (ex: `Sumare`).\n\n"
+            "_Diga *menu* a qualquer momento para encerrar._"
+        )
+    return None  # sinaliza para cair no Gemini geral
+
+
+def _handle_awaiting_loja(text, session, user_sessions, phone):
+    if _is_reset(text):
+        user_sessions.pop(phone, None)
+        return _menu_text()
+    if _is_back(text):
+        user_sessions.pop(phone, None)
+        return _menu_text()
+
+    results = search_unidades(text)
+    if not results:
+        return (
+            "❌ Não encontrei nenhuma loja com esse termo.\n"
+            "Pode tentar de novo passando o *ID* ou o *nome* da loja?\n"
+            "_Diga *menu* para encerrar._"
+        )
+
+    if len(results) == 1:
+        loja = results[0]
+        session["loja"] = loja
+        session["loja_candidates"] = None
+        session["step"] = STEP_AWAITING_ALARM
+        user_sessions[phone] = _touch(session)
+        return (
+            f"✅ Loja confirmada: *{loja.get('lojaNm')}* "
+            f"(ID {loja.get('lojaId')}, {loja.get('contaNm') or 'sem conta'}).\n\n"
+            "Agora me diga o *ID do alarme* que você quer consultar "
+            "(ou palavras-chave da descrição, ex: `alta temperatura`).\n"
+            "_Diga *voltar* para trocar de loja ou *menu* para encerrar._"
+        )
+
+    # múltiplos resultados
+    session["loja_candidates"] = results
+    session["step"] = STEP_CONFIRMING_LOJA
+    user_sessions[phone] = _touch(session)
+    lines = [
+        "🔎 Encontrei *várias lojas* com esse termo. Qual delas você quer?",
+        "",
+    ]
+    for i, u in enumerate(results, 1):
+        lines.append(f"{i}. {format_loja_line(u)}")
+    lines.append("")
+    lines.append(
+        "Responda com o *número* (ex: `1`), o *ID da loja* ou o *nome exato*.\n"
+        "_Diga *menu* para encerrar._"
+    )
+    return "\n".join(lines)
+
+
+def _handle_confirming_loja(text, session, user_sessions, phone):
+    if _is_reset(text):
+        user_sessions.pop(phone, None)
+        return _menu_text()
+    if _is_back(text):
+        session["step"] = STEP_AWAITING_LOJA
+        session["loja_candidates"] = None
+        user_sessions[phone] = _touch(session)
+        return (
+            "↩️ Ok, vamos tentar de novo.\n"
+            "Me informe a *loja* (ID ou nome). _Diga *menu* para encerrar._"
+        )
+
+    candidates = session.get("loja_candidates") or []
+    chosen = None
+    raw = (text or "").strip()
+    if raw.isdigit():
+        idx = int(raw) - 1
+        if 0 <= idx < len(candidates):
+            chosen = candidates[idx]
+    if not chosen and raw.isdigit():
+        # pode ser que o usuário tenha digitado o lojaId direto
+        for u in candidates:
+            if str(u.get("lojaId")) == raw:
+                chosen = u
+                break
+    if not chosen:
+        for u in candidates:
+            if u.get("lojaNm") and u["lojaNm"].lower() == raw.lower():
+                chosen = u
+                break
+    if not chosen:
+        return (
+            "❓ Não consegui identificar a loja nessa resposta.\n"
+            "Responda com o *número* da lista, o *ID* ou o *nome exato*.\n"
+            "_Diga *menu* para encerrar._"
+        )
+
+    session["loja"] = chosen
+    session["loja_candidates"] = None
+    session["step"] = STEP_AWAITING_ALARM
+    user_sessions[phone] = _touch(session)
+    return (
+        f"✅ Loja confirmada: *{chosen.get('lojaNm')}* (ID {chosen.get('lojaId')}).\n\n"
+        "Agora me diga o *ID do alarme* (ou palavras-chave da descrição).\n"
+        "_Diga *voltar* para trocar de loja ou *menu* para encerrar._"
+    )
+
+
+def _handle_awaiting_alarm(text, session, user_sessions, phone):
+    if _is_reset(text):
+        user_sessions.pop(phone, None)
+        return _menu_text()
+    if _is_back(text):
+        session["step"] = STEP_AWAITING_LOJA
+        session["loja"] = None
+        user_sessions[phone] = _touch(session)
+        return (
+            "↩️ Ok, voltamos para a escolha da *loja*.\n"
+            "Me informe o *ID* ou *nome* da loja. _Diga *menu* para encerrar._"
+        )
+
+    loja = session.get("loja") or {}
+    results = search_alarmes(text, loja.get("lojaId"))
+    if not results:
+        return (
+            f"❌ Não encontrei nenhum alarme em *{loja.get('lojaNm') or loja.get('lojaId')}* "
+            "com esse termo.\n"
+            "Tente de novo com outro *ID* ou palavras-chave da descrição.\n"
+            "_Diga *voltar* para trocar de loja ou *menu* para encerrar._"
+        )
+
+    if len(results) == 1:
+        alarm = results[0]
+        session["alarm"] = alarm
+        session["alarm_candidates"] = None
+        user_sessions.pop(phone, None)  # sessão concluída
+        return analyze_alarm_for_user(alarm)
+
+    # múltiplos resultados
+    session["alarm_candidates"] = results
+    session["step"] = STEP_CONFIRMING_ALARM
+    user_sessions[phone] = _touch(session)
+    lines = [
+        f"🔎 Encontrei *vários alarmes* em *{loja.get('lojaNm') or loja.get('lojaId')}*. "
+        "Qual deles você quer?",
+        "",
+    ]
+    for i, a in enumerate(results, 1):
+        lines.append(f"{i}. {format_alarme_line(a)}")
+        lines.append("")
+    lines.append(
+        "Responda com o *número* (ex: `1`) ou o *ID do alarme*.\n"
+        "_Diga *voltar* para trocar a busca ou *menu* para encerrar._"
+    )
+    return "\n".join(lines)
+
+
+def _handle_confirming_alarm(text, session, user_sessions, phone):
+    if _is_reset(text):
+        user_sessions.pop(phone, None)
+        return _menu_text()
+    if _is_back(text):
+        session["step"] = STEP_AWAITING_ALARM
+        session["alarm_candidates"] = None
+        user_sessions[phone] = _touch(session)
+        return (
+            "↩️ Ok, vamos tentar de novo.\n"
+            "Me diga o *ID do alarme* (ou palavras-chave da descrição) "
+            "para *{loja}*.".format(loja=(session.get("loja") or {}).get("lojaNm") or "a loja")
+        )
+
+    candidates = session.get("alarm_candidates") or []
+    chosen = None
+    raw = (text or "").strip()
+    if raw.isdigit():
+        idx = int(raw) - 1
+        if 0 <= idx < len(candidates):
+            chosen = candidates[idx]
+    if not chosen and raw.isdigit():
+        for a in candidates:
+            if str(a.get("alarmeId")) == raw:
+                chosen = a
+                break
+    if not chosen:
+        return (
+            "❓ Não consegui identificar o alarme.\n"
+            "Responda com o *número* da lista ou o *ID do alarme*.\n"
+            "_Diga *menu* para encerrar._"
+        )
+
+    session["alarm"] = chosen
+    session["alarm_candidates"] = None
+    user_sessions.pop(phone, None)  # sessão concluída
+    return analyze_alarm_for_user(chosen)
+
+
+def run_state_machine(text, reply_jid, user_sessions):
+    """
+    Processa a mensagem de acordo com o estado atual da sessão do usuário.
+    Retorna a resposta a ser enviada.
+    Se a sessão está em 'idle' e a mensagem não dispara o fluxo de alarme,
+    retorna None — nesse caso, o caller deve usar o Gemini geral.
+    """
+    phone = reply_jid
+    text = (text or "").strip()
+    if not text:
+        return _menu_text()
+
+    session = user_sessions.get(phone) or _new_session(STEP_IDLE)
+    step = session.get("step", STEP_IDLE)
+
+    if step == STEP_IDLE:
+        reply = _handle_idle(text, user_sessions, phone)
+        return reply  # pode ser None
+
+    if step == STEP_AWAITING_LOJA:
+        return _handle_awaiting_loja(text, session, user_sessions, phone)
+    if step == STEP_CONFIRMING_LOJA:
+        return _handle_confirming_loja(text, session, user_sessions, phone)
+    if step == STEP_AWAITING_ALARM:
+        return _handle_awaiting_alarm(text, session, user_sessions, phone)
+    if step == STEP_CONFIRMING_ALARM:
+        return _handle_confirming_alarm(text, session, user_sessions, phone)
+
+    # estado desconhecido: reinicia
+    user_sessions.pop(phone, None)
+    return _menu_text()
+
+
+def build_context_and_respond(message_text, reply_jid, user_sessions):
+    """Busca contexto do Supabase, roda a máquina de estados e gera resposta com Gemini."""
     if not supabase:
         return "⚠️ Desculpe, o sistema de banco de dados (Supabase) está inacessível no momento."
+
+    # 0. Máquina de estados (fluxo guiado de alarme: loja → alarme)
+    sm_reply = run_state_machine(message_text, reply_jid, user_sessions)
+    if sm_reply is not None:
+        return sm_reply
 
     # 1. Buscar unidades cadastradas
     unidades_context = ""
@@ -388,8 +933,10 @@ def main():
     logger.info(f"🗄️ DB: {EVOLUTION_DB_HOST}:{EVOLUTION_DB_PORT}/{EVOLUTION_DB_NAME}")
     logger.info("=" * 60)
 
-    # Carrega estado persistido (last_timestamp + IDs já processados)
-    last_timestamp, processed_ids = load_state()
+    # Carrega estado persistido (last_timestamp + IDs já processados + sessões de usuário)
+    last_timestamp, processed_ids, user_sessions = load_state()
+    # Descarta sessões ociosas que tenham ultrapassado o timeout
+    user_sessions = purge_expired_sessions(user_sessions)
 
     # Se não tem estado salvo, usa o timestamp atual do banco como ponto de partida
     if last_timestamp == 0:
@@ -403,7 +950,11 @@ def main():
             logger.error("Verifique se o container do PostgreSQL está rodando.")
             sys.exit(1)
     else:
-        logger.info(f"⏰ Estado restaurado. last_timestamp={last_timestamp}, IDs processados={len(processed_ids)}")
+        logger.info(
+            f"⏰ Estado restaurado. last_timestamp={last_timestamp}, "
+            f"IDs processados={len(processed_ids)}, "
+            f"sessões ativas={len(user_sessions)}"
+        )
 
     logger.info(f"✅ Aguardando novas mensagens...")
     logger.info("")
@@ -431,8 +982,12 @@ def main():
                     logger.info(f"   → Resposta será enviada para: {msg['reply_jid']}")
                 logger.info(f"   Texto: {msg['text'][:120]}")
 
-                logger.info(f"🧠 Processando com Gemini...")
-                reply_text = build_context_and_respond(msg["text"])
+                logger.info(f"🧠 Processando mensagem...")
+                reply_text = build_context_and_respond(
+                    msg["text"],
+                    msg["reply_jid"],
+                    user_sessions,
+                )
 
                 send_reply(msg["reply_jid"], reply_text)
 
@@ -447,7 +1002,7 @@ def main():
                 state_changed = True
 
             if state_changed:
-                save_state(last_timestamp, processed_ids)
+                save_state(last_timestamp, processed_ids, user_sessions)
 
         except psycopg2.OperationalError as e:
             logger.warning(f"⚠️ Erro de conexão com banco, tentando reconectar: {e}")
