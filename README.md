@@ -28,6 +28,10 @@ O sistema é modular e dividido nas seguintes áreas principais:
    EVOLUTION_API_URL=http://localhost:8080
    EVOLUTION_API_TOKEN=B6D711FCDE4D4FD5936544120E713976
    EVOLUTION_INSTANCE=55_SEU_NUMERO_COM_DDD  # Ex: 5511999999999
+    
+   # Opcionais para o Bot de Chat (Webhook)
+   WEBHOOK_PORT=5005
+   WEBHOOK_URL=http://host.docker.internal:5005/webhook
    ```
 
 2. **Subindo a Infraestrutura Local (Docker)**:
@@ -57,11 +61,28 @@ Para iniciar o serviço que fica escutando alarmes ao vivo da API da Eletrofrio 
 .venv/Scripts/python.exe src/main.py
 ```
 
-### Rodando Testes Manuais
+### Rodando o Chatbot de Perguntas e Respostas (Webhook)
+Para iniciar o servidor webhook que recebe as mensagens do WhatsApp e responde usando o Gemini com o contexto do banco de dados:
+
+```bash
+# Executar a partir da raiz do projeto
+.venv/Scripts/python.exe src/webhook_server.py
+```
+
+O servidor registrará automaticamente a URL do webhook na Evolution API ao subir.
+
+### Rodando Testes Manuais de Alerta
 Para validar envios de WhatsApp com dados mockados e testar integrações sem precisar esperar um alarme real acontecer:
 
 ```bash
 .venv/Scripts/python.exe tests/test_notifications.py
+```
+
+### Rodando Testes do Chatbot
+Para simular mensagens recebidas e testar as respostas automáticas do bot via terminal:
+
+```bash
+.venv/Scripts/python.exe tests/test_webhook.py
 ```
 
 ## Logs e Histórico
