@@ -9,6 +9,7 @@ package "Presentation Layer" {
 
 package "Application Layer" {
   [AlarmService\n(main.py)] as AlarmService
+  [BotService\n(bot_polling.py)] as BotService
 }
 
 package "Business Logic Layer" {
@@ -20,11 +21,14 @@ package "Business Logic Layer" {
 package "Integration Layer" {
   [EvolutionClient\n(src/integrations/evolution_client.py)] as EvolutionClient
   [SupabaseConnection\n(src/config/supabase_connection.py)] as SupabaseConnection
+  [EvolutionPostgresClient\n(psycopg2 in bot_polling.py)] as EvolutionPostgresClient
 }
 
 package "Data Layer" {
   [Supabase DB] as SupabaseDB
+  [Evolution DB\n(Message / Instance / Chat)] as EvolutionDB
   [alarm_state.json] as AlarmStateFile
+  [bot_polling_state.json] as BotStateFile
 }
 
 package "External Systems" {
@@ -33,11 +37,23 @@ package "External Systems" {
   [Evolution API] as EvolutionAPI
 }
 
-WhatsAppUser --> AlarmService : polling / notification trigger
+WhatsAppUser --> AlarmService : receives proactive notifications
+WhatsAppUser --> BotService : sends free-text messages
+
 AlarmService --> NotificationManager : process new alarms
 AlarmService --> SupabaseConnection : upsert and sync data
 AlarmService --> EletrofrioAPI : poll alarms / unidades
 AlarmService --> AlarmStateFile : read/write state
+
+BotService --> TelemetryService : fetch telemetry on alarm lookup
+BotService --> LLMContextBuilder : enrich alarm context
+BotService --> EvolutionClient : send WhatsApp reply
+BotService --> SupabaseConnection : search unidades / alarmes
+BotService --> EvolutionPostgresClient : poll new incoming messages
+BotService --> BotStateFile : persist last_timestamp + sessions
+BotService --> EvolutionAPI : POST /message/sendText/{instance}
+
+EvolutionPostgresClient --> EvolutionDB : SELECT from "Message"
 
 NotificationManager --> TelemetryService : fetch telemetry
 NotificationManager --> LLMContextBuilder : enrich alarm context

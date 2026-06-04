@@ -7,6 +7,8 @@
 - **PostgreSQL** `16.4-alpine` (porta 5432) e **Redis** `7.2-alpine` (porta 6379)
 - Use `localhost` para acessar via navegador no host. Use `host.docker.internal` quando um container (ex.: o próprio n8n) precisar chamar algo que roda no host ou em outro serviço exposto pelo compose.
 
+> **Importante para o `bot_polling.py`:** o bot **lê mensagens direto do PostgreSQL da Evolution** (tabela `Message`), portanto o `postgres` deste compose é parte essencial do fluxo do chatbot. Garanta que o banco `evolution` esteja criado (o compose acima já cria porque a `evolution_api` provisiona o schema na primeira execução). Se for usar um Postgres externo, defina `EVOLUTION_DB_HOST`, `EVOLUTION_DB_PORT`, `EVOLUTION_DB_NAME`, `POSTGRES_USER` e `POSTGRES_PASSWORD` no `.env`.
+
 ## Como subir
 
 ```bash
@@ -31,5 +33,6 @@ Para desligar: `docker-compose down`. Para apagar dados: `docker-compose down -v
 - **Por que `host.docker.internal`?** Dentro dos containers `localhost` aponta para o próprio container. Configure webhooks/nodes do n8n para chamar `http://host.docker.internal:<porta>` e, ao testar no navegador do host, use `http://localhost:<porta>`.
 - **Como atualizar versões?** Troque as tags das imagens no `docker-compose.yml`, rode `docker-compose pull` e suba de novo.
 - **Problema com dados antigos do Postgres?** Remova o volume: `docker volume rm docker-evolution-and-n8n_postgres_data` (após `docker-compose down -v`).
+- **O `bot_polling.py` precisa de webhook?** Não. O bot não expõe porta HTTP: ele faz `SELECT` na tabela `Message` do Postgres a cada `POLL_INTERVAL` segundos. Mantenha o webhook da Evolution **desabilitado** para esse bot (caso contrário, o container faz retentativas em loop). Veja `docs/FIX_BOT_POLLING.md` para detalhes.
 
 Pronto para uso local de desenvolvimento. Apenas para fins educacionais. Contributions são bem-vindas. 

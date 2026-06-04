@@ -22,6 +22,13 @@ Este documento apresenta os diagramas de componentes em padrão UML para o siste
 │  │  - Alarm Detection & Processing                  │  │
 │  │  - State Persistence                             │  │
 │  └──────────────────────────────────────────────────┘  │
+│  ┌──────────────────────────────────────────────────┐  │
+│  │         BotService (bot_polling.py)              │  │
+│  │  - DB Polling Loop (5s interval)                 │  │
+│  │  - Conversation State Machine                    │  │
+│  │  - Guided alarm query (loja → alarme)           │  │
+│  │  - Gemini general Q&A fallback                   │  │
+│  └──────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────┘
                   │
 ┌─────────────────▼───────────────────────────────────────┐
@@ -48,6 +55,11 @@ Este documento apresenta os diagramas de componentes em padrão UML para o siste
 │  │ - Retry Mgmt     │ - Query Ops      │              │
 │  │ - Formatting     │ - Transactions   │              │
 │  └──────────────────┴──────────────────┘              │
+│  ┌──────────────────────────────────────┐            │
+│  │ EvolutionPostgresClient (psycopg2)  │            │
+│  │ - Read new messages from "Message"   │            │
+│  │ - Filter fromMe / groups / status    │            │
+│  └──────────────────────────────────────┘            │
 └─────────────────────────────────────────────────────────┘
                   │
 ┌─────────────────▼───────────────────────────────────────┐
@@ -58,6 +70,12 @@ Este documento apresenta os diagramas de componentes em padrão UML para o siste
 │  │ - unidades       │ - Dedup Prevention              │
 │  │ - notificacoes   │                  │              │
 │  └──────────────────┴──────────────────┘              │
+│  ┌──────────────────┬──────────────────────────┐      │
+│  │ Evolution DB     │ bot_polling_state.json   │      │
+│  │ - "Message"      │ - last_timestamp         │      │
+│  │ - "Instance"     │ - processed_ids          │      │
+│  │ - "Chat"         │ - user_sessions          │      │
+│  └──────────────────┴──────────────────────────┘      │
 └─────────────────────────────────────────────────────────┘
                   │
 ┌─────────────────▼───────────────────────────────────────┐
@@ -100,6 +118,24 @@ Este documento apresenta os diagramas de componentes em padrão UML para o siste
   - Compara com estado anterior
   - Persiste em Supabase
   - Dispara NotificationManager
+
+#### **BotService** (`src/bot_polling.py`)
+- **Responsabilidades:**
+  - Polling do PostgreSQL da Evolution a cada `POLL_INTERVAL` segundos (default 5s)
+  - Detecção de novas mensagens recebidas (`fromMe=false`, privadas, com JID válido)
+  - Máquina de estados da conversa por usuário (idle → awaiting_loja → awaiting_alarm)
+  - Resposta com Gemini geral quando o usuário está em `idle` e não dispara o fluxo de alarme
+  - Persistência de estado em `data/bot_polling_state.json`
+  - Disparo de resposta via Evolution API (`POST /message/sendText/{instance}`)
+
+- **Métodos Principais:**
+  ```python
+  main() → None                                 # Loop principal de polling
+  get_new_messages(conn, last_timestamp) → list # Busca mensagens novas no banco
+  run_state_machine(text, jid, sessions) → str   # FSM do fluxo guiado de alarme
+  build_context_and_respond(text, jid, ...) → str
+  send_reply(reply_jid, text) → bool
+  ```
 
 ### **Camada 3: Business Logic Layer**
 
@@ -214,6 +250,11 @@ Este documento apresenta os diagramas de componentes em padrão UML para o siste
   - `unidades` - Dados de lojas (PK: lojaId)
   - `notificacoes_enviadas` - Log de envios (PK: id)
 
+#### **Evolution API PostgreSQL Database**
+- **Tabelas Utilizadas pelo Bot:**
+  - `Message` - Mensagens recebidas/enviadas (PK: id, jsonb `key` com `fromMe`, `remoteJid`, `remoteJidAlt`)
+  - `Instance` - Cadastro de instâncias WhatsApp (PK: id, `name`)
+
 #### **State File** (`data/alarm_state.json`)
 - **Função:** Rastreia alarmes já processados para evitar duplicação
 - **Formato:**
@@ -221,6 +262,23 @@ Este documento apresenta os diagramas de componentes em padrão UML para o siste
   {
     "alarmeId": "estado_anterior",
     "timestamp": "last_check"
+  }
+  ```
+
+#### **Bot Polling State File** (`data/bot_polling_state.json`)
+- **Função:** Persiste o estado do `BotService` entre execuções
+- **Formato:**
+  ```json
+  {
+    "last_timestamp": 1717000000,
+    "processed_ids": ["id1", "id2", "..."],
+    "user_sessions": {
+      "5511999999999@s.whatsapp.net": {
+        "step": "awaiting_alarm",
+        "loja": { "lojaId": 58, "lojaNm": "Sumare" },
+        "last_updated": 1717000123
+      }
+    }
   }
   ```
 
@@ -260,6 +318,45 @@ AlarmService
               └─ save to notificacoes_enviadas
 ```
 
+### **Sequência do Bot (Polling → Resposta no WhatsApp)**
+
+```
+BotService
+  │
+  ├─ 1. poll loop (POLL_INTERVAL, default 5s)
+  │     └─ SELECT id, key, messageTimestamp, message
+  │        FROM "Message"
+  │        WHERE messageTimestamp >= last_ts
+  │          AND (key->>'fromMe')::boolean = false
+  │          AND key->>'remoteJid' NOT LIKE '%@g.us'
+  │          AND key->>'remoteJid' NOT LIKE '%@broadcast'
+  │          AND key->>'remoteJid' NOT LIKE 'status%'
+  │     └─ resolve @lid via key->>'remoteJidAlt'
+  │
+  ├─ 2. for each NEW message (id not in processed_ids):
+  │
+  │   ├─ 2.1 if session[phone].step == "idle":
+  │   │     ├─ if message matches ALARM_TRIGGER_KEYWORDS
+  │   │     │   └─ step = "awaiting_loja"  (pede ID ou nome da loja)
+  │   │     └─ else
+  │   │         └─ cai no Gemini geral (contexto: unidades + alarmes + telemetria)
+  │   │
+  │   ├─ 2.2 if step == "awaiting_loja":
+  │   │     └─ Supabase.unidades.search(id|ilike nome) → 1 ou N candidatos
+  │   │
+  │   ├─ 2.3 if step == "awaiting_alarm":
+  │   │     └─ Supabase.alarmes.search(lojaId, id|descrição)
+  │   │
+  │   ├─ 2.4 if alarme resolvido:
+  │   │     ├─ TelemetryService.fetch_telemetry(dispositivoId)
+  │   │     ├─ LLMContextBuilder.build_and_analyze(enriched)
+  │   │     └─ format_message(...) → texto final
+  │   │
+  │   └─ 2.5 Evolution API → POST /message/sendText/{instance}
+  │
+  └─ 3. save_state(last_timestamp, processed_ids, user_sessions)
+```
+
 ### **Tratamento de Erros e Retries**
 
 ```
@@ -282,12 +379,15 @@ except:
 | Componente | Responsabilidade | Padrão UML |
 |-----------|------------------|-----------|
 | AlarmService | Orquestração principal | Component |
+| BotService | Chatbot WhatsApp (polling) | Component |
 | NotificationManager | Coordenação de notificações | Component |
 | TelemetryService | Coleta de dados | Service |
 | LLMContextBuilder | Análise com IA | Service |
 | EvolutionClient | Integração WhatsApp | Adapter |
 | SupabaseConnection | Acesso a dados | Adapter |
+| EvolutionPostgresClient | Leitura de mensagens | Adapter |
 | Supabase DB | Persistência | Database |
+| Evolution DB | Caixa de entrada do bot | Database |
 | Evolution API | Gateway WhatsApp | External Service |
 | Eletrofrio API | Dados de alarmes | External Service |
 | Gemini API | Análise de IA | External Service |
@@ -329,6 +429,14 @@ AlarmService
 ├── depends on: SupabaseConnection
 └── calls: Eletrofrio API
 
+BotService
+├── depends on: TelemetryService
+├── depends on: LLMContextBuilder
+├── depends on: EvolutionAPIClient
+├── depends on: SupabaseConnection
+├── reads: Evolution PostgreSQL ("Message" table)
+└── calls: Evolution API (/message/sendText)
+
 NotificationManager
 ├── depends on: TelemetryService
 ├── depends on: LLMContextBuilder
@@ -338,20 +446,20 @@ NotificationManager
 
 TelemetryService
 ├── calls: Eletrofrio API
-└── returns to: NotificationManager
+└── returns to: NotificationManager, BotService
 
 LLMContextBuilder
 ├── calls: Gemini API
 ├── calls: Eletrofrio API
-└── returns to: NotificationManager
+└── returns to: NotificationManager, BotService
 
 EvolutionAPIClient
 ├── calls: Evolution API
-└── returns to: NotificationManager
+└── returns to: NotificationManager, BotService
 
 SupabaseConnection
 ├── connects to: Supabase PostgreSQL
-└── used by: AlarmService, NotificationManager
+└── used by: AlarmService, NotificationManager, BotService
 ```
 
 ---
@@ -393,12 +501,14 @@ SupabaseConnection
 ### **Resiliência**
 - Retry automático com 3 tentativas
 - Fallback para timeout de telemetria
-- State persistence evita duplicação
+- State persistence evita duplicação (alarm + bot)
+- Bot: sessões de conversa expiram por inatividade
 
 ### **Escalabilidade**
 - Connection pooling do Supabase
 - Processamento assíncrono de notificações
 - Batch processing de alarmes
+- Bot: lê mensagens em SQL com filtros otimizados (sem varredura em Python)
 
 ### **Manutenibilidade**
 - Separação clara de responsabilidades
@@ -416,21 +526,24 @@ SupabaseConnection
 
 1. **Inicialização**
    - AlarmService inicia polling loop
+   - BotService inicia polling loop no PostgreSQL da Evolution
    - Supabase connection pool é criado
-   - State file é carregado
+   - State files são carregados (`alarm_state.json`, `bot_polling_state.json`)
 
 2. **Operação Normal**
    - A cada 60s: AlarmService poll → Eletrofrio API
-   - Detecta novas alterações
-   - Dispara NotificationManager
+   - A cada `POLL_INTERVAL` (default 5s): BotService poll → Evolution PostgreSQL
+   - AlarmService detecta novos alarmes → dispara NotificationManager
+   - BotService detecta novas mensagens → responde via Evolution API
 
 3. **Falha e Recuperação**
    - Erro de conexão → retry automático
    - Erro de telemetria → usar dados cached
    - Erro de WhatsApp → schedule retry
+   - Sessões de bot ociosas além de `BOT_SESSION_TIMEOUT` (default 30 min) são descartadas automaticamente
 
 4. **Término Graceful**
-   - Salva estado atual
+   - Salva estado atual (alarm + bot)
    - Fecha connections
    - Persiste pending notifications
 
@@ -445,7 +558,11 @@ SupabaseConnection
 
 ---
 
-**Versão**: 1.0  
-**Data**: Maio 2026  
+**Versão**: 1.1  
+**Data**: Junho 2026  
 **Autor**: Eletrofrio Alert System  
 **Status**: Ativo em Produção
+
+### Histórico de Versões
+- **1.1 (Jun 2026)**: Adicionado `BotService (bot_polling.py)` que substitui o antigo `webhook_server.py`. O bot agora consulta o PostgreSQL da Evolution em vez de depender de webhook HTTP. Atualizado o `Data Layer` para incluir o banco da Evolution e o arquivo de estado `data/bot_polling_state.json`.
+- **1.0 (Mai 2026)**: Versão inicial com `AlarmService`, `NotificationManager`, `TelemetryService`, `LLMContextBuilder`, `EvolutionClient` e `SupabaseConnection`.

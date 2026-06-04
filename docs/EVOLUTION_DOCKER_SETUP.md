@@ -18,6 +18,8 @@ docker run -d \
 
 Aguarde **30-60 segundos** para o serviço ficar pronto.
 
+> **Nota:** a imagem `evolution-api:latest` usa um banco **embutido** por padrão, que **não persiste** mensagens entre reinicializações do container. Para o `bot_polling.py` deste projeto, você precisa de **PostgreSQL externo + `DATABASE_PROVIDER=postgresql`** (veja [Opção 2](#opção-2-usando-docker-compose) ou o `docker-compose.yml` da raiz do projeto, que já traz Postgres + Redis + Evolution juntos).
+
 ### Passo 2: Verificar Status
 
 ```bash
@@ -112,9 +114,17 @@ Se o container mostrar QR code, escaneie com WhatsApp.
 ### 3. Configurar `.env`
 
 ```env
+# Conexão com a Evolution API (para envio de mensagens)
 EVOLUTION_URL=http://localhost:8080
 EVOLUTION_API_KEY=sua-api-key-se-tiver
 EVOLUTION_INSTANCE=seu-numero
+
+# Conexão com o PostgreSQL da Evolution (para o bot_polling.py)
+EVOLUTION_DB_HOST=localhost
+EVOLUTION_DB_PORT=5432
+EVOLUTION_DB_NAME=evolution
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres123
 ```
 
 ⚠️ **Importante**: `EVOLUTION_INSTANCE` deve ser exatamente o nome criado (ex: "5511999999999" ou "seu-numero")

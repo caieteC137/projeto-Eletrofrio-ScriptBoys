@@ -10,6 +10,7 @@ O sistema é modular e dividido nas seguintes áreas principais:
 * **Telemetria (`src/services/telemetry_service.py`)**: Ao detectar um alarme crítico, busca a curva histórica de temperatura (telemetria) do dispositivo, calculando médias, máximas e mínimas.
 * **Inteligência Artificial (`src/ai/llm_context_builder.py`)**: Constrói um payload semântico unindo o alarme e a telemetria, e aciona a API do **Google Gemini (gemini-2.5-flash)** para diagnosticar a causa do problema de forma objetiva e rápida.
 * **Mensageria (`src/services/notification_manager.py` & `evolution_client.py`)**: Formata uma mensagem rica em detalhes (incluindo a análise da IA) e a despacha para o gerente responsável via **WhatsApp**, utilizando a Evolution API. Todo o histórico de envio é salvo no banco de dados Supabase.
+* **Chatbot Conversacional (`src/bot_polling.py`)**: Bot que responde mensagens recebidas no WhatsApp. Em vez de expor um endpoint HTTP (webhook), ele consulta periodicamente o **PostgreSQL da Evolution API** para identificar novas mensagens e respondê-las usando o Gemini com contexto do Supabase. Implementa um fluxo guiado de consulta de alarmes (loja → alarme) e mantém o estado da conversa por usuário em `data/bot_polling_state.json`.
 
 ## Pré-requisitos
 
@@ -22,16 +23,26 @@ O sistema é modular e dividido nas seguintes áreas principais:
 1. **Variáveis de Ambiente**: 
    Crie ou edite o arquivo `.env` na raiz do projeto com as seguintes credenciais:
    ```env
+   # Supabase e IA
    SUPABASE_URL=sua_url_supabase
    SUPABASE_KEY=sua_chave_supabase
    GEMINI_API_KEY=sua_chave_google_gemini
-   EVOLUTION_API_URL=http://localhost:8080
-   EVOLUTION_API_TOKEN=B6D711FCDE4D4FD5936544120E713976
+
+   # Evolution API
+   EVOLUTION_URL=http://localhost:8080
+   EVOLUTION_API_KEY=B6D711FCDE4D4FD5936544120E713976
    EVOLUTION_INSTANCE=55_SEU_NUMERO_COM_DDD  # Ex: 5511999999999
-    
-   # Opcionais para o Bot de Chat (Webhook)
-   WEBHOOK_PORT=5005
-   WEBHOOK_URL=http://host.docker.internal:5005/webhook
+
+   # PostgreSQL da Evolution (necessário para o bot_polling)
+   EVOLUTION_DB_HOST=localhost
+   EVOLUTION_DB_PORT=5432
+   EVOLUTION_DB_NAME=evolution
+   POSTGRES_USER=postgres
+   POSTGRES_PASSWORD=postgres123
+
+   # Bot de chat (polling) — opcionais
+   POLL_INTERVAL=5
+   BOT_SESSION_TIMEOUT=1800
    ```
 
 2. **Subindo a Infraestrutura Local (Docker)**:
@@ -61,15 +72,15 @@ Para iniciar o serviço que fica escutando alarmes ao vivo da API da Eletrofrio 
 .venv/Scripts/python.exe src/main.py
 ```
 
-### Rodando o Chatbot de Perguntas e Respostas (Webhook)
-Para iniciar o servidor webhook que recebe as mensagens do WhatsApp e responde usando o Gemini com o contexto do banco de dados:
+### Rodando o Chatbot de Perguntas e Respostas (Polling)
+Para iniciar o bot que responde as mensagens recebidas no WhatsApp consultando periodicamente o banco da Evolution e usando o Gemini com o contexto do Supabase:
 
 ```bash
 # Executar a partir da raiz do projeto
-.venv/Scripts/python.exe src/webhook_server.py
+.venv/Scripts/python.exe src/bot_polling.py
 ```
 
-O servidor registrará automaticamente a URL do webhook na Evolution API ao subir.
+> O bot não expõe nenhuma porta HTTP: ele lê as mensagens direto do PostgreSQL da Evolution (tabela `Message`) a cada `POLL_INTERVAL` segundos e responde via `POST /message/sendText/{instance}`. O estado das conversas e dos IDs já processados é persistido em `data/bot_polling_state.json`.
 
 ### Rodando Testes Manuais de Alerta
 Para validar envios de WhatsApp com dados mockados e testar integrações sem precisar esperar um alarme real acontecer:
@@ -78,16 +89,13 @@ Para validar envios de WhatsApp com dados mockados e testar integrações sem pr
 .venv/Scripts/python.exe tests/test_notifications.py
 ```
 
-### Rodando Testes do Chatbot
-Para simular mensagens recebidas e testar as respostas automáticas do bot via terminal:
-
-```bash
-.venv/Scripts/python.exe tests/test_webhook.py
-```
+### Inserindo Mensagens de Teste no Banco da Evolution
+Para testar o bot sem precisar de outro celular, você pode injetar uma mensagem fake direto na tabela `Message` do PostgreSQL da Evolution. O bot vai detectá-la no próximo ciclo de polling e respondê-la normalmente. Exemplo de `INSERT` está documentado em [`docs/FIX_BOT_POLLING.md`](docs/FIX_BOT_POLLING.md).
 
 ## Logs e Histórico
-- O log completo de execução fica guardado em `data/alarm_service.log`.
+- O log completo de execução do `main.py` fica guardado em `data/alarm_service.log`.
 - O histórico de IDs de alarmes já processados fica em `data/alarm_state.json`.
+- O estado do bot (timestamps, IDs já respondidos e sessões de conversa) fica em `data/bot_polling_state.json`.
 
 ## Vídeo para da solução
 
