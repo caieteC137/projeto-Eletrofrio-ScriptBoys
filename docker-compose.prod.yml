@@ -1,0 +1,90 @@
+# =============================================================================
+#  Override de PRODUCAO para Oracle Cloud (VM.Standard.A1.FMC)
+# =============================================================================
+#  Uso:
+#     docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+#  O que muda em relacao ao `docker-compose.yml` base:
+#   - Postgres e Redis NAO expoem porta no host (apenas na rede interna)
+#   - Limites de CPU/memoria por servico (Always Free ARM = 4 OCPU, 24 GB)
+#   - Log rotation centralizado via driver json-file
+#   - Restart policy mais agressiva
+#   - Variavel EVOLUTION_URL apontando para o servico interno (evolution:8080)
+#     porque o bot e o main estao na mesma stack
+# =============================================================================
+
+version: '3.8'
+
+services:
+  app:
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  main:
+    restart: always
+    environment:
+      # Quando rodando dentro da stack, o host da Evolution eh o nome do servico
+      - EVOLUTION_URL=http://evolution:8080
+      - EVOLUTION_DB_HOST=postgres
+
+  bot:
+    restart: always
+    environment:
+      - EVOLUTION_URL=http://evolution:8080
+      - EVOLUTION_DB_HOST=postgres
+
+  postgres:
+    # Em producao, Postgres NAO precisa expor porta no host.
+    # Apenas os containers na mesma rede acessam.
+    expose:
+      - "5432"
+    ports: []   # remove o mapeamento definido no base
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.00'
+          memory: 1G
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  redis:
+    expose:
+      - "6379"
+    ports: []
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  evolution:
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.50'
+          memory: 2G
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"

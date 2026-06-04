@@ -1,5 +1,7 @@
 # 🐳 Setup Evolution API Local (Docker)
 
+> **Contexto:** este documento é um guia standalone para subir apenas a Evolution API em Docker. Para subir **toda a stack** (Postgres + Redis + Evolution + `main` + `bot`) use [`docs/docker-run.md`](docker-run.md) ou [`docs/DEPLOY_OCI.md`](DEPLOY_OCI.md).
+
 ## Opção 1: Usando Docker
 
 ### Pré-requisitos

@@ -101,5 +101,71 @@ Para testar o bot sem precisar de outro celular, você pode injetar uma mensagem
 
 https://drive.google.com/file/d/1h2QdQ1bInfxxZ_wfyg41suK2zveMdZps/view
 
+## Deploy em produção (Oracle Cloud)
+
+A stack roda 100% containerizada e foi preparada para deploy na **Oracle Cloud** usando a `VM.Standard.A1.FMC` (Always Free ARM, 4 OCPU + 24 GB RAM). O guia completo está em [`docs/DEPLOY_OCI.md`](docs/DEPLOY_OCI.md) e cobre:
+
+- Provisionamento da VCN e da VM no console da OCI
+- Instalação do Docker + UFW + fail2ban via `deploy/scripts/setup-vm.sh`
+- Build e subida da stack via `deploy/scripts/deploy.sh`
+- HTTPS com nginx + Let's Encrypt (opcional)
+- Backup automático via `deploy/scripts/backup.sh` + cron
+
+**Subindo localmente em 3 comandos (desenvolvimento)**:
+```bash
+cp .env.example .env  # edite com seus valores
+docker compose up -d --build
+```
+
+**Subindo em produção na OCI**:
+```bash
+git clone https://github.com/caieteC137/projeto-Eletrofrio-ScriptBoys.git /opt/eletrofrio
+cd /opt/eletrofrio
+cp .env.example .env  # edite com seus valores
+chmod +x deploy/scripts/*.sh
+bash deploy/scripts/deploy.sh
+```
+
+> **O n8n foi removido** da stack. Apenas Postgres, Redis, Evolution, `main` e `bot` rodam agora.
+
+## Estrutura do repositório
+
+```
+.
+├── Dockerfile                 # Imagem da app Python
+├── docker-compose.yml         # Stack base (dev/prod)
+├── docker-compose.prod.yml    # Override de produção (limites de recurso, log rotation)
+├── .env.example               # Modelo de variáveis (sem segredos)
+├── requirements.txt
+├── src/
+│   ├── main.py                # Serviço de polling de alarmes
+│   ├── bot_polling.py         # Bot WhatsApp (consulta o DB da Evolution)
+│   ├── ai/llm_context_builder.py
+│   ├── config/supabase_connection.py
+│   ├── integrations/evolution_client.py
+│   └── services/
+│       ├── notification_manager.py
+│       └── telemetry_service.py
+├── tests/
+├── data/                      # Logs e arquivos de estado (volume Docker)
+├── docs/                      # Documentação
+│   ├── DEPLOY_OCI.md          # ⭐ Guia de deploy na Oracle Cloud
+│   ├── DEPLOY_REFACTORING.md  # ⭐ O que mudou para viabilizar o deploy
+│   ├── FIX_BOT_POLLING.md
+│   ├── COMPONENT_DIAGRAM_UML.md
+│   ├── docker-run.md
+│   ├── EVOLUTION_DOCKER_SETUP.md
+│   └── NOTIFICACOES_GUIDE.md
+└── deploy/                    # ⭐ Artefatos de deploy
+    ├── README.md
+    ├── nginx/nginx.conf
+    └── scripts/
+        ├── setup-vm.sh
+        ├── deploy.sh
+        ├── healthcheck.sh
+        ├── backup.sh
+        └── restore.sh
+```
+
 ---
 *Desenvolvido pela equipe ScriptBoys - Hackathon Eletrofrio*

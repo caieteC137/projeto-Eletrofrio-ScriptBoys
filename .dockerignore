@@ -1,0 +1,44 @@
+# Evita copiar lixo local e arquivos com segredos para dentro da imagem Docker
+.venv
+venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+
+# Logs e estado local
+data/alarm_service.log
+data/alarm_state.json
+data/bot_polling_state.json
+data/pipeline.log
+data/*.log
+
+# Documentação
+docs/
+*.md
+README.md
+GEMINI.md
+
+# Configuração do editor / IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Pastas que não devem ir pra imagem
+.graphify
+graphify-out
+.agents
+.gemini
+scratch
+tests
+
+# Variáveis de ambiente reais (NUNCA versionar)
+.env
+.env.*
+!.env.example
+
+# Git
+.git
+.gitignore
