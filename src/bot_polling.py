@@ -31,6 +31,7 @@ if sys.platform == "win32":
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from services import telemetry_service
+from services import automation_flags
 from ai import llm_context_builder
 from supabase import create_client
 
@@ -52,6 +53,15 @@ logger = logging.getLogger(__name__)
 # ─────────────────────────────────────────────────────────────
 
 POLL_INTERVAL = int(os.getenv("POLL_INTERVAL", "5"))  # segundos entre cada verificação
+
+# Idade maxima (em segundos) das mensagens que o bot esta disposto a
+# responder. Mensagens mais antigas que isso sao IGNORADAS mesmo que
+# ainda nao tenham sido processadas - util para evitar responder um
+# backlog antigo quando o servico volta de uma queda longa, ou para
+# nao responder mensagens muito velhas que ficaram pendentes no banco
+# da Evolution.
+# Padrao: 24h. Configuravel via BOT_MAX_MESSAGE_AGE_SECONDS no .env.
+MAX_MESSAGE_AGE_SECONDS = int(os.getenv("BOT_MAX_MESSAGE_AGE_SECONDS", str(24 * 3600)))
 
 # Supabase
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -170,12 +180,27 @@ def get_db_connection():
         database=EVOLUTION_DB_NAME
     )
 
-def get_new_messages(conn, last_timestamp):
+def get_new_messages(conn, last_timestamp, min_timestamp=None):
     """
-    Busca mensagens recebidas (fromMe=false) que são mais recentes que last_timestamp.
-    Filtra apenas mensagens privadas (não grupos).
-    Suporta JIDs @lid resolvendo o número real via remoteJidAlt.
+    Busca mensagens recebidas (fromMe=false) que sao mais recentes que
+    `max(last_timestamp, min_timestamp)`.
+
+    Args:
+        last_timestamp: cursor incremental vindo de bot_polling_state.json.
+            Garante que cada mensagem seja processada no maximo uma vez
+            entre reinicializacoes.
+        min_timestamp: idade maxima aceita, em segundos UNIX. Mensagens
+            com timestamp anterior a esse valor sao IGNORADAS pela query
+            (mais eficiente que filtrar em Python). Se for None, so o
+            last_timestamp e considerado.
+
+    Filtra apenas mensagens privadas (nao grupos).
+    Suporta JIDs @lid resolvendo o numero real via remoteJidAlt.
     """
+    effective_last_ts = last_timestamp
+    if min_timestamp is not None and min_timestamp > effective_last_ts:
+        effective_last_ts = min_timestamp
+
     cur = conn.cursor()
     cur.execute("""
         SELECT id, key, "pushName", "messageTimestamp", "messageType", message
@@ -186,7 +211,7 @@ def get_new_messages(conn, last_timestamp):
           AND key->>'remoteJid' NOT LIKE '%%@broadcast'
           AND key->>'remoteJid' NOT LIKE 'status%%'
         ORDER BY "messageTimestamp" ASC, id ASC
-    """, (last_timestamp,))
+    """, (effective_last_ts,))
 
     rows = cur.fetchall()
     cur.close()
@@ -931,6 +956,16 @@ def main():
     logger.info(f"📱 Instância: {EVOLUTION_INSTANCE}")
     logger.info(f"🔄 Intervalo de polling: {POLL_INTERVAL}s")
     logger.info(f"🗄️ DB: {EVOLUTION_DB_HOST}:{EVOLUTION_DB_PORT}/{EVOLUTION_DB_NAME}")
+    logger.info(
+        f"⏳ Idade máxima das mensagens: {MAX_MESSAGE_AGE_SECONDS}s "
+        f"({MAX_MESSAGE_AGE_SECONDS / 3600:.1f}h) "
+        f"— configurável via BOT_MAX_MESSAGE_AGE_SECONDS"
+    )
+
+    # Estado inicial do kill switch (controlado pelo dashboard).
+    initial_flags, _ = automation_flags.read_flags()
+    bot_status = "ATIVO ✅" if initial_flags.get("bot_enabled", True) else "⏸️  PAUSADO"
+    logger.info(f"🎛️  Respostas automáticas do bot: {bot_status}")
     logger.info("=" * 60)
 
     # Carrega estado persistido (last_timestamp + IDs já processados + sessões de usuário)
@@ -960,9 +995,26 @@ def main():
     logger.info("")
 
     while True:
+        # Kill switch: se as respostas automaticas foram pausadas pelo
+        # dashboard, nao consultamos o banco da Evolution nem respondemos
+        # mensagens. Apenas esperamos o proximo ciclo e checamos de novo.
+        flags_now, _ = automation_flags.read_flags()
+        if not flags_now.get("bot_enabled", True):
+            logger.info(
+                "⏸️  Respostas automáticas do bot PAUSADAS via dashboard. "
+                f"Aguardando reativação (checando a cada {POLL_INTERVAL}s)..."
+            )
+            time.sleep(POLL_INTERVAL)
+            continue
+
         try:
             conn = get_db_connection()
-            new_messages = get_new_messages(conn, last_timestamp)
+            # Filtro de idade: ignora mensagens mais velhas que
+            # MAX_MESSAGE_AGE_SECONDS (padrao 24h), independente do
+            # last_timestamp. Evita responder backlog muito antigo
+            # apos uma queda longa do servico.
+            min_ts = int(time.time()) - MAX_MESSAGE_AGE_SECONDS
+            new_messages = get_new_messages(conn, last_timestamp, min_timestamp=min_ts)
             conn.close()
 
             state_changed = False

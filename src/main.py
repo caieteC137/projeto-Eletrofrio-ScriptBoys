@@ -7,6 +7,7 @@ import pandas as pd
 from supabase import create_client
 from dotenv import load_dotenv
 from services.notification_manager import NotificationManager
+from services import automation_flags
 
 # ─────────────────────────────────────────────────────────────
 # Configurações
@@ -161,9 +162,26 @@ def main():
     supabase = get_supabase_client()
     notification_manager = get_notification_manager()
     previous_state = load_previous_state()
+
+    # Estado inicial do kill switch (controlado pelo dashboard).
+    initial_flags, _ = automation_flags.read_flags()
+    main_status = "ATIVO ✅" if initial_flags.get("main_enabled", True) else "⏸️  PAUSADO"
+    logging.info(f"🎛️  Envio automático de notificações: {main_status}")
     
     try:
         while True:
+            # Kill switch: se o envio automatico foi pausado pelo dashboard,
+            # nao consultamos a API nem disparamos notificacoes. Apenas
+            # esperamos o proximo ciclo e checamos de novo.
+            flags_now, _ = automation_flags.read_flags()
+            if not flags_now.get("main_enabled", True):
+                logging.info(
+                    "⏸️  Envio automático de notificações PAUSADO via dashboard. "
+                    f"Aguardando reativação (checando a cada {POLL_INTERVAL}s)..."
+                )
+                time.sleep(POLL_INTERVAL)
+                continue
+
             logging.info("🔍 Verificando novos alarmes...")
             current_alarms = fetch_alarms_from_api()
             

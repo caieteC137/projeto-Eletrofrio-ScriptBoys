@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Eletrofrio - Dashboard de Notificações</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
+
 <body>
   <header class="topbar">
     <div class="brand">
@@ -24,103 +26,224 @@
     </div>
   </header>
 
+  <nav class="tabbar" role="tablist">
+    <button class="tab tab-active" data-tab="notificacoes" role="tab" aria-selected="true">
+      <span class="tab-icon">📨</span>
+      <span>Notificações</span>
+    </button>
+    <button class="tab" data-tab="automacao" role="tab" aria-selected="false">
+      <span class="tab-icon">🤖</span>
+      <span>Central de Automatização</span>
+    </button>
+  </nav>
+
   <main>
-    <!-- KPI CARDS -->
-    <section class="kpis">
-      <div class="kpi kpi-blue">
-        <span class="kpi-label">Total de notificações</span>
-        <span class="kpi-value" id="kpi-total">0</span>
-      </div>
-      <div class="kpi kpi-green">
-        <span class="kpi-label">Enviadas com sucesso</span>
-        <span class="kpi-value" id="kpi-enviado">0</span>
-      </div>
-      <div class="kpi kpi-red">
-        <span class="kpi-label">Falhas</span>
-        <span class="kpi-value" id="kpi-falhas">0</span>
-      </div>
-      <div class="kpi kpi-amber">
-        <span class="kpi-label">Pendentes</span>
-        <span class="kpi-value" id="kpi-pendentes">0</span>
-      </div>
-      <div class="kpi kpi-purple">
-        <span class="kpi-label">Últimas 24h</span>
-        <span class="kpi-value" id="kpi-24h">0</span>
-      </div>
-      <div class="kpi kpi-cyan">
-        <span class="kpi-label">Taxa de sucesso</span>
-        <span class="kpi-value" id="kpi-taxa">0%</span>
-      </div>
+    <!-- ═════════════════════════════════════════════════════
+         VIEW: NOTIFICAÇÕES (read-only)
+         ═════════════════════════════════════════════════════ -->
+    <section id="view-notificacoes" class="view view-active">
+      <!-- KPI CARDS -->
+      <section class="kpis">
+        <div class="kpi kpi-blue">
+          <span class="kpi-label">Total de notificações</span>
+          <span class="kpi-value" id="kpi-total">0</span>
+        </div>
+        <div class="kpi kpi-green">
+          <span class="kpi-label">Enviadas com sucesso</span>
+          <span class="kpi-value" id="kpi-enviado">0</span>
+        </div>
+        <div class="kpi kpi-red">
+          <span class="kpi-label">Falhas</span>
+          <span class="kpi-value" id="kpi-falhas">0</span>
+        </div>
+        <div class="kpi kpi-amber">
+          <span class="kpi-label">Pendentes</span>
+          <span class="kpi-value" id="kpi-pendentes">0</span>
+        </div>
+        <div class="kpi kpi-purple">
+          <span class="kpi-label">Últimas 24h</span>
+          <span class="kpi-value" id="kpi-24h">0</span>
+        </div>
+        <div class="kpi kpi-cyan">
+          <span class="kpi-label">Taxa de sucesso</span>
+          <span class="kpi-value" id="kpi-taxa">0%</span>
+        </div>
+      </section>
+
+      <!-- FILTROS -->
+      <section class="filters">
+        <div class="filter">
+          <label for="filter-status">Status</label>
+          <select id="filter-status">
+            <option value="">Todos</option>
+            <option value="enviado">Enviado</option>
+            <option value="pendente">Pendente</option>
+            <option value="pendente_retry">Pendente (retry)</option>
+            <option value="falha">Falha</option>
+            <option value="falha_permanente">Falha permanente</option>
+          </select>
+        </div>
+        <div class="filter">
+          <label for="filter-criticidade">Criticidade</label>
+          <select id="filter-criticidade">
+            <option value="">Todas</option>
+            <option value="CRÍTICO">Crítico</option>
+            <option value="ALTO">Alto</option>
+            <option value="MEDIO">Médio</option>
+            <option value="BAIXO">Baixo</option>
+          </select>
+        </div>
+        <div class="filter">
+          <label for="filter-loja">Loja (ID)</label>
+          <input type="number" id="filter-loja" placeholder="Ex: 1234" />
+        </div>
+        <div class="filter">
+          <label for="filter-limit">Qtd. registros</label>
+          <select id="filter-limit">
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200" selected>200</option>
+            <option value="500">500</option>
+          </select>
+        </div>
+        <button id="btn-aplicar" class="btn-primary">Aplicar filtros</button>
+      </section>
+
+      <!-- TABELA -->
+      <section class="table-wrapper">
+        <div class="table-header">
+          <h2>Notificações enviadas</h2>
+          <span class="badge" id="result-count">0 resultados</span>
+        </div>
+
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Data/Hora</th>
+                <th>Unidade</th>
+                <th>Alarme</th>
+                <th>Criticidade</th>
+                <th>Telefone</th>
+                <th>Status</th>
+                <th>Tentativas</th>
+                <th>Mensagem</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-notificacoes">
+              <tr>
+                <td colspan="9" class="empty">Carregando...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </section>
 
-    <!-- FILTROS -->
-    <section class="filters">
-      <div class="filter">
-        <label for="filter-status">Status</label>
-        <select id="filter-status">
-          <option value="">Todos</option>
-          <option value="enviado">Enviado</option>
-          <option value="pendente">Pendente</option>
-          <option value="pendente_retry">Pendente (retry)</option>
-          <option value="falha">Falha</option>
-          <option value="falha_permanente">Falha permanente</option>
-        </select>
-      </div>
-      <div class="filter">
-        <label for="filter-criticidade">Criticidade</label>
-        <select id="filter-criticidade">
-          <option value="">Todas</option>
-          <option value="CRÍTICO">Crítico</option>
-          <option value="ALTO">Alto</option>
-          <option value="MEDIO">Médio</option>
-          <option value="BAIXO">Baixo</option>
-        </select>
-      </div>
-      <div class="filter">
-        <label for="filter-loja">Loja (ID)</label>
-        <input type="number" id="filter-loja" placeholder="Ex: 1234" />
-      </div>
-      <div class="filter">
-        <label for="filter-limit">Qtd. registros</label>
-        <select id="filter-limit">
-          <option value="50">50</option>
-          <option value="100">100</option>
-          <option value="200" selected>200</option>
-          <option value="500">500</option>
-        </select>
-      </div>
-      <button id="btn-aplicar" class="btn-primary">Aplicar filtros</button>
-    </section>
+    <!-- ═════════════════════════════════════════════════════
+         VIEW: CENTRAL DE AUTOMAÇÃO
+         Controles manuais para main.py (notificações) e
+         bot_polling.py (respostas a usuários).
+         ═════════════════════════════════════════════════════ -->
+    <section id="view-automacao" class="view" hidden>
+      <!-- HERO: Kill switches (pausar/retomar cada servico) -->
+      <section class="auto-card kill-switches-card">
+        <div class="auto-card-header">
+          <h2>🎛️ Controle geral de automação <span class="muted-tag">data/automation_flags.json</span></h2>
+          <p class="auto-card-sub">
+            Liga e desliga globalmente o envio automático de notificações
+            (<code>main.py</code>) e as respostas automáticas do bot
+            (<code>bot_polling.py</code>). Os serviços checam o estado a
+            cada iteração do loop — a mudança propaga em até
+            <strong>1 ciclo</strong> (60s no <code>main</code>, 5s no
+            <code>bot</code>). As ações manuais da central abaixo
+            continuam funcionando mesmo com tudo pausado.
+          </p>
+        </div>
 
-    <!-- TABELA -->
-    <section class="table-wrapper">
-      <div class="table-header">
-        <h2>Notificações enviadas</h2>
-        <span class="badge" id="result-count">0 resultados</span>
-      </div>
+        <div class="kill-switches-grid">
+          <!-- Kill switch: envio de notificacoes (main.py) -->
+          <div class="ks-tile" id="ks-main-tile" data-state="active">
+            <div class="ks-tile-head">
+              <div class="ks-icon">📨</div>
+              <div class="ks-tile-meta">
+                <span class="ks-title">Envio de notificações</span>
+                <span class="ks-sub">main.py · polling de 60s</span>
+              </div>
+            </div>
+            <div class="ks-status">
+              <span class="ks-dot" id="ks-main-dot"></span>
+              <span class="ks-status-text" id="ks-main-text">ATIVO</span>
+            </div>
+            <p class="ks-help" id="ks-main-help">
+              Notificações WhatsApp estão sendo enviadas normalmente
+              para alarmes críticos detectados pela API da Eletrofrio.
+            </p>
+            <button type="button" class="btn-ks btn-ks-pause" id="btn-toggle-main" data-target="main">
+              <span class="btn-ks-icon">⏸</span>
+              <span class="btn-ks-label">Pausar envio automático</span>
+            </button>
+          </div>
 
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Data/Hora</th>
-              <th>Unidade</th>
-              <th>Alarme</th>
-              <th>Criticidade</th>
-              <th>Telefone</th>
-              <th>Status</th>
-              <th>Tentativas</th>
-              <th>Mensagem</th>
-            </tr>
-          </thead>
-          <tbody id="tbody-notificacoes">
-            <tr>
-              <td colspan="9" class="empty">Carregando...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+          <!-- Kill switch: respostas do bot (bot_polling.py) -->
+          <div class="ks-tile" id="ks-bot-tile" data-state="active">
+            <div class="ks-tile-head">
+              <div class="ks-icon">🤖</div>
+              <div class="ks-tile-meta">
+                <span class="ks-title">Respostas do bot</span>
+                <span class="ks-sub">bot_polling.py · polling de 5s</span>
+              </div>
+            </div>
+            <div class="ks-status">
+              <span class="ks-dot" id="ks-bot-dot"></span>
+              <span class="ks-status-text" id="ks-bot-text">ATIVO</span>
+            </div>
+            <p class="ks-help" id="ks-bot-help">
+              O bot está consultando novas mensagens e respondendo com
+              ajuda do Gemini + Supabase.
+            </p>
+            <button type="button" class="btn-ks btn-ks-pause" id="btn-toggle-bot" data-target="bot">
+              <span class="btn-ks-icon">⏸</span>
+              <span class="btn-ks-label">Pausar respostas automáticas</span>
+            </button>
+          </div>
+        </div>
+
+        <pre id="ks-result" class="form-result" hidden></pre>
+      </section>
+
+      <!-- Logs compartilhados -->
+      <section class="auto-card logs-card">
+        <div class="auto-card-header">
+          <h2>📜 Logs recentes</h2>
+          <p class="auto-card-sub">
+            Últimas linhas dos arquivos de log gerados pelos serviços
+            <code>main.py</code> e <code>bot_polling.py</code>.
+          </p>
+        </div>
+
+        <div class="logs-grid">
+          <div class="log-pane">
+            <div class="log-pane-header">
+              <span>alarm_service.log</span>
+              <button type="button" class="btn-ghost btn-mini" id="btn-reload-log-alarm">
+                Recarregar
+              </button>
+            </div>
+            <pre class="log-body" id="log-alarm-body">Carregando...</pre>
+          </div>
+          <div class="log-pane">
+            <div class="log-pane-header">
+              <span>pipeline.log</span>
+              <button type="button" class="btn-ghost btn-mini" id="btn-reload-log-pipeline">
+                Recarregar
+              </button>
+            </div>
+            <pre class="log-body" id="log-pipeline-body">Carregando...</pre>
+          </div>
+        </div>
+      </section>
     </section>
   </main>
 
@@ -140,5 +263,7 @@
   </div>
 
   <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/automation.js') }}"></script>
 </body>
+
 </html>

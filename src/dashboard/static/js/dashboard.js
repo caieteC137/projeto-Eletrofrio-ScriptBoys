@@ -1,6 +1,8 @@
 /* Dashboard de Notificacoes - Eletrofrio
  * Read-only: este front-end apenas consulta o backend Flask.
  * Nenhuma acao de envio, edicao ou disparo eh disparada por aqui.
+ *
+ * A central de automacao (aba dedicada) tem sua logica em automation.js.
  */
 
 const REFRESH_INTERVAL_MS = 15000;
@@ -28,10 +30,17 @@ const els = {
     h24: document.getElementById("kpi-24h"),
     taxa: document.getElementById("kpi-taxa"),
   },
+  // Tabs
+  tabs: document.querySelectorAll(".tab"),
+  views: {
+    notificacoes: document.getElementById("view-notificacoes"),
+    automacao: document.getElementById("view-automacao"),
+  },
 };
 
 let unidadesMap = new Map();
 let refreshTimer = null;
+let activeTab = "notificacoes";
 
 function formatDateTime(iso) {
   if (!iso) return "—";
@@ -183,12 +192,45 @@ function closeModal() { els.modal.hidden = true; }
 function startAutoRefresh() {
   if (refreshTimer) clearInterval(refreshTimer);
   refreshTimer = setInterval(() => {
-    if (els.autoRefresh.checked) refreshAll();
+    // So atualiza se a aba de notificacoes estiver ativa e o auto-refresh
+    // estiver ligado. A aba de automacao tem seu proprio refresh.
+    if (activeTab === "notificacoes" && els.autoRefresh.checked) {
+      refreshAll();
+    }
   }, REFRESH_INTERVAL_MS);
 }
 
 async function refreshAll() {
   await Promise.all([fetchStats(), fetchNotificacoes()]);
+}
+
+/* === Tabs === */
+function switchTab(tabName) {
+  if (!els.views[tabName]) return;
+  activeTab = tabName;
+
+  els.tabs.forEach(t => {
+    const isActive = t.dataset.tab === tabName;
+    t.classList.toggle("tab-active", isActive);
+    t.setAttribute("aria-selected", isActive ? "true" : "false");
+  });
+
+  Object.entries(els.views).forEach(([name, view]) => {
+    if (!view) return;
+    const isActive = name === tabName;
+    view.classList.toggle("view-active", isActive);
+    if (isActive) {
+      view.removeAttribute("hidden");
+    } else {
+      view.setAttribute("hidden", "");
+    }
+  });
+
+  // Hook para a aba de automacao: se a funcao existir no escopo global
+  // (carregada via automation.js), chama para fazer o primeiro fetch.
+  if (tabName === "automacao" && typeof window.refreshAutomation === "function") {
+    window.refreshAutomation();
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -204,6 +246,11 @@ document.addEventListener("DOMContentLoaded", () => {
   els.filterStatus.addEventListener("change", fetchNotificacoes);
   els.filterCriticidade.addEventListener("change", fetchNotificacoes);
   els.filterLimit.addEventListener("change", fetchNotificacoes);
+
+  // Liga os botoes da tabbar
+  els.tabs.forEach(t => {
+    t.addEventListener("click", () => switchTab(t.dataset.tab));
+  });
 
   (async () => {
     await fetchUnidades();
