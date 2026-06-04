@@ -92,6 +92,19 @@ Para validar envios de WhatsApp com dados mockados e testar integrações sem pr
 ### Inserindo Mensagens de Teste no Banco da Evolution
 Para testar o bot sem precisar de outro celular, você pode injetar uma mensagem fake direto na tabela `Message` do PostgreSQL da Evolution. O bot vai detectá-la no próximo ciclo de polling e respondê-la normalmente. Exemplo de `INSERT` está documentado em [`docs/FIX_BOT_POLLING.md`](docs/FIX_BOT_POLLING.md).
 
+### Rodando o Dashboard de Notificações (visualização)
+Painel **read-only** em Flask + HTML/CSS/JS puro que consulta a tabela `notificacoes_enviadas` do Supabase e exibe KPIs, filtros e a lista de notificações. **Não envia, não dispara e não altera nada** — é apenas para visualizar se os envios foram de fato realizados.
+
+```bash
+# Subir junto com a stack
+docker compose up -d dashboard
+
+# OU rodar localmente (sem Docker) a partir da raiz do projeto
+.venv/Scripts/python.exe src/dashboard/app.py
+```
+
+Acesse em `http://localhost:5000`. A porta pode ser ajustada via `DASHBOARD_HOST_PORT` no `.env`.
+
 ## Logs e Histórico
 - O log completo de execução do `main.py` fica guardado em `data/alarm_service.log`.
 - O histórico de IDs de alarmes já processados fica em `data/alarm_state.json`.

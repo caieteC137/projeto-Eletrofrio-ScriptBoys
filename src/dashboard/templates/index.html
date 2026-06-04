@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eletrofrio - Dashboard de Notificações</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">⚡</span>
+      <div>
+        <h1>Eletrofrio · Dashboard de Notificações</h1>
+        <p class="subtitle">Monitoramento de alarmes e envios via WhatsApp</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <label class="refresh-toggle">
+        <input type="checkbox" id="auto-refresh" checked />
+        <span>Auto-atualizar</span>
+      </label>
+      <span class="last-update" id="last-update">—</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- KPI CARDS -->
+    <section class="kpis">
+      <div class="kpi kpi-blue">
+        <span class="kpi-label">Total de notificações</span>
+        <span class="kpi-value" id="kpi-total">0</span>
+      </div>
+      <div class="kpi kpi-green">
+        <span class="kpi-label">Enviadas com sucesso</span>
+        <span class="kpi-value" id="kpi-enviado">0</span>
+      </div>
+      <div class="kpi kpi-red">
+        <span class="kpi-label">Falhas</span>
+        <span class="kpi-value" id="kpi-falhas">0</span>
+      </div>
+      <div class="kpi kpi-amber">
+        <span class="kpi-label">Pendentes</span>
+        <span class="kpi-value" id="kpi-pendentes">0</span>
+      </div>
+      <div class="kpi kpi-purple">
+        <span class="kpi-label">Últimas 24h</span>
+        <span class="kpi-value" id="kpi-24h">0</span>
+      </div>
+      <div class="kpi kpi-cyan">
+        <span class="kpi-label">Taxa de sucesso</span>
+        <span class="kpi-value" id="kpi-taxa">0%</span>
+      </div>
+    </section>
+
+    <!-- FILTROS -->
+    <section class="filters">
+      <div class="filter">
+        <label for="filter-status">Status</label>
+        <select id="filter-status">
+          <option value="">Todos</option>
+          <option value="enviado">Enviado</option>
+          <option value="pendente">Pendente</option>
+          <option value="pendente_retry">Pendente (retry)</option>
+          <option value="falha">Falha</option>
+          <option value="falha_permanente">Falha permanente</option>
+        </select>
+      </div>
+      <div class="filter">
+        <label for="filter-criticidade">Criticidade</label>
+        <select id="filter-criticidade">
+          <option value="">Todas</option>
+          <option value="CRÍTICO">Crítico</option>
+          <option value="ALTO">Alto</option>
+          <option value="MEDIO">Médio</option>
+          <option value="BAIXO">Baixo</option>
+        </select>
+      </div>
+      <div class="filter">
+        <label for="filter-loja">Loja (ID)</label>
+        <input type="number" id="filter-loja" placeholder="Ex: 1234" />
+      </div>
+      <div class="filter">
+        <label for="filter-limit">Qtd. registros</label>
+        <select id="filter-limit">
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="200" selected>200</option>
+          <option value="500">500</option>
+        </select>
+      </div>
+      <button id="btn-aplicar" class="btn-primary">Aplicar filtros</button>
+    </section>
+
+    <!-- TABELA -->
+    <section class="table-wrapper">
+      <div class="table-header">
+        <h2>Notificações enviadas</h2>
+        <span class="badge" id="result-count">0 resultados</span>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Data/Hora</th>
+              <th>Unidade</th>
+              <th>Alarme</th>
+              <th>Criticidade</th>
+              <th>Telefone</th>
+              <th>Status</th>
+              <th>Tentativas</th>
+              <th>Mensagem</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-notificacoes">
+            <tr>
+              <td colspan="9" class="empty">Carregando...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Eletrofrio · Painel read-only · <span id="footer-fetched">—</span></span>
+  </footer>
+
+  <!-- Modal de mensagem -->
+  <div class="modal" id="modal-msg" hidden>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">Mensagem</h3>
+        <button class="modal-close" id="modal-close">×</button>
+      </div>
+      <pre id="modal-body"></pre>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
