@@ -4,16 +4,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1b2e5c" />
   <title>Eletrofrio - Dashboard de Notificações</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 
 <body>
   <header class="topbar">
     <div class="brand">
-      <span class="logo">⚡</span>
-      <div>
-        <h1>Eletrofrio · Dashboard de Notificações</h1>
+      <img src="{{ url_for('static', filename='img/logoeletrofrio.png') }}" alt="Eletrofrio Refrigeração"
+        class="brand-logo" />
+      <div class="brand-text">
+        <h1>Dashboard de Notificações</h1>
         <p class="subtitle">Monitoramento de alarmes e envios via WhatsApp</p>
       </div>
     </div>
@@ -25,14 +30,15 @@
       <span class="last-update" id="last-update">—</span>
     </div>
   </header>
+  <div class="topbar-accent" aria-hidden="true"></div>
 
   <nav class="tabbar" role="tablist">
     <button class="tab tab-active" data-tab="notificacoes" role="tab" aria-selected="true">
-      <span class="tab-icon">📨</span>
+      <i class="tab-icon fa-solid fa-envelope" aria-hidden="true"></i>
       <span>Notificações</span>
     </button>
     <button class="tab" data-tab="automacao" role="tab" aria-selected="false">
-      <span class="tab-icon">🤖</span>
+      <i class="tab-icon fa-solid fa-robot" aria-hidden="true"></i>
       <span>Central de Automatização</span>
     </button>
   </nav>
@@ -150,15 +156,11 @@
       <!-- HERO: Kill switches (pausar/retomar cada servico) -->
       <section class="auto-card kill-switches-card">
         <div class="auto-card-header">
-          <h2>🎛️ Controle geral de automação <span class="muted-tag">data/automation_flags.json</span></h2>
+          <h2><i class="fa-solid fa-sliders" aria-hidden="true"></i> Controle geral de automação</h2>
           <p class="auto-card-sub">
-            Liga e desliga globalmente o envio automático de notificações
-            (<code>main.py</code>) e as respostas automáticas do bot
-            (<code>bot_polling.py</code>). Os serviços checam o estado a
-            cada iteração do loop — a mudança propaga em até
-            <strong>1 ciclo</strong> (60s no <code>main</code>, 5s no
-            <code>bot</code>). As ações manuais da central abaixo
-            continuam funcionando mesmo com tudo pausado.
+            Ative ou pause de forma centralizada o envio automático de notificações por WhatsApp
+            e as respostas do bot de atendimento. As alterações entram em vigor no próximo ciclo
+            de verificação dos serviços (poucos segundos).
           </p>
         </div>
 
@@ -166,10 +168,9 @@
           <!-- Kill switch: envio de notificacoes (main.py) -->
           <div class="ks-tile" id="ks-main-tile" data-state="active">
             <div class="ks-tile-head">
-              <div class="ks-icon">📨</div>
+              <div class="ks-icon"><i class="fa-solid fa-envelope" aria-hidden="true"></i></div>
               <div class="ks-tile-meta">
                 <span class="ks-title">Envio de notificações</span>
-                <span class="ks-sub">main.py · polling de 60s</span>
               </div>
             </div>
             <div class="ks-status">
@@ -177,11 +178,11 @@
               <span class="ks-status-text" id="ks-main-text">ATIVO</span>
             </div>
             <p class="ks-help" id="ks-main-help">
-              Notificações WhatsApp estão sendo enviadas normalmente
-              para alarmes críticos detectados pela API da Eletrofrio.
+              Os alarmes detectados pela Eletrofrio estão sendo notificados automaticamente
+              via WhatsApp para as unidades responsáveis.
             </p>
             <button type="button" class="btn-ks btn-ks-pause" id="btn-toggle-main" data-target="main">
-              <span class="btn-ks-icon">⏸</span>
+              <i class="btn-ks-icon fa-solid fa-pause" aria-hidden="true"></i>
               <span class="btn-ks-label">Pausar envio automático</span>
             </button>
           </div>
@@ -189,10 +190,9 @@
           <!-- Kill switch: respostas do bot (bot_polling.py) -->
           <div class="ks-tile" id="ks-bot-tile" data-state="active">
             <div class="ks-tile-head">
-              <div class="ks-icon">🤖</div>
+              <div class="ks-icon"><i class="fa-solid fa-robot" aria-hidden="true"></i></div>
               <div class="ks-tile-meta">
                 <span class="ks-title">Respostas do bot</span>
-                <span class="ks-sub">bot_polling.py · polling de 5s</span>
               </div>
             </div>
             <div class="ks-status">
@@ -200,11 +200,11 @@
               <span class="ks-status-text" id="ks-bot-text">ATIVO</span>
             </div>
             <p class="ks-help" id="ks-bot-help">
-              O bot está consultando novas mensagens e respondendo com
-              ajuda do Gemini + Supabase.
+              O bot de atendimento está ativo e responde automaticamente às mensagens
+              recebidas no WhatsApp.
             </p>
             <button type="button" class="btn-ks btn-ks-pause" id="btn-toggle-bot" data-target="bot">
-              <span class="btn-ks-icon">⏸</span>
+              <i class="btn-ks-icon fa-solid fa-pause" aria-hidden="true"></i>
               <span class="btn-ks-label">Pausar respostas automáticas</span>
             </button>
           </div>
@@ -213,37 +213,6 @@
         <pre id="ks-result" class="form-result" hidden></pre>
       </section>
 
-      <!-- Logs compartilhados -->
-      <section class="auto-card logs-card">
-        <div class="auto-card-header">
-          <h2>📜 Logs recentes</h2>
-          <p class="auto-card-sub">
-            Últimas linhas dos arquivos de log gerados pelos serviços
-            <code>main.py</code> e <code>bot_polling.py</code>.
-          </p>
-        </div>
-
-        <div class="logs-grid">
-          <div class="log-pane">
-            <div class="log-pane-header">
-              <span>alarm_service.log</span>
-              <button type="button" class="btn-ghost btn-mini" id="btn-reload-log-alarm">
-                Recarregar
-              </button>
-            </div>
-            <pre class="log-body" id="log-alarm-body">Carregando...</pre>
-          </div>
-          <div class="log-pane">
-            <div class="log-pane-header">
-              <span>pipeline.log</span>
-              <button type="button" class="btn-ghost btn-mini" id="btn-reload-log-pipeline">
-                Recarregar
-              </button>
-            </div>
-            <pre class="log-body" id="log-pipeline-body">Carregando...</pre>
-          </div>
-        </div>
-      </section>
     </section>
   </main>
 
@@ -259,6 +228,24 @@
         <button class="modal-close" id="modal-close">×</button>
       </div>
       <pre id="modal-body"></pre>
+    </div>
+  </div>
+
+  <!-- Modal de confirmacao (substitui confirm() nativo do browser) -->
+  <div class="modal modal-confirm" id="modal-confirm" hidden>
+    <div class="modal-content modal-confirm-content" role="dialog" aria-modal="true" aria-labelledby="modal-confirm-title" aria-describedby="modal-confirm-body">
+      <div class="modal-header">
+        <div class="modal-confirm-head">
+          <span class="modal-confirm-icon" id="modal-confirm-icon"><i class="fa-solid fa-circle-question"></i></span>
+          <h3 id="modal-confirm-title">Confirmação</h3>
+        </div>
+        <button class="modal-close" id="modal-confirm-close" aria-label="Fechar">×</button>
+      </div>
+      <div class="modal-confirm-body" id="modal-confirm-body"></div>
+      <div class="modal-actions">
+        <button class="btn btn-modal-cancel" id="modal-confirm-cancel" type="button">Cancelar</button>
+        <button class="btn btn-modal-confirm" id="modal-confirm-ok" type="button">Confirmar</button>
+      </div>
     </div>
   </div>
 
