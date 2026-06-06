@@ -15,7 +15,6 @@ import psycopg2
 import requests
 import urllib3
 from dotenv import load_dotenv
-from google import genai
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -95,17 +94,67 @@ STATE_FILE = os.path.join(
 # a sessão do usuário é descartada para evitar "conversas-fantasma".
 SESSION_TIMEOUT_SECONDS = int(os.getenv("BOT_SESSION_TIMEOUT", str(30 * 60)))
 
-# Palavras-chave que disparam o fluxo guiado de "alarme" a partir do estado idle.
-ALARM_TRIGGER_KEYWORDS = [
-    "alarm", "alarme", "alarmes", "alerta", "alertas",
-    "problema", "problemas", "ocorrencia", "ocorrência",
-    "ajuda", "help", "consultar alarme", "buscar alarme",
-    "ver alarme", "ver alarmes", "abrir alarme", "abrir chamado",
-]
-
 # Comandos aceitos em qualquer estado da conversa.
 RESET_COMMANDS = {"menu", "inicio", "início", "start", "cancelar", "sair", "reset", "0", "parar", "encerrar"}
 BACK_COMMANDS = {"voltar", "back", "<", "anterior"}
+
+# Classificador determinístico de intenção. Cada chave é uma intenção;
+# os valores são tokens/fragmentos que aparecem na mensagem do usuário.
+# A checagem é case-insensitive e tolerante a acentos (compara lower sem
+# acento, ver helper).
+INTENT_KEYWORDS = {
+    "saudacao": [
+        "oi", "ola", "olá", "oie", "ei", "eai", "e aí",
+        "bom dia", "boa tarde", "boa noite", "hi", "hello", "hey",
+    ],
+    "encerramento": [
+        "tchau", "bye", "vlw", "valeu", "obrigado", "obrigada", "thanks",
+        "ate mais", "até mais", "ate logo", "até logo", "fui",
+    ],
+    "conversa": [
+        "tudo bem", "tudo certo", "tudo ok", "beleza", "suave",
+        "como vai", "como vc vai", "como você vai", "como vc esta",
+        "como você está", "e ai", "eai",
+    ],
+    "consulta_loja": [
+        "loja", "lojas", "unidade", "unidades", "estabelecimento",
+        "estabelecimentos", "filial", "filiais",
+    ],
+    "consulta_alerta": [
+        "alarme", "alarmes", "alerta", "alertas",
+        "ocorrencia", "ocorrência", "ocorrencias", "ocorrências",
+        "incidente", "incidentes", "problema", "problemas",
+        "chamado", "chamados", "abrir alarme", "abrir chamado",
+        "ver alarme", "ver alarmes", "buscar alarme", "consultar alarme",
+    ],
+    "consulta_equipamento": [
+        "temperatura", "telemetria", "evaporador", "evaporadores",
+        "camara", "câmara", "camaras", "câmaras",
+        "compressor", "compressores", "sensor", "sensores",
+        "equipamento", "equipamentos", "dispositivo", "dispositivos",
+        "graus",
+    ],
+    "status": [
+        "status", "status geral", "visao geral", "visão geral",
+        "sistema", "como esta o sistema", "como está o sistema",
+        "tudo funcionando", "tem algo errado", "tem problema",
+        "resumo", "panorama",
+    ],
+}
+
+# Intenções que disparam consulta a dados. Social/goodbye não consultam.
+OPERATIONAL_INTENTS = {
+    "consulta_loja", "consulta_alerta",
+    "consulta_equipamento", "status",
+}
+
+# Sugestões de pergunta única (uma por vez) quando falta contexto.
+ASK_PROMPTS = {
+    "loja": "Qual loja você quer consultar? (pode mandar o ID ou o nome)",
+    "alarme": "Qual o ID do alarme? (ou uma palavra-chave da descrição)",
+    "equipamento": "Qual equipamento? (pode mandar o nome ou ID)",
+    "escopo_status": "Quer o resumo de qual loja, ou o geral da rede?",
+}
 
 
 def _empty_state():
@@ -499,7 +548,7 @@ def analyze_alarm_for_user(alarm):
 
     if analise_ia:
         lines.append("")
-        lines.append("🤖 *Análise da IA (Gemini):*")
+        lines.append("🤖 *Análise da Eletra (Assistente Virtual da Eletrofrio):*")
         lines.append(analise_ia)
 
     lines.append("")
@@ -514,27 +563,45 @@ def analyze_alarm_for_user(alarm):
 # ─────────────────────────────────────────────────────────────
 # Máquina de Estados da conversa por usuário
 # ─────────────────────────────────────────────────────────────
-# Estados possíveis:
-#   idle              → nenhuma sessão ativa (cai no Gemini geral)
-#   awaiting_loja     → aguardando o usuário informar a loja
-#   confirming_loja   → usuário precisa escolher entre 2+ lojas candidatas
-#   awaiting_alarm    → loja definida; aguardando o usuário informar o alarme
-#   confirming_alarm  → usuário precisa escolher entre 2+ alarmes candidatos
+# Estados:
+#   idle         → nova mensagem, sem pendência; roda o pipeline completo
+#                  (entender → extrair slots → validar contexto → buscar → responder)
+#   pending      → última resposta deixou uma pergunta em aberto
+#                  (loja, alarme, equipamento ou desempate de candidatos);
+#                  a próxima mensagem é tratada como resposta dessa pendência.
+#
+# Slots lembrados entre turnos (memória conversacional curta):
+#   ultima_intencao, ultima_loja, ultimo_equipamento, ultimo_alarme_id.
+# Expiram junto com a sessão (SESSION_TIMEOUT_SECONDS).
 
 STEP_IDLE = "idle"
-STEP_AWAITING_LOJA = "awaiting_loja"
-STEP_CONFIRMING_LOJA = "confirming_loja"
-STEP_AWAITING_ALARM = "awaiting_alarm"
-STEP_CONFIRMING_ALARM = "confirming_alarm"
+STEP_PENDING = "pending"
+
+# Tipos de pendência que podem estar abertos.
+PENDING_NONE = None
+PENDING_LOJA = "loja"
+PENDING_ALARME = "alarme"
+PENDING_EQUIPAMENTO = "equipamento"
+PENDING_DISAMB_LOJA = "disamb_loja"
+PENDING_DISAMB_ALARME = "disamb_alarme"
+PENDING_ESCOPO_STATUS = "escopo_status"
 
 
-def _new_session(step=STEP_IDLE):
+def _new_session():
     return {
-        "step": step,
-        "loja": None,
+        "step": STEP_IDLE,
+        "pending": PENDING_NONE,
+        "intencao": None,
+        # Memória de curto prazo (carry-over entre turnos)
+        "ultima_intencao": None,
+        "ultima_loja": None,         # dict unidade completo
+        "ultimo_equipamento": None,  # dict {dispositivoId, dispositivoNm}
+        "ultimo_alarme_id": None,    # int
+        # Estado de desempate
         "loja_candidates": None,
-        "alarm": None,
         "alarm_candidates": None,
+        # Auditoria
+        "last_message_ts": None,
         "last_updated": int(time.time()),
     }
 
@@ -544,357 +611,657 @@ def _touch(session):
     return session
 
 
-def _wants_alarm_flow(text):
-    t = (text or "").lower()
-    return any(k in t for k in ALARM_TRIGGER_KEYWORDS)
+def _strip_accents(s):
+    import unicodedata
+    return "".join(
+        c for c in unicodedata.normalize("NFD", s)
+        if unicodedata.category(c) != "Mn"
+    )
+
+
+def _normalize(text):
+    return _strip_accents((text or "").strip().lower())
+
+
+def _classify_intent(text):
+    """Classifica a intenção da mensagem por keywords (determinístico).
+
+    Retorna sempre a intenção mais específica. Se houver empate entre
+    intents, prioriza a ordem: operacional > conversa > encerramento >
+    saudação (a última só vale sozinha).
+    """
+    norm = _normalize(text)
+    if not norm:
+        return "saudacao"
+
+    hits = []
+    for intent, keywords in INTENT_KEYWORDS.items():
+        for kw in keywords:
+            kw_norm = _normalize(kw)
+            if not kw_norm:
+                continue
+            if kw_norm in norm:
+                hits.append((intent, kw_norm))
+                break
+
+    if not hits:
+        return "conversa"
+
+    intents_found = [h[0] for h in hits]
+    for intent in (
+        "consulta_equipamento", "consulta_alerta", "consulta_loja",
+        "status", "encerramento", "conversa", "saudacao",
+    ):
+        if intent in intents_found:
+            return intent
+    return intents_found[0]
+
+
+def _is_pure_greeting(text):
+    """Saudação 'pura': mensagem curta sem nenhuma palavra técnica."""
+    norm = _normalize(text)
+    if not norm:
+        return False
+    technical = {"alarme", "alerta", "loja", "temperatura", "telemetria",
+                 "evaporador", "camara", "câmara", "sensor", "status"}
+    if any(t in norm for t in technical):
+        return False
+    intent = _classify_intent(text)
+    return intent in ("saudacao", "conversa", "encerramento")
 
 
 def _is_reset(text):
-    return (text or "").strip().lower() in RESET_COMMANDS
+    return _normalize(text) in {_normalize(c) for c in RESET_COMMANDS}
 
 
 def _is_back(text):
-    return (text or "").strip().lower() in BACK_COMMANDS
+    return _normalize(text) in {_normalize(c) for c in BACK_COMMANDS}
 
 
 def _menu_text():
     return (
         "👋 *Assistente Eletrofrio*\n\n"
-        "Posso te ajudar com informações sobre *lojas* e *alarmes*.\n"
-        "Me conte o que você precisa. Algumas opções:\n\n"
-        "• Digite *alarme* para iniciar a consulta guiada "
-        "(pergunto a *loja* e depois o *ID do alarme*).\n"
-        "• Faça uma pergunta livre sobre telemetria, temperatura ou status.\n"
-        "• A qualquer momento diga *menu*, *cancelar* ou *voltar*."
+        "Posso te ajudar com *lojas*, *alarmes* e *temperatura de equipamentos*.\n"
+        "Me conte o que você precisa. Exemplos:\n\n"
+        "• *alarmes críticos* — resumo dos alarmes ativos\n"
+        "• *alarme na loja Sumare* — busca por loja\n"
+        "• *temperatura da câmara 1* — telemetria de um dispositivo\n"
+        "A qualquer momento diga *menu* para reiniciar ou *sair* para encerrar."
     )
 
 
-def _handle_idle(text, user_sessions, phone):
-    """No estado idle: detecta gatilho de alarme ou responde com o Gemini geral."""
-    if _wants_alarm_flow(text):
-        user_sessions[phone] = _touch(_new_session(step=STEP_AWAITING_LOJA))
+def _social_reply(intent, text):
+    """Resposta curta para mensagens sociais. NÃO consulta banco."""
+    greetings = ["Olá! 👋", "Oi! 👋", "Opa! 👋"]
+    norm = _normalize(text)
+
+    if intent == "encerramento":
+        return "Tchau! Quando precisar, é só me chamar. 👋"
+
+    if intent == "saudacao":
         return (
-            "🔎 *Consulta de Alarme*\n"
-            "Para começar, me informe a *loja* em que você quer consultar o alarme.\n"
-            "Você pode me passar o *ID da loja* (ex: `58`) ou o *nome* (ex: `Sumare`).\n\n"
-            "_Diga *menu* a qualquer momento para encerrar._"
-        )
-    return None  # sinaliza para cair no Gemini geral
-
-
-def _handle_awaiting_loja(text, session, user_sessions, phone):
-    if _is_reset(text):
-        user_sessions.pop(phone, None)
-        return _menu_text()
-    if _is_back(text):
-        user_sessions.pop(phone, None)
-        return _menu_text()
-
-    results = search_unidades(text)
-    if not results:
-        return (
-            "❌ Não encontrei nenhuma loja com esse termo.\n"
-            "Pode tentar de novo passando o *ID* ou o *nome* da loja?\n"
-            "_Diga *menu* para encerrar._"
+            f"{greetings[hash(norm) % len(greetings)]} Sou a Eletra, a assistente virtual da Eletrofrio. "
+            "Posso te ajudar com *lojas*, *alarmes* ou *temperatura de equipamentos*.\n"
+            "Sobre o que você quer saber?"
         )
 
-    if len(results) == 1:
-        loja = results[0]
-        session["loja"] = loja
-        session["loja_candidates"] = None
-        session["step"] = STEP_AWAITING_ALARM
-        user_sessions[phone] = _touch(session)
-        return (
-            f"✅ Loja confirmada: *{loja.get('lojaNm')}* "
-            f"(ID {loja.get('lojaId')}, {loja.get('contaNm') or 'sem conta'}).\n\n"
-            "Agora me diga o *ID do alarme* que você quer consultar "
-            "(ou palavras-chave da descrição, ex: `alta temperatura`).\n"
-            "_Diga *voltar* para trocar de loja ou *menu* para encerrar._"
-        )
-
-    # múltiplos resultados
-    session["loja_candidates"] = results
-    session["step"] = STEP_CONFIRMING_LOJA
-    user_sessions[phone] = _touch(session)
-    lines = [
-        "🔎 Encontrei *várias lojas* com esse termo. Qual delas você quer?",
-        "",
-    ]
-    for i, u in enumerate(results, 1):
-        lines.append(f"{i}. {format_loja_line(u)}")
-    lines.append("")
-    lines.append(
-        "Responda com o *número* (ex: `1`), o *ID da loja* ou o *nome exato*.\n"
-        "_Diga *menu* para encerrar._"
+    # conversa geral
+    return (
+        "Tudo certo por aqui! 🙂\n"
+        "Se quiser, me conta o que você precisa (loja, alarme, temperatura…)."
     )
-    return "\n".join(lines)
 
 
-def _handle_confirming_loja(text, session, user_sessions, phone):
-    if _is_reset(text):
-        user_sessions.pop(phone, None)
-        return _menu_text()
-    if _is_back(text):
-        session["step"] = STEP_AWAITING_LOJA
-        session["loja_candidates"] = None
-        user_sessions[phone] = _touch(session)
-        return (
-            "↩️ Ok, vamos tentar de novo.\n"
-            "Me informe a *loja* (ID ou nome). _Diga *menu* para encerrar._"
-        )
+def _extract_slots(text, session):
+    """Extrai entidades simples do texto e atualiza a memória de curto prazo.
 
+    Hoje é uma heurística leve: números grandes viram alarmeId, e nomes
+    de loja/dispositivo são delegados para as funções de busca. Carry-over
+    é resolvido pelo orquestrador (que reaproveita ultima_loja quando a
+    mensagem é curta e não cita uma nova entidade).
+    """
+    session.setdefault("ultima_loja", None)
+    session.setdefault("ultimo_equipamento", None)
+    session.setdefault("ultimo_alarme_id", None)
+
+
+def _format_loja_brief(u):
+    return f"*{u.get('lojaNm')}* (ID {u.get('lojaId')})"
+
+
+def _ask_for(slot_key, session):
+    """Monta a pergunta de continuidade (UMA por vez) e marca a sessão como pending."""
+    pergunta = ASK_PROMPTS.get(slot_key, "Pode me dar mais detalhes?")
+    session["step"] = STEP_PENDING
+    session["pending"] = slot_key
+    return f"🔎 {pergunta}\n_Diga *menu* para encerrar._"
+
+
+def _disambig_loja(text, session, user_sessions, phone):
     candidates = session.get("loja_candidates") or []
-    chosen = None
     raw = (text or "").strip()
     if raw.isdigit():
         idx = int(raw) - 1
         if 0 <= idx < len(candidates):
-            chosen = candidates[idx]
-    if not chosen and raw.isdigit():
-        # pode ser que o usuário tenha digitado o lojaId direto
+            return candidates[idx]
         for u in candidates:
             if str(u.get("lojaId")) == raw:
-                chosen = u
-                break
-    if not chosen:
-        for u in candidates:
-            if u.get("lojaNm") and u["lojaNm"].lower() == raw.lower():
-                chosen = u
-                break
-    if not chosen:
+                return u
+    for u in candidates:
+        if u.get("lojaNm") and _normalize(u["lojaNm"]) == _normalize(raw):
+            return u
+    return None
+
+
+def _disambig_alarme(text, candidates):
+    raw = (text or "").strip()
+    if raw.isdigit():
+        idx = int(raw) - 1
+        if 0 <= idx < len(candidates):
+            return candidates[idx]
+        for a in candidates:
+            if str(a.get("alarmeId")) == raw:
+                return a
+    return None
+
+
+def _resolve_loja_from_text(text, session):
+    """Tenta resolver uma loja nova a partir do texto. Retorna (loja, candidatos, multi)."""
+    results = search_unidades(text)
+    if not results:
+        return None, [], False
+    if len(results) == 1:
+        return results[0], [], False
+    return None, results, True
+
+
+def _resolve_alarme_from_text(text, session):
+    """Tenta resolver um alarme novo a partir do texto, exigindo loja."""
+    loja = session.get("ultima_loja")
+    if not loja:
+        return None, None
+    results = search_alarmes(text, loja.get("lojaId"))
+    if not results:
+        return None, loja
+    if len(results) == 1:
+        return results[0], loja
+    return None, loja  # múltiplos: handled pelo caller
+
+
+# ─────────────────────────────────────────────────────────────
+# Pipeline principal: IDLE → UNDERSTAND → ASK_CONTEXT → SEARCH → ANSWER
+# ─────────────────────────────────────────────────────────────
+
+def _process_new_message(text, session, user_sessions, phone):
+    """Roda o pipeline para uma mensagem sem pendência aberta."""
+    intent = _classify_intent(text)
+    session["intencao"] = intent
+    session["ultima_intencao"] = intent
+    session["last_message_ts"] = int(time.time())
+    _extract_slots(text, session)
+
+    # 1) Encerramento: fecha a sessão sem consultar nada.
+    if intent == "encerramento":
+        user_sessions.pop(phone, None)
+        return _social_reply("encerramento", text)
+
+    # 2) Saudação / conversa geral: resposta curta, sem DB.
+    if intent in ("saudacao", "conversa"):
+        session["step"] = STEP_IDLE
+        session["pending"] = PENDING_NONE
+        user_sessions[phone] = _touch(session)
+        return _social_reply(intent, text)
+
+    # 3) Intenção operacional: validar contexto, talvez buscar, talvez perguntar.
+    if intent == "consulta_loja":
+        return _handle_consulta_loja(text, session, user_sessions, phone)
+
+    if intent == "consulta_alerta":
+        return _handle_consulta_alerta(text, session, user_sessions, phone)
+
+    if intent == "consulta_equipamento":
+        return _handle_consulta_equipamento(text, session, user_sessions, phone)
+
+    if intent == "status":
+        return _handle_status(text, session, user_sessions, phone)
+
+    # Fallback: trata como conversa.
+    user_sessions[phone] = _touch(session)
+    return _social_reply("conversa", text)
+
+
+def _handle_consulta_loja(text, session, user_sessions, phone):
+    """Consulta de loja. Tenta resolver uma loja pelo texto; se múltiplas, desempata."""
+    # Texto parece só um cumprimento? (ex: "alarme?" sem loja) — pede contexto.
+    if not text or len(_normalize(text).split()) < 1:
+        user_sessions[phone] = _touch(session)
+        return _ask_for("loja", session)
+
+    loja, candidates, multi = _resolve_loja_from_text(text, session)
+
+    if loja:
+        session["ultima_loja"] = loja
+        session["loja_candidates"] = None
+        session["step"] = STEP_IDLE
+        session["pending"] = PENDING_NONE
+        user_sessions[phone] = _touch(session)
         return (
-            "❓ Não consegui identificar a loja nessa resposta.\n"
-            "Responda com o *número* da lista, o *ID* ou o *nome exato*.\n"
-            "_Diga *menu* para encerrar._"
+            f"✅ Loja: {_format_loja_brief(loja)} "
+            f"({loja.get('contaNm') or 'sem conta'}).\n"
+            "Quer consultar *alarmes* ou *temperatura* dessa loja?"
         )
 
-    session["loja"] = chosen
-    session["loja_candidates"] = None
-    session["step"] = STEP_AWAITING_ALARM
+    if multi:
+        session["loja_candidates"] = candidates
+        user_sessions[phone] = _touch(session)
+        return _ask_for("loja", session)  # sessão fica pending=loja, mas
+        # também guardamos os candidatos; o resolver trata isso.
+
     user_sessions[phone] = _touch(session)
     return (
-        f"✅ Loja confirmada: *{chosen.get('lojaNm')}* (ID {chosen.get('lojaId')}).\n\n"
-        "Agora me diga o *ID do alarme* (ou palavras-chave da descrição).\n"
-        "_Diga *voltar* para trocar de loja ou *menu* para encerrar._"
+        "❌ Não encontrei nenhuma loja com esse termo.\n"
+        "Pode tentar de novo com o *ID* ou o *nome*?\n"
+        "_Diga *menu* para encerrar._"
     )
 
 
-def _handle_awaiting_alarm(text, session, user_sessions, phone):
-    if _is_reset(text):
-        user_sessions.pop(phone, None)
-        return _menu_text()
-    if _is_back(text):
-        session["step"] = STEP_AWAITING_LOJA
-        session["loja"] = None
+def _handle_consulta_alerta(text, session, user_sessions, phone):
+    """Consulta de alarme. Se não houver loja/alarme, pergunta UM dado por vez."""
+    text_norm = _normalize(text)
+    digits = "".join(ch for ch in text if ch.isdigit())
+
+    # Tem loja? Se não, tenta resolver; se ambígua, pede desempate.
+    if not session.get("ultima_loja"):
+        if digits:
+            # Se veio só número, pode ser lojaId
+            loja, candidates, multi = _resolve_loja_from_text(digits, session)
+            if multi:
+                session["loja_candidates"] = candidates
+                user_sessions[phone] = _touch(session)
+                return _ask_for("loja", session)
+            if loja:
+                session["ultima_loja"] = loja
+        else:
+            loja, candidates, multi = _resolve_loja_from_text(text, session)
+            if multi:
+                session["loja_candidates"] = candidates
+                user_sessions[phone] = _touch(session)
+                return _ask_for("loja", session)
+            if loja:
+                session["ultima_loja"] = loja
+
+    # Sem loja e sem candidato a resolver: pergunta a loja.
+    if not session.get("ultima_loja"):
+        user_sessions[phone] = _touch(session)
+        return _ask_for("loja", session)
+
+    # Tem loja: buscar alarme.
+    query = digits or text
+    results = search_alarmes(query, session["ultima_loja"].get("lojaId"))
+    if not results:
         user_sessions[phone] = _touch(session)
         return (
-            "↩️ Ok, voltamos para a escolha da *loja*.\n"
-            "Me informe o *ID* ou *nome* da loja. _Diga *menu* para encerrar._"
-        )
-
-    loja = session.get("loja") or {}
-    results = search_alarmes(text, loja.get("lojaId"))
-    if not results:
-        return (
-            f"❌ Não encontrei nenhum alarme em *{loja.get('lojaNm') or loja.get('lojaId')}* "
-            "com esse termo.\n"
-            "Tente de novo com outro *ID* ou palavras-chave da descrição.\n"
-            "_Diga *voltar* para trocar de loja ou *menu* para encerrar._"
+            f"❌ Não encontrei alarme em *{session['ultima_loja'].get('lojaNm')}* "
+            "com esse termo. Tente outro *ID* ou palavra-chave."
         )
 
     if len(results) == 1:
         alarm = results[0]
-        session["alarm"] = alarm
+        session["ultimo_alarme_id"] = alarm.get("alarmeId")
+        session["step"] = STEP_IDLE
+        session["pending"] = PENDING_NONE
         session["alarm_candidates"] = None
-        user_sessions.pop(phone, None)  # sessão concluída
+        user_sessions[phone] = _touch(session)
         return analyze_alarm_for_user(alarm)
 
-    # múltiplos resultados
     session["alarm_candidates"] = results
-    session["step"] = STEP_CONFIRMING_ALARM
     user_sessions[phone] = _touch(session)
+    session["step"] = STEP_PENDING
+    session["pending"] = PENDING_ALARME
+    return _ask_disamb_alarme(results, session["ultima_loja"])
+
+
+def _ask_disamb_alarme(candidates, loja):
     lines = [
-        f"🔎 Encontrei *vários alarmes* em *{loja.get('lojaNm') or loja.get('lojaId')}*. "
-        "Qual deles você quer?",
+        f"🔎 Encontrei *vários alarmes* em *{loja.get('lojaNm')}*. Qual?",
         "",
     ]
-    for i, a in enumerate(results, 1):
+    for i, a in enumerate(candidates[:5], 1):
         lines.append(f"{i}. {format_alarme_line(a)}")
         lines.append("")
-    lines.append(
-        "Responda com o *número* (ex: `1`) ou o *ID do alarme*.\n"
-        "_Diga *voltar* para trocar a busca ou *menu* para encerrar._"
-    )
+    lines.append("Responda com o *número* ou o *ID do alarme*.")
     return "\n".join(lines)
 
 
-def _handle_confirming_alarm(text, session, user_sessions, phone):
+def _handle_consulta_equipamento(text, session, user_sessions, phone):
+    """Consulta de equipamento (temperatura/telemetria). Requer loja ou dispositivo."""
+    dispositivo_id, dispositivo_nm = resolve_telemetry_for_query(text, supabase)
+    if not dispositivo_id:
+        # Sem dispositivo explícito: precisa de loja + dispositivo, OU
+        # tenta usar a última loja + pedir o dispositivo.
+        if not session.get("ultima_loja"):
+            user_sessions[phone] = _touch(session)
+            return _ask_for("loja", session)
+        user_sessions[phone] = _touch(session)
+        return _ask_for("equipamento", session)
+
+    session["ultimo_equipamento"] = {
+        "dispositivoId": dispositivo_id,
+        "dispositivoNm": dispositivo_nm,
+    }
+    loja = session.get("ultima_loja")
+    # Se o dispositivo foi resolvido por nome, tentamos descobrir a loja dele
+    # usando a telemetria do Gemini (mantido aqui de propósito).
+    reply = _build_telemetry_reply(text, dispositivo_id, dispositivo_nm, loja)
+    session["step"] = STEP_IDLE
+    session["pending"] = PENDING_NONE
+    user_sessions[phone] = _touch(session)
+    return reply
+
+
+def _build_telemetry_reply(text, dispositivo_id, dispositivo_nm, loja):
+    raw = telemetry_service.fetch_telemetry(dispositivo_id) if dispositivo_id else {"status": "missing"}
+    normalized = telemetry_service.normalize_telemetry(raw)
+    header = f"📡 *{dispositivo_nm}* (ID {dispositivo_id})"
+    if loja:
+        header += f" — {_format_loja_brief(loja)}"
+    if normalized.get("status") != "ok":
+        return (
+            f"{header}\n"
+            f"Telemetria indisponível no momento ({normalized.get('error') or 'sem dados'})."
+        )
+    metrics = normalized.get("metrics") or {}
+    lines = [header, ""]
+    for label, data in list(metrics.items())[:4]:
+        avg = data.get("avg")
+        avg_str = f"{round(avg, 2)}" if isinstance(avg, (int, float)) else "N/A"
+        lines.append(
+            f"• {label}: atual *{data.get('latest')}* | "
+            f"máx {data.get('max')} | mín {data.get('min')} | média {avg_str}"
+        )
+    lines.append("")
+    lines.append("Posso detalhar algum sensor específico?")
+    return "\n".join(lines)
+
+
+def _handle_status(text, session, user_sessions, phone):
+    """Status geral: pede escopo se não houver, senão busca."""
+    if not session.get("ultima_loja") and not _has_explicit_scope(text):
+        user_sessions[phone] = _touch(session)
+        session["step"] = STEP_PENDING
+        session["pending"] = PENDING_ESCOPO_STATUS
+        return (
+            "🔎 Quer o *resumo geral da rede* ou o status de uma *loja específica*?\n"
+            "_Diga *geral* ou o nome/ID da loja._"
+        )
+
+    if session.get("ultima_loja"):
+        loja = session["ultima_loja"]
+        return _summary_for_loja(text, loja, session, user_sessions, phone)
+
+    return _summary_general(text, session, user_sessions, phone)
+
+
+def _has_explicit_scope(text):
+    norm = _normalize(text)
+    return "geral" in norm or "rede" in norm or "tudo" in norm
+
+
+def _summary_for_loja(text, loja, session, user_sessions, phone):
+    try:
+        resp = (
+            supabase.table("alarmes")
+            .select("alarmeId, alarmeDesc, criticidade, status, alarmeDhCad")
+            .eq("lojaId", loja.get("lojaId"))
+            .order("alarmeDhCad", desc=True)
+            .limit(20)
+            .execute()
+        )
+        data = resp.data or []
+    except Exception as e:
+        logger.error(f"⚠️ Erro ao buscar alarmes para status da loja: {e}")
+        data = []
+    criticos = [a for a in data if (a.get("criticidade") or "").upper() in ("A", "ALTO", "ALTA", "CRÍTICO", "CRITICO")]
+    if not data:
+        body = "Nenhum alarme ativo no momento."
+    elif not criticos:
+        body = f"Tudo certo por aqui — {len(data)} alarme(s) registrado(s), sem críticos."
+    else:
+        top = criticos[:3]
+        body = f"Encontrei *{len(criticos)} alarme(s) crítico(s)* em {_format_loja_brief(loja)}.\n\n"
+        for a in top:
+            body += f"• ID {a.get('alarmeId')} — {a.get('alarmeDesc') or 'sem descrição'}\n"
+        body += "\nPosso detalhar algum?"
+
+    session["step"] = STEP_IDLE
+    session["pending"] = PENDING_NONE
+    user_sessions[phone] = _touch(session)
+    return f"📊 *Status — {_format_loja_brief(loja)}*\n{body}"
+
+
+def _summary_general(text, session, user_sessions, phone):
+    try:
+        resp = (
+            supabase.table("alarmes")
+            .select("alarmeId, alarmeDesc, criticidade, status, lojaNm, alarmeDhCad")
+            .order("alarmeDhCad", desc=True)
+            .limit(50)
+            .execute()
+        )
+        data = resp.data or []
+    except Exception as e:
+        logger.error(f"⚠️ Erro ao buscar alarmes para status geral: {e}")
+        data = []
+    criticos = [a for a in data if (a.get("criticidade") or "").upper() in ("A", "ALTO", "ALTA", "CRÍTICO", "CRITICO")]
+    lojas_afetadas = sorted({(a.get("lojaNm") or "?") for a in criticos})[:5]
+    if not data:
+        body = "Nenhum alarme ativo no momento."
+    elif not criticos:
+        body = "Tudo certo na rede — sem alarmes críticos agora."
+    else:
+        body = (
+            f"Encontrei *{len(criticos)} alarme(s) crítico(s)* em "
+            f"*{len(lojas_afetadas)} loja(s)*.\n\n"
+        )
+        for loja in lojas_afetadas:
+            body += f"• {loja}\n"
+        body += "\nPosso detalhar algum?"
+
+    session["step"] = STEP_IDLE
+    session["pending"] = PENDING_NONE
+    user_sessions[phone] = _touch(session)
+    return f"📊 *Status geral da rede*\n{body}"
+
+
+# ─────────────────────────────────────────────────────────────
+# Resolução de pendências (resposta à pergunta feita no turno anterior)
+# ─────────────────────────────────────────────────────────────
+
+def _resolve_pending(text, session, user_sessions, phone):
+    pending = session.get("pending")
+
     if _is_reset(text):
         user_sessions.pop(phone, None)
         return _menu_text()
     if _is_back(text):
-        session["step"] = STEP_AWAITING_ALARM
-        session["alarm_candidates"] = None
+        session["step"] = STEP_IDLE
+        session["pending"] = PENDING_NONE
+        user_sessions[phone] = _touch(session)
+        return "↩️ Ok, voltamos ao início. Me conte o que você precisa."
+
+    if pending == PENDING_LOJA:
+        # Se temos candidatos guardados, tenta desambiguar; senão busca.
+        if session.get("loja_candidates"):
+            chosen = _disambig_loja(text, session, user_sessions, phone)
+            if chosen:
+                session["ultima_loja"] = chosen
+                session["loja_candidates"] = None
+                # Se a intenção original era consulta de alarme, segue
+                # direto para a próxima pergunta; senão responde e fecha.
+                if session.get("ultima_intencao") == "consulta_alerta":
+                    session["step"] = STEP_PENDING
+                    session["pending"] = PENDING_ALARME
+                    user_sessions[phone] = _touch(session)
+                    return (
+                        f"✅ Loja: {_format_loja_brief(chosen)}.\n"
+                        "Agora me diga o *ID do alarme* (ou palavra-chave)."
+                    )
+                session["step"] = STEP_IDLE
+                session["pending"] = PENDING_NONE
+                user_sessions[phone] = _touch(session)
+                return (
+                    f"✅ Loja: {_format_loja_brief(chosen)}.\n"
+                    "Quer consultar *alarmes* ou *temperatura* dessa loja?"
+                )
+            user_sessions[phone] = _touch(session)
+            return (
+                "❓ Não consegui identificar a loja. Responda com o *número* da lista, "
+                "o *ID* ou o *nome exato*."
+            )
+
+        # Sem candidatos: tenta resolver novo termo como loja.
+        loja, candidates, multi = _resolve_loja_from_text(text, session)
+        if multi:
+            session["loja_candidates"] = candidates
+            user_sessions[phone] = _touch(session)
+            return _ask_for("loja", session)
+        if loja:
+            session["ultima_loja"] = loja
+            session["loja_candidates"] = None
+            if session.get("ultima_intencao") == "consulta_alerta":
+                session["step"] = STEP_PENDING
+                session["pending"] = PENDING_ALARME
+                user_sessions[phone] = _touch(session)
+                return (
+                    f"✅ Loja: {_format_loja_brief(loja)}.\n"
+                    "Agora me diga o *ID do alarme* (ou palavra-chave)."
+                )
+            session["step"] = STEP_IDLE
+            session["pending"] = PENDING_NONE
+            user_sessions[phone] = _touch(session)
+            return (
+                f"✅ Loja: {_format_loja_brief(loja)}.\n"
+                "Quer consultar *alarmes* ou *temperatura* dessa loja?"
+            )
+
         user_sessions[phone] = _touch(session)
         return (
-            "↩️ Ok, vamos tentar de novo.\n"
-            "Me diga o *ID do alarme* (ou palavras-chave da descrição) "
-            "para *{loja}*.".format(loja=(session.get("loja") or {}).get("lojaNm") or "a loja")
+            "❌ Não encontrei nenhuma loja com esse termo. "
+            "Pode tentar com o *ID* ou *nome*?"
         )
 
-    candidates = session.get("alarm_candidates") or []
-    chosen = None
-    raw = (text or "").strip()
-    if raw.isdigit():
-        idx = int(raw) - 1
-        if 0 <= idx < len(candidates):
-            chosen = candidates[idx]
-    if not chosen and raw.isdigit():
-        for a in candidates:
-            if str(a.get("alarmeId")) == raw:
-                chosen = a
-                break
-    if not chosen:
+    if pending == PENDING_ALARME:
+        candidates = session.get("alarm_candidates") or []
+        chosen = _disambig_alarme(text, candidates) if candidates else None
+        if chosen:
+            session["ultimo_alarme_id"] = chosen.get("alarmeId")
+            session["step"] = STEP_IDLE
+            session["pending"] = PENDING_NONE
+            session["alarm_candidates"] = None
+            user_sessions[phone] = _touch(session)
+            return analyze_alarm_for_user(chosen)
+        # Sem candidatos: tenta busca direta usando a loja atual.
+        loja = session.get("ultima_loja") or {}
+        if loja.get("lojaId") is None:
+            user_sessions[phone] = _touch(session)
+            session["step"] = STEP_PENDING
+            session["pending"] = PENDING_LOJA
+            return _ask_for("loja", session)
+        results = search_alarmes(text, loja["lojaId"])
+        if not results:
+            user_sessions[phone] = _touch(session)
+            return (
+                f"❌ Não encontrei alarme em *{loja.get('lojaNm')}* com esse termo. "
+                "Tente outro *ID* ou palavra-chave."
+            )
+        if len(results) == 1:
+            session["ultimo_alarme_id"] = results[0].get("alarmeId")
+            session["step"] = STEP_IDLE
+            session["pending"] = PENDING_NONE
+            user_sessions[phone] = _touch(session)
+            return analyze_alarm_for_user(results[0])
+        session["alarm_candidates"] = results
+        user_sessions[phone] = _touch(session)
+        return _ask_disamb_alarme(results, loja)
+
+    if pending == PENDING_EQUIPAMENTO:
+        # Tenta resolver o texto como nome/id de dispositivo.
+        dispositivo_id, dispositivo_nm = resolve_telemetry_for_query(text, supabase)
+        if not dispositivo_id:
+            user_sessions[phone] = _touch(session)
+            return (
+                "❌ Não identifiquei esse equipamento. "
+                "Pode tentar com o *nome exato* ou *ID*?"
+            )
+        session["ultimo_equipamento"] = {
+            "dispositivoId": dispositivo_id,
+            "dispositivoNm": dispositivo_nm,
+        }
+        session["step"] = STEP_IDLE
+        session["pending"] = PENDING_NONE
+        user_sessions[phone] = _touch(session)
+        return _build_telemetry_reply(text, dispositivo_id, dispositivo_nm, session.get("ultima_loja"))
+
+    if pending == PENDING_ESCOPO_STATUS:
+        norm = _normalize(text)
+        if "geral" in norm or "rede" in norm or "tudo" in norm:
+            session["loja_candidates"] = None
+            return _summary_general(text, session, user_sessions, phone)
+        # Caso contrário, trata o texto como nome/id de loja.
+        loja, candidates, multi = _resolve_loja_from_text(text, session)
+        if multi:
+            session["loja_candidates"] = candidates
+            user_sessions[phone] = _touch(session)
+            session["pending"] = PENDING_LOJA
+            return _ask_for("loja", session)
+        if loja:
+            session["ultima_loja"] = loja
+            session["loja_candidates"] = None
+            return _summary_for_loja(text, loja, session, user_sessions, phone)
+        user_sessions[phone] = _touch(session)
         return (
-            "❓ Não consegui identificar o alarme.\n"
-            "Responda com o *número* da lista ou o *ID do alarme*.\n"
-            "_Diga *menu* para encerrar._"
+            "❌ Não reconheci esse escopo. Responda *geral* ou o nome/ID da loja."
         )
 
-    session["alarm"] = chosen
-    session["alarm_candidates"] = None
-    user_sessions.pop(phone, None)  # sessão concluída
-    return analyze_alarm_for_user(chosen)
+    # Pendência desconhecida: reinicia
+    session["step"] = STEP_IDLE
+    session["pending"] = PENDING_NONE
+    user_sessions[phone] = _touch(session)
+    return _menu_text()
 
 
 def run_state_machine(text, reply_jid, user_sessions):
-    """
-    Processa a mensagem de acordo com o estado atual da sessão do usuário.
-    Retorna a resposta a ser enviada.
-    Se a sessão está em 'idle' e a mensagem não dispara o fluxo de alarme,
-    retorna None — nesse caso, o caller deve usar o Gemini geral.
-    """
+    """Pipeline IDLE → UNDERSTAND → ASK_CONTEXT → SEARCH → ANSWER → WAIT."""
     phone = reply_jid
     text = (text or "").strip()
     if not text:
         return _menu_text()
 
-    session = user_sessions.get(phone) or _new_session(STEP_IDLE)
-    step = session.get("step", STEP_IDLE)
+    if _is_reset(text):
+        user_sessions.pop(phone, None)
+        return _menu_text()
 
-    if step == STEP_IDLE:
-        reply = _handle_idle(text, user_sessions, phone)
-        return reply  # pode ser None
+    session = user_sessions.get(phone) or _new_session()
 
-    if step == STEP_AWAITING_LOJA:
-        return _handle_awaiting_loja(text, session, user_sessions, phone)
-    if step == STEP_CONFIRMING_LOJA:
-        return _handle_confirming_loja(text, session, user_sessions, phone)
-    if step == STEP_AWAITING_ALARM:
-        return _handle_awaiting_alarm(text, session, user_sessions, phone)
-    if step == STEP_CONFIRMING_ALARM:
-        return _handle_confirming_alarm(text, session, user_sessions, phone)
+    if session.get("step") == STEP_PENDING:
+        return _resolve_pending(text, session, user_sessions, phone)
 
-    # estado desconhecido: reinicia
-    user_sessions.pop(phone, None)
-    return _menu_text()
+    return _process_new_message(text, session, user_sessions, phone)
 
 
 def build_context_and_respond(message_text, reply_jid, user_sessions):
-    """Busca contexto do Supabase, roda a máquina de estados e gera resposta com Gemini."""
+    """Roda o pipeline IDLE → UNDERSTAND → ASK_CONTEXT → SEARCH → ANSWER.
+
+    O pipeline (run_state_machine) é determinístico e SEMPRE devolve uma
+    string — mensagens sociais não consultam banco; intenções operacionais
+    só avançam para busca após o contexto mínimo (loja/alarme/equipamento)
+    ser fornecido. Gemini é chamado apenas dentro de analyze_alarm_for_user
+    para o diagnóstico técnico do alarme confirmado.
+    """
     if not supabase:
         return "⚠️ Desculpe, o sistema de banco de dados (Supabase) está inacessível no momento."
 
-    # 0. Máquina de estados (fluxo guiado de alarme: loja → alarme)
-    sm_reply = run_state_machine(message_text, reply_jid, user_sessions)
-    if sm_reply is not None:
-        return sm_reply
-
-    # 1. Buscar unidades cadastradas
-    unidades_context = ""
-    try:
-        resp = supabase.table("unidades").select("lojaId, lojaNm, contaNm, endereco, telefone, ativo").execute()
-        if resp.data:
-            unidades_context = "### Lojas Cadastradas no Sistema (Unidades):\n"
-            for u in resp.data:
-                status = "Ativa" if u.get("ativo") else "Inativa"
-                unidades_context += f"- ID: {u.get('lojaId')} | Nome: {u.get('lojaNm')} | Conta: {u.get('contaNm')} | Endereço: {u.get('endereco')} | Tel: {u.get('telefone')} | Status: {status}\n"
-        else:
-            unidades_context = "Nenhuma loja cadastrada encontrada no banco de dados.\n"
-    except Exception as e:
-        logger.error(f"Erro ao buscar unidades: {e}")
-        unidades_context = "Erro ao ler unidades do banco de dados.\n"
-
-    # 2. Buscar alarmes recentes
-    alarmes_context = ""
-    try:
-        resp = supabase.table("alarmes").select("*").order("alarmeDhCad", desc=True).limit(15).execute()
-        if resp.data:
-            alarmes_context = "### Alarmes Recentes registrados:\n"
-            for a in resp.data:
-                alarmes_context += f"- ID: {a.get('alarmeId')} | Loja: {a.get('lojaNm')} | Dispositivo: {a.get('dispositivoNm')} | Descrição: {a.get('alarmeDesc')} | Criticidade: {a.get('criticidade')} | Data: {a.get('alarmeDhCad')} | Status: {a.get('status') or 'N/A'}\n"
-        else:
-            alarmes_context = "Não há alarmes recentes cadastrados no banco de dados.\n"
-    except Exception as e:
-        logger.error(f"Erro ao buscar alarmes: {e}")
-        alarmes_context = "Erro ao ler alarmes do banco de dados.\n"
-
-    # 3. Telemetria
-    telemetria_context = ""
-    dispositivo_id, dispositivo_nm = resolve_telemetry_for_query(message_text, supabase)
-    if dispositivo_id:
-        logger.info(f"🔍 Dispositivo detectado: '{dispositivo_nm}' (ID: {dispositivo_id}). Buscando telemetria...")
-        telemetry_raw = telemetry_service.fetch_telemetry(dispositivo_id)
-        telemetry_normalized = telemetry_service.normalize_telemetry(telemetry_raw)
-        if telemetry_normalized.get("status") == "ok":
-            metrics = telemetry_normalized.get("metrics", {})
-            telemetria_context = f"### Telemetria Recente do Dispositivo '{dispositivo_nm}' (ID: {dispositivo_id}):\n"
-            for label, data in metrics.items():
-                telemetria_context += f"- {label}: Atual: {data.get('latest')} | Máx: {data.get('max')} | Mín: {data.get('min')} | Média: {round(data.get('avg'), 2) if data.get('avg') is not None else 'N/A'}\n"
-        else:
-            telemetria_context = f"### Telemetria Recente do Dispositivo '{dispositivo_nm}':\nTelemetria indisponível no momento ({telemetry_normalized.get('error')}).\n"
-
-    # 4. Gemini
-    system_instruction = """Você é o Assistente Virtual Oficial da Eletrofrio (equipe ScriptBoys).
-Seu papel é responder perguntas de técnicos, gerentes de lojas e operadores sobre o status do sistema de refrigeração.
-
-Diretrizes de resposta:
-1. Responda em Português (Brasil).
-2. Seja prestativo, profissional, direto e amigável.
-3. Utilize formatação em negrito do WhatsApp (*texto*) para destacar IDs de alarmes, nomes de lojas, limites de temperatura ou status críticos.
-4. Baseie-se SEMPRE no contexto fornecido (Lojas Cadastradas, Alarmes Recentes, Telemetria). Se a pergunta for sobre um dispositivo ou loja não listados e você não puder deduzir, informe educadamente que não possui esses dados.
-5. Se houver alarmes críticos na lista, mencione-os de forma destacada para alertar o usuário.
-6. Mantenha as respostas concisas e fáceis de ler no celular (use tópicos ou parágrafos curtos).
-"""
-
-    prompt_user = f"""Pergunta do Usuário: {message_text}
-
---- CONTEXTO DO SISTEMA ELETROFRIO ---
-{unidades_context}
-
-{alarmes_context}
-
-{telemetria_context}
--------------------------------------
-Utilize o contexto acima para responder a pergunta do usuário da forma mais precisa possível."""
-
-    gemini_api_key = os.getenv("GEMINI_API_KEY")
-    if not gemini_api_key:
-        return "⚠️ Desculpe, não consigo processar a resposta pois a chave do Gemini API (GEMINI_API_KEY) não está configurada."
-
-    try:
-        client = genai.Client(api_key=gemini_api_key)
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt_user,
-            config=genai.types.GenerateContentConfig(
-                system_instruction=system_instruction,
-            ),
-        )
-        return response.text
-    except Exception as e:
-        logger.error(f"❌ Erro ao chamar API do Gemini: {e}")
-        return f"⚠️ Desculpe, tive um problema ao analisar sua pergunta via IA: {e}"
+    return run_state_machine(message_text, reply_jid, user_sessions)
 
 # ─────────────────────────────────────────────────────────────
 # Envio de Mensagem

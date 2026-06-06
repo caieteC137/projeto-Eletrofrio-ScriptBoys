@@ -85,6 +85,7 @@ class NotificationManager:
 
 *Unidade:* {unidade.get('lojaNm', 'N/A')}
 *Criticidade:* {criticidade}
+*Alarme ID:* {alarme.get('alarmeId', 'N/A')}
 *Tipo:* {alarme.get('alarmeDesc', 'N/A')}
 *Horário:* {alarme.get('alarmeDhCad', 'N/A')}
 
@@ -92,7 +93,7 @@ class NotificationManager:
 👤 *Conta:* {unidade.get('contaNm', 'N/A')}
 """
             if analise_ia:
-                self.output_message += f"\n🤖 *Análise da IA (Gemini):*\n{analise_ia}\n"
+                self.output_message += f"\n🤖 *Análise da Eletra (Assistente Virtual da Eletrofrio):*\n{analise_ia}\n"
                 
             self.output_message += f"""
 ⚠️ *Ação Necessária:*
