@@ -1,17 +1,19 @@
-# =============================================================================
-#  Override de PRODUCAO para Oracle Cloud (VM.Standard.A1.FMC)
-# =============================================================================
-#  Uso:
-#     docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-#
-#  O que muda em relacao ao `docker-compose.yml` base:
-#   - Postgres e Redis NAO expoem porta no host (apenas na rede interna)
-#   - Limites de CPU/memoria por servico (Always Free ARM = 4 OCPU, 24 GB)
-#   - Log rotation centralizado via driver json-file
-#   - Restart policy mais agressiva
-#   - Variavel EVOLUTION_URL apontando para o servico interno (evolution:8080)
-#     porque o bot e o main estao na mesma stack
-# =============================================================================
+  # =============================================================================
+  #  Override de PRODUCAO para Oracle Cloud (VM.Standard.A1.FMC)
+  # =============================================================================
+  #  Uso:
+  #     docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+  #
+  #  O que muda em relacao ao `docker-compose.yml` base:
+  #   - Postgres e Redis NAO expoem porta no host (apenas na rede interna)
+  #   - Evolution NAO expoe 8080 no host (acesso pelo nginx via 443)
+  #   - Dashboard NAO expoe 5000 no host (acesso pelo nginx OU via SSH tunnel)
+  #   - Limites de CPU/memoria por servico (Always Free ARM = 4 OCPU, 24 GB)
+  #   - Log rotation centralizado via driver json-file
+  #   - Restart policy mais agressiva
+  #   - Variavel EVOLUTION_URL apontando para o servico interno (evolution:8080)
+  #     porque o bot e o main estao na mesma stack
+  # =============================================================================
 
 version: '3.8'
 
@@ -47,7 +49,8 @@ services:
     # Apenas os containers na mesma rede acessam.
     expose:
       - "5432"
-    ports: []   # remove o mapeamento definido no base
+    # `!reset` limpa qualquer `ports` que o base venha a definir.
+    ports: !reset []
     restart: always
     deploy:
       resources:
@@ -63,7 +66,7 @@ services:
   redis:
     expose:
       - "6379"
-    ports: []
+    ports: !reset []
     restart: always
     deploy:
       resources:
@@ -77,6 +80,14 @@ services:
         max-file: "3"
 
   evolution:
+    # Em producao a Evolution NAO expoe 8080 no host. O acesso ao Manager
+    # acontece pelo nginx (proxy 443 -> evolution:8080 dentro da stack).
+    # Para voltar a expor (ex: debug local), descomente a linha abaixo.
+    # ports:
+    #   - "127.0.0.1:8080:8080"
+    # `!reset` e necessario em Compose V2 para limpar o `ports` do base
+    # (lista eh mergeada aditivamente, nao substituida).
+    ports: !reset []
     restart: always
     deploy:
       resources:
@@ -88,3 +99,25 @@ services:
       options:
         max-size: "20m"
         max-file: "5"
+
+  dashboard:
+    # Em producao o dashboard NAO expoe 5000 no host. Duas opcoes de acesso:
+    #   1) HTTPS via nginx (recomendado) - requer DNS do subdominio
+    #      configurado no `deploy/nginx/nginx.conf` (server block dash.SEU_DOMINIO)
+    #   2) SSH tunnel a partir da sua maquina:
+    #        ssh -L 5000:127.0.0.1:5000 ubuntu@SEU_IP_OCI
+    #      E neste caso, descomente a linha abaixo para bind localhost-only.
+    # ports:
+    #   - "127.0.0.1:5000:5000"
+    ports: !reset []
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

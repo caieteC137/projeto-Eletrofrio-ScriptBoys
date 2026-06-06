@@ -29,11 +29,11 @@ echo "$LOG_PREFIX Configurando firewall (UFW)..."
 # Politica padrao: bloquear entrada
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
-# Permitir SSH, HTTP e HTTPS
+# Permitir apenas SSH, HTTP e HTTPS. A porta 8080 (Evolution) NAO eh
+# exposta publicamente: o acesso ao Manager acontece via nginx (443).
 sudo ufw allow 22/tcp   comment "SSH"
 sudo ufw allow 80/tcp   comment "HTTP (nginx + certbot)"
 sudo ufw allow 443/tcp  comment "HTTPS (nginx)"
-sudo ufw allow 8080/tcp comment "Evolution API Manager (opcional, remova se usar so HTTPS)"
 # Habilita sem pedir confirmacao
 sudo ufw --force enable
 sudo ufw status

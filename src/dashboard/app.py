@@ -290,6 +290,6 @@ def automation_set_flags():
 
 
 if __name__ == "__main__":
-    port = int(os.getenv("DASHBOARD_PORT", "5000"))
+    port = int(os.getenv("DASHBOARD_PORT") or os.getenv("PORT") or "5000")
     debug = os.getenv("DASHBOARD_DEBUG", "0") == "1"
     app.run(host="0.0.0.0", port=port, debug=debug)

@@ -1,0 +1,273 @@
+# =============================================================================
+#  render.yaml — Blueprint da stack Eletrofrio no Render
+# =============================================================================
+#  Como usar:
+#    1) Suba este arquivo no GitHub (raiz do repo)
+#    2) No Render: New → Blueprint → conecte o repo
+#    3) Render lê este arquivo e provisiona tudo
+#    4) Secretos (GEMINI_API_KEY, SUPABASE_KEY, EVOLUTION_API_KEY) são
+#       solicitados no dashboard na primeira deploy
+# =============================================================================
+
+databases:
+  - name: eletrofrio-db
+    plan: starter              # Free zera em 30 dias; Starter $7/mo
+    databaseName: evolution
+    user: evolution
+
+services:
+  # ─── Redis (Key Value) ──────────────────────────────────────────────
+  - type: redis
+    name: eletrofrio-redis
+    plan: starter
+    region: oregon
+    ipAllowList: []            # só serviços internos acessam
+
+  # ─── Evolution API (WhatsApp) ───────────────────────────────────────
+  - type: web
+    name: eletrofrio-evolution
+    runtime: docker
+    image:
+      url: evoapicloud/evolution-api:v2.3.6
+    plan: starter               # Free spin-down quebra a sessão Baileys
+    region: oregon
+    healthCheckPath: /
+    envVars:
+      - key: SERVER_TYPE
+        value: http
+      - key: SERVER_PORT
+        value: "8080"
+      - key: LOG_LEVEL
+        value: ERROR,WARN,INFO
+      - key: LOG_COLOR
+        value: "true"
+      - key: LOG_BAILEYS
+        value: error
+      - key: CORS_ORIGIN
+        value: "*"
+      - key: CORS_METHODS
+        value: GET,POST,PUT,DELETE
+      - key: CORS_CREDENTIALS
+        value: "true"
+      - key: DATABASE_PROVIDER
+        value: postgresql
+      - key: DATABASE_CONNECTION_URI
+        fromDatabase:
+          name: eletrofrio-db
+          property: connectionString
+      - key: DATABASE_SAVE_DATA_INSTANCE
+        value: "true"
+      - key: DATABASE_SAVE_DATA_NEW_MESSAGE
+        value: "true"
+      - key: DATABASE_SAVE_MESSAGE_UPDATE
+        value: "true"
+      - key: DATABASE_SAVE_DATA_CONTACTS
+        value: "true"
+      - key: DATABASE_SAVE_DATA_CHATS
+        value: "true"
+      - key: DATABASE_SAVE_DATA_LABELS
+        value: "true"
+      - key: DATABASE_SAVE_DATA_HISTORIC
+        value: "true"
+      - key: CACHE_REDIS_ENABLED
+        value: "true"
+      - key: CACHE_REDIS_URI
+        fromService:
+          type: redis
+          name: eletrofrio-redis
+          property: connectionString
+      - key: CACHE_REDIS_PREFIX_KEY
+        value: evolution
+      - key: CACHE_REDIS_SAVE_INSTANCES
+        value: "false"
+      - key: RABBITMQ_ENABLED
+        value: "false"
+      - key: WEBSOCKET_ENABLED
+        value: "false"
+      - key: WEBHOOK_GLOBAL_ENABLED
+        value: "false"
+      - key: WEBHOOK_GLOBAL_URL
+        value: ""
+      - key: QRCODE_LIMIT
+        value: "30"
+      - key: CONFIG_SESSION_PHONE_CLIENT
+        value: Evolution API
+      - key: CONFIG_SESSION_PHONE_NAME
+        value: Chrome
+      - key: AUTHENTICATION_API_KEY
+        sync: false             # pedir no dashboard
+      - key: AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES
+        value: "true"
+      - key: TYPEBOT_ENABLED
+        value: "false"
+      - key: CHATWOOT_ENABLED
+        value: "false"
+      - key: OPENAI_ENABLED
+        value: "false"
+      - key: DIFY_ENABLED
+        value: "false"
+      - key: S3_ENABLED
+        value: "false"
+      - key: DEL_INSTANCE
+        value: "false"
+    disk:
+      name: evolution-instances
+      mountPath: /evolution/instances
+      sizeGB: 1
+    autoDeploy: true
+
+  # ─── Helper: env vars comuns dos workers Python ─────────────────────
+  # Render não tem "extends", então cada worker repete. Mantemos alinhado.
+
+  - type: worker
+    name: eletrofrio-main
+    runtime: python
+    plan: starter
+    region: oregon
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: python -u src/main.py
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: EVOLUTION_URL
+        fromService:
+          type: web
+          name: eletrofrio-evolution
+          property: hostport
+      - key: EVOLUTION_INSTANCE
+        sync: false
+      - key: EVOLUTION_API_KEY
+        sync: false
+      - key: EVOLUTION_DB_HOST
+        fromDatabase:
+          name: eletrofrio-db
+          property: host
+      - key: EVOLUTION_DB_PORT
+        fromDatabase:
+          name: eletrofrio-db
+          property: port
+      - key: EVOLUTION_DB_NAME
+        fromDatabase:
+          name: eletrofrio-db
+          property: database
+      - key: EVOLUTION_DB_USER
+        fromDatabase:
+          name: eletrofrio-db
+          property: user
+      - key: EVOLUTION_DB_PASS
+        fromDatabase:
+          name: eletrofrio-db
+          property: password
+      - key: POSTGRES_USER
+        fromDatabase:
+          name: eletrofrio-db
+          property: user
+      - key: POSTGRES_PASSWORD
+        fromDatabase:
+          name: eletrofrio-db
+          property: password
+      - key: POSTGRES_DB
+        fromDatabase:
+          name: eletrofrio-db
+          property: database
+      - key: REDIS_PASSWORD
+        fromService:
+          type: redis
+          name: eletrofrio-redis
+          property: password
+    disk:
+      name: main-data
+      mountPath: /app/data
+      sizeGB: 1
+
+  - type: worker
+    name: eletrofrio-bot
+    runtime: python
+    plan: starter
+    region: oregon
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: python -u src/bot_polling.py
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: EVOLUTION_URL
+        fromService:
+          type: web
+          name: eletrofrio-evolution
+          property: hostport
+      - key: EVOLUTION_INSTANCE
+        sync: false
+      - key: EVOLUTION_API_KEY
+        sync: false
+      - key: EVOLUTION_DB_HOST
+        fromDatabase:
+          name: eletrofrio-db
+          property: host
+      - key: EVOLUTION_DB_PORT
+        fromDatabase:
+          name: eletrofrio-db
+          property: port
+      - key: EVOLUTION_DB_NAME
+        fromDatabase:
+          name: eletrofrio-db
+          property: database
+      - key: EVOLUTION_DB_USER
+        fromDatabase:
+          name: eletrofrio-db
+          property: user
+      - key: EVOLUTION_DB_PASS
+        fromDatabase:
+          name: eletrofrio-db
+          property: password
+      - key: POSTGRES_USER
+        fromDatabase:
+          name: eletrofrio-db
+          property: user
+      - key: POSTGRES_PASSWORD
+        fromDatabase:
+          name: eletrofrio-db
+          property: password
+      - key: POSTGRES_DB
+        fromDatabase:
+          name: eletrofrio-db
+          property: database
+      - key: POLL_INTERVAL
+        value: "5"
+      - key: BOT_SESSION_TIMEOUT
+        value: "1800"
+      - key: BOT_MAX_MESSAGE_AGE_SECONDS
+        value: "3600"
+    disk:
+      name: bot-data
+      mountPath: /app/data
+      sizeGB: 1
+
+  - type: web
+    name: eletrofrio-dashboard
+    runtime: python
+    plan: starter
+    region: oregon
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: python -u src/dashboard/app.py
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: DASHBOARD_DEBUG
+        value: "0"
+      # Sem DASHBOARD_PORT: app.py agora cai em $PORT (injetado pelo Render)

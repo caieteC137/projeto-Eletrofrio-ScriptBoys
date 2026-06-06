@@ -290,16 +290,30 @@ Esperado: `"state": "open"`.
 
 ## 7. Configurar backup automático
 
+O projeto inclui um script idempotente que agenda o backup diário às 03:00
+no crontab do root, com log em `/var/log/eletrofrio-backup.log`:
+
 ```bash
-# 1. Editar crontab
-crontab -e
-
-# 2. Adicionar linha: backup diario as 3h da manha
-0 3 * * * /opt/eletrofrio/deploy/scripts/backup.sh >> /var/log/eletrofrio-backup.log 2>&1
-
-# 3. (Opcional) subir os backups para OCI Object Storage
-#    Veja: https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/s3compatible.htm
+sudo bash deploy/scripts/install-backup-cron.sh
 ```
+
+Para verificar:
+```bash
+crontab -l | grep eletrofrio
+# esperado: 0 3 * * * /opt/eletrofrio/deploy/scripts/backup.sh >> ... # eletrofrio-backup-cron
+```
+
+Para desinstalar:
+```bash
+sudo bash deploy/scripts/install-backup-cron.sh --remove
+```
+
+> Antes do script automatizado, era necessário editar o crontab manualmente
+> (`crontab -e` e adicionar `0 3 * * * /opt/eletrofrio/deploy/scripts/backup.sh ...`).
+> Esse passo manual não é mais necessário.
+
+(Opcional) subir os backups para OCI Object Storage —
+Veja: <https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/s3compatible.htm>
 
 ---
 
