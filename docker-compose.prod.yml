@@ -80,14 +80,11 @@ services:
         max-file: "3"
 
   evolution:
-    # Em producao a Evolution NAO expoe 8080 no host. O acesso ao Manager
-    # acontece pelo nginx (proxy 443 -> evolution:8080 dentro da stack).
-    # Para voltar a expor (ex: debug local), descomente a linha abaixo.
-    # ports:
-    #   - "127.0.0.1:8080:8080"
-    # `!reset` e necessario em Compose V2 para limpar o `ports` do base
-    # (lista eh mergeada aditivamente, nao substituida).
-    ports: !reset []
+    # Em producao, Evolution expoe 8080 APENAS no localhost (127.0.0.1).
+    # O cloudflared (ou nginx) se conecta localmente para fazer proxy reverso.
+    # Porta 8080 NAO fica acessivel publicamente na VM.
+    ports:
+      - "127.0.0.1:8080:8080"
     restart: always
     deploy:
       resources:

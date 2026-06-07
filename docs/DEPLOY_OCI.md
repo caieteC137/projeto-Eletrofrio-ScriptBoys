@@ -18,6 +18,7 @@ Guia completo para colocar a stack Eletrofrio em produção usando a
 3. [Acessar a VM e instalar Docker](#3-acessar-a-vm-e-instalar-docker)
 4. [Subir a stack Eletrofrio](#4-subir-a-stack-eletrofrio)
 5. [Configurar HTTPS com Let's Encrypt](#5-configurar-https-com-lets-encrypt-opcional-mas-recomendado)
+   - [Opção 2: Cloudflare Tunnel](#5b-opção-2--https-sem-domínio-usando-cloudflare-tunnel-recomendado)
 6. [Parear o WhatsApp (QR Code)](#6-parear-o-whatsapp-qr-code)
 7. [Configurar backup automático](#7-configurar-backup-automatico)
 8. [Operação do dia-a-dia](#8-operação-do-dia-a-dia)
@@ -48,11 +49,11 @@ A VCN padrão já abre `22 (SSH)`. Vamos liberar mais:
 | Protocolo | Porta | Uso |
 |-----------|-------|-----|
 | TCP | 22 | SSH (já vem aberto por padrão) |
-| TCP | 80 | HTTP (Let's Encrypt + redirect) |
-| TCP | 443 | HTTPS (Evolution API via nginx) |
+| TCP | 80 | HTTP (Let's Encrypt + redirect) — só se usar nginx |
+| TCP | 443 | HTTPS (Evolution API via nginx) — só se usar nginx |
 | TCP | 8080 | Evolution API Manager (direto, **só se quiser**) |
 
-> **Dica**: mantenha a porta `8080` fechada no Security List e exponha **apenas 80/443** — o nginx faz o proxy reverso para o container `evolution:8080` internamente.
+> **Dica**: se usar **Cloudflare Tunnel** (recomendado), não é necessário abrir portas 80/443 — o túnel faz conexão outbound. Mantenha apenas a porta 22 (SSH) aberta.
 
 ### 1.3. Reservar a VM
 
@@ -229,6 +230,115 @@ EVOLUTION_URL=https://eletrofrio.seudominio.com.br
 ```
 
 (mas isso é opcional, o `bot` e o `main` continuam usando `http://evolution:8080` na rede interna, que é mais rápido e seguro).
+
+---
+
+## 5B. Opção 2 — HTTPS sem domínio usando Cloudflare Tunnel (recomendado)
+
+> **Por que essa opção?** Não precisa de domínio próprio, não precisa de certbot, não abre portas na VM. O Cloudflare Tunnel cria uma conexão **outbound** da VM para o Cloudflare e te dá uma URL HTTPS pública automaticamente.
+
+### 5B.1. Instalar o Cloudflare Tunnel
+
+O `setup-vm.sh` já instala o `cloudflared`. Se não rodou o setup, instale manualmente:
+
+```bash
+# Detectar arquitetura
+ARCH=$(uname -m)  # aarch64 na OCI Always Free ARM
+
+# Baixar e instalar
+curl -fSL "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${ARCH}.deb" \
+    -o /tmp/cloudflared.deb
+sudo dpkg -i /tmp/cloudflared.deb
+rm /tmp/cloudflared.deb
+```
+
+### 5B.2. Criar o túnel
+
+O script `setup-cloudflared.sh` faz tudo automaticamente (instala + cria serviço systemd):
+
+```bash
+bash deploy/scripts/setup-cloudflared.sh
+```
+
+Ou manualmente:
+
+```bash
+# Iniciar o túnel (apontando para a Evolution na porta 8080 local)
+cloudflared tunnel --url http://localhost:8080
+```
+
+Vai aparecer algo como:
+```
+Your quick Tunnel has been created! Visit it at (it may take some time to be accessible):
+https://random-name.trycloudflare.com
+```
+
+### 5B.3. Criar serviço systemd (para iniciar na boot)
+
+Para o túnel ficar ativo mesmo após reiniciar a VM:
+
+```bash
+# Criar o arquivo de serviço
+sudo tee /etc/systemd/system/cloudflared-tunnel.service > /dev/null <<EOF
+[Unit]
+Description=Cloudflare Tunnel - Eletrofrio HTTPS
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/cloudflared tunnel --url http://localhost:8080
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Habilitar e iniciar
+sudo systemctl daemon-reload
+sudo systemctl enable cloudflared-tunnel
+sudo systemctl start cloudflared-tunnel
+```
+
+### 5B.4. Acessar o Evolution Manager
+
+Abra no navegador:
+```
+https://<random-name>.trycloudflare.com/manager/status
+```
+
+### 5B.5. Comandos úteis
+
+```bash
+# Ver status do túnel
+sudo systemctl status cloudflared-tunnel
+
+# Ver logs em tempo real
+sudo journalctl -u cloudflared-tunnel -f
+
+# Reiniciar o túnel
+sudo systemctl restart cloudflared-tunnel
+
+# Parar o túnel
+sudo systemctl stop cloudflared-tunnel
+
+# Remover completamente
+bash deploy/scripts/setup-cloudflared.sh --remove
+```
+
+### 5B.6. Vantagens vs desvantagens
+
+| | Cloudflare Tunnel | Let's Encrypt + nginx |
+|---|---|---|
+| Domínio necessário | **Não** | Sim |
+| HTTPS automático | **Sim** | Sim (certbot) |
+| Portas de entrada | **Nenhuma** | 80, 443 |
+| Rate-limiting | Via dashboard Cloudflare | Via nginx |
+| Configuração | **Simples** | Mais complexa |
+| Estabilidade | Depende do Cloudflare | Depende do DNS |
+
+> **Dica**: se quiser rate-limiting, configure no dashboard do Cloudflare (gratuito): Security → WAF → Rate Limiting.
 
 ---
 

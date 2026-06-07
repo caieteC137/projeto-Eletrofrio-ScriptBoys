@@ -9,6 +9,7 @@
 #     bash deploy.sh --qr      # mostra o QR Code do WhatsApp no terminal
 #     bash deploy.sh --stop    # para tudo
 #     bash deploy.sh --down    # para e remove containers (mantem volumes)
+#     bash deploy.sh --cloudflared  # configura Cloudflare Tunnel (HTTPS)
 # =============================================================================
 set -euo pipefail
 
@@ -64,8 +65,13 @@ case "$action" in
         $COMPOSE_CMD down
         ;;
 
+    --cloudflared)
+        echo "[deploy] Configurando Cloudflare Tunnel..."
+        bash "$(dirname "$0")/setup-cloudflared.sh"
+        ;;
+
     *)
-        echo "Uso: $0 [up|--pull|--logs|--qr|--stop|--down]"
+        echo "Uso: $0 [up|--pull|--logs|--qr|--stop|--down|--cloudflared]"
         exit 1
         ;;
 esac
