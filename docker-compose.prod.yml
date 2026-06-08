@@ -83,7 +83,8 @@ services:
     # Em producao, Evolution expoe 8080 APENAS no localhost (127.0.0.1).
     # O cloudflared (ou nginx) se conecta localmente para fazer proxy reverso.
     # Porta 8080 NAO fica acessivel publicamente na VM.
-    ports:
+    # `!reset` substitui a lista de ports do base (ao inves de fazer merge).
+    ports: !reset
       - "127.0.0.1:8080:8080"
     restart: always
     deploy:
@@ -101,7 +102,8 @@ services:
     # Em producao o dashboard expoe 5000 APENAS no localhost (127.0.0.1).
     # O cloudflared se conecta localmente para fazer proxy reverso.
     # Porta 5000 NAO fica acessivel publicamente na VM.
-    ports:
+    # `!reset` substitui a lista de ports do base (ao inves de fazer merge).
+    ports: !reset
       - "127.0.0.1:5000:5000"
     restart: always
     deploy:
