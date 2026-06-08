@@ -98,15 +98,11 @@ services:
         max-file: "5"
 
   dashboard:
-    # Em producao o dashboard NAO expoe 5000 no host. Duas opcoes de acesso:
-    #   1) HTTPS via nginx (recomendado) - requer DNS do subdominio
-    #      configurado no `deploy/nginx/nginx.conf` (server block dash.SEU_DOMINIO)
-    #   2) SSH tunnel a partir da sua maquina:
-    #        ssh -L 5000:127.0.0.1:5000 ubuntu@SEU_IP_OCI
-    #      E neste caso, descomente a linha abaixo para bind localhost-only.
-    # ports:
-    #   - "127.0.0.1:5000:5000"
-    ports: !reset []
+    # Em producao o dashboard expoe 5000 APENAS no localhost (127.0.0.1).
+    # O cloudflared se conecta localmente para fazer proxy reverso.
+    # Porta 5000 NAO fica acessivel publicamente na VM.
+    ports:
+      - "127.0.0.1:5000:5000"
     restart: always
     deploy:
       resources:
