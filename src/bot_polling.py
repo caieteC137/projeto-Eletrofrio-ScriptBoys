@@ -537,7 +537,6 @@ def analyze_alarm_for_user(alarm):
             avg = data.get("avg")
             avg_str = f"{round(avg, 2)}" if isinstance(avg, (int, float)) else "N/A"
             lines.append(
-                f"   • {label}: atual *{data.get('latest')}* | "
                 f"máx {data.get('max')} | mín {data.get('min')} | média {avg_str}"
             )
     else:
@@ -976,7 +975,6 @@ def _build_telemetry_reply(text, dispositivo_id, dispositivo_nm, loja):
         avg = data.get("avg")
         avg_str = f"{round(avg, 2)}" if isinstance(avg, (int, float)) else "N/A"
         lines.append(
-            f"• {label}: atual *{data.get('latest')}* | "
             f"máx {data.get('max')} | mín {data.get('min')} | média {avg_str}"
         )
     lines.append("")
