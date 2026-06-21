@@ -2489,3 +2489,199 @@ body.splash-active {
     animation: none;
   }
 }
+
+/* ============================================================
+   === Fase 4 — Bot + Sistema ===
+   ============================================================ */
+.bot-kpi-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 20px;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.service-card {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-left: 4px solid var(--ef-border-strong);
+}
+
+.service-online {
+  border-left-color: var(--ef-success);
+}
+
+.service-degraded {
+  border-left-color: var(--ef-warn);
+}
+
+.service-offline {
+  border-left-color: var(--ef-danger);
+}
+
+.service-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.service-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ef-primary-soft);
+  color: var(--ef-primary-strong);
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.service-card h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ef-text);
+}
+
+.service-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.service-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ef-text-muted);
+}
+
+.service-online .service-dot {
+  background: var(--ef-success);
+  box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.6);
+  animation: service-pulse 1.8s infinite;
+}
+
+.service-degraded .service-dot {
+  background: var(--ef-warn);
+}
+
+.service-offline .service-dot {
+  background: var(--ef-danger);
+}
+
+@keyframes service-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.45); }
+  70% { box-shadow: 0 0 0 8px rgba(22, 163, 74, 0); }
+}
+
+.service-detail {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ef-text-body);
+  line-height: 1.45;
+}
+
+.service-latency {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ef-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.system-info,
+.system-logs {
+  padding: 20px 22px;
+  margin-bottom: 16px;
+}
+
+.system-info-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.system-info-header h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ef-text);
+}
+
+.system-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 24px;
+  margin: 0;
+}
+
+.system-info-grid dt {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ef-text-muted);
+  margin-bottom: 4px;
+}
+
+.system-info-grid dd {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ef-text);
+}
+
+.system-info-grid dd.flag-on {
+  color: var(--ef-success);
+}
+
+.system-info-grid dd.flag-off {
+  color: var(--ef-danger);
+}
+
+.system-log-pre {
+  margin: 0;
+  padding: 14px 16px;
+  background: var(--ef-surface-muted);
+  border: 1px solid var(--ef-border);
+  border-radius: 8px;
+  font-family: "SF Mono", Monaco, Consolas, monospace;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--ef-text-body);
+  max-height: 280px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@media (max-width: 1024px) {
+  .bot-kpi-grid,
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .system-info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .system-info-grid {
+    grid-template-columns: 1fr;
+  }
+}

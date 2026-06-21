@@ -66,6 +66,14 @@
         <i class="sidebar-icon fa-solid fa-sliders" aria-hidden="true"></i>
         <span class="sidebar-label">Automatização</span>
       </a>
+      <a href="#" class="sidebar-link" data-tab="bot" role="tab" aria-selected="false">
+        <i class="sidebar-icon fa-solid fa-robot" aria-hidden="true"></i>
+        <span class="sidebar-label">Bot</span>
+      </a>
+      <a href="#" class="sidebar-link" data-tab="sistema" role="tab" aria-selected="false">
+        <i class="sidebar-icon fa-solid fa-server" aria-hidden="true"></i>
+        <span class="sidebar-label">Sistema</span>
+      </a>
     </nav>
 
     <div class="sidebar-section">
@@ -82,11 +90,6 @@
       <span class="sidebar-link sidebar-link-disabled" aria-disabled="true">
         <i class="sidebar-icon fa-solid fa-chart-line" aria-hidden="true"></i>
         <span class="sidebar-label">Analytics</span>
-        <span class="sidebar-badge">Novo</span>
-      </span>
-      <span class="sidebar-link sidebar-link-disabled" aria-disabled="true">
-        <i class="sidebar-icon fa-solid fa-robot" aria-hidden="true"></i>
-        <span class="sidebar-label">Bot</span>
         <span class="sidebar-badge">Novo</span>
       </span>
     </div>
@@ -394,6 +397,122 @@
         </section>
 
       </section>
+
+      <!-- ═════════════════════════════════════════════════════
+           VIEW: MONITOR DO BOT
+           ═════════════════════════════════════════════════════ -->
+      <section id="view-bot" class="view" hidden>
+        <section class="kpi-grid bot-kpi-grid">
+          <article class="kpi-card kpi-card-teal">
+            <div class="kpi-card-accent"></div>
+            <div class="kpi-card-top">
+              <span class="kpi-card-label">Conversas hoje</span>
+              <span class="kpi-card-icon"><i class="fa-solid fa-comments"></i></span>
+            </div>
+            <span class="kpi-card-value" id="bot-kpi-hoje">0</span>
+            <span class="kpi-card-hint" id="bot-kpi-hoje-hint">Usuários distintos</span>
+          </article>
+          <article class="kpi-card kpi-card-blue">
+            <div class="kpi-card-accent"></div>
+            <div class="kpi-card-top">
+              <span class="kpi-card-label">Tempo médio de resposta</span>
+              <span class="kpi-card-icon"><i class="fa-solid fa-stopwatch"></i></span>
+            </div>
+            <span class="kpi-card-value" id="bot-kpi-tempo">—</span>
+            <span class="kpi-card-hint" id="bot-kpi-tempo-hint">Últimos 7 dias</span>
+          </article>
+          <article class="kpi-card kpi-card-green">
+            <div class="kpi-card-accent"></div>
+            <div class="kpi-card-top">
+              <span class="kpi-card-label">Taxa de resolução</span>
+              <span class="kpi-card-icon"><i class="fa-solid fa-check-double"></i></span>
+            </div>
+            <span class="kpi-card-value" id="bot-kpi-taxa">0%</span>
+            <span class="kpi-card-hint" id="bot-kpi-taxa-hint">Respostas em até 2 min</span>
+          </article>
+        </section>
+
+        <section class="table-section card">
+          <div class="table-section-header">
+            <div class="table-section-titles">
+              <h2>Logs de conversas</h2>
+              <p class="table-section-sub">Últimas interações recebidas e respostas automáticas do bot.</p>
+            </div>
+            <span class="badge" id="bot-log-count">0 registros</span>
+          </div>
+          <div class="table-scroll loadable" id="loadable-bot-table" aria-busy="false">
+            <div class="loader-overlay" aria-hidden="true">
+              <div class="loader-spinner" role="status" aria-label="Carregando logs"></div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Data/Hora</th>
+                  <th>Telefone</th>
+                  <th>Pergunta</th>
+                  <th>Resposta</th>
+                  <th>Tokens</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-bot-logs">
+                <tr>
+                  <td colspan="5" class="empty">Carregando...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- ═════════════════════════════════════════════════════
+           VIEW: STATUS DO SISTEMA
+           ═════════════════════════════════════════════════════ -->
+      <section id="view-sistema" class="view" hidden>
+        <section class="service-grid" id="service-grid">
+          <!-- preenchido via system-status.js -->
+        </section>
+
+        <section class="system-info card">
+          <div class="system-info-header">
+            <h2>Informações do sistema</h2>
+            <span class="badge" id="system-sync-badge">—</span>
+          </div>
+          <dl class="system-info-grid">
+            <div>
+              <dt>Versão</dt>
+              <dd id="sys-version">—</dd>
+            </div>
+            <div>
+              <dt>Uptime (dashboard)</dt>
+              <dd id="sys-uptime">—</dd>
+            </div>
+            <div>
+              <dt>Iniciado em</dt>
+              <dd id="sys-started">—</dd>
+            </div>
+            <div>
+              <dt>Automação main.py</dt>
+              <dd id="sys-main-flag">—</dd>
+            </div>
+            <div>
+              <dt>Automação bot</dt>
+              <dd id="sys-bot-flag">—</dd>
+            </div>
+            <div>
+              <dt>Última verificação</dt>
+              <dd id="sys-last-check">—</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="system-logs card">
+          <div class="system-info-header">
+            <h2>Erros recentes</h2>
+            <span class="badge" id="system-error-count">0 linhas</span>
+          </div>
+          <pre class="system-log-pre" id="system-error-logs">Nenhum erro recente.</pre>
+        </section>
+      </section>
     </main>
 
     <footer>
@@ -432,6 +551,8 @@
 
   <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
   <script src="{{ url_for('static', filename='js/automation.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bot-monitor.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/system-status.js') }}"></script>
 </body>
 
 </html>

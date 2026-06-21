@@ -26,6 +26,7 @@ if _SRC_DIR not in sys.path:
     sys.path.insert(0, _SRC_DIR)
 
 from services import automation_flags  # noqa: E402
+from services import dashboard_monitor  # noqa: E402
 
 load_dotenv()
 
@@ -286,6 +287,45 @@ def automation_set_flags():
         })
     except Exception as e:
         logging.exception("Falha em automation_set_flags")
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+# ═════════════════════════════════════════════════════════════
+# Fase 4 — Monitor do Bot + Status do Sistema
+# ═════════════════════════════════════════════════════════════
+
+@app.route("/api/bot/stats")
+def bot_stats():
+    """KPIs do assistente conversacional (Evolution DB + estado local)."""
+    try:
+        return jsonify(dashboard_monitor.get_bot_stats())
+    except Exception as e:
+        logging.exception("Falha em bot_stats")
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.route("/api/bot/logs")
+def bot_logs():
+    """Ultimas interacoes do bot (pergunta + resposta pareada)."""
+    try:
+        try:
+            limit = int(request.args.get("limit", "50"))
+        except ValueError:
+            limit = 50
+        desde = request.args.get("desde")
+        return jsonify(dashboard_monitor.get_bot_logs(limit=limit, desde=desde))
+    except Exception as e:
+        logging.exception("Falha em bot_logs")
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.route("/api/system/health")
+def system_health():
+    """Health check dos servicos integrados ao dashboard."""
+    try:
+        return jsonify(dashboard_monitor.get_system_health(get_supabase, automation_flags.read_flags))
+    except Exception as e:
+        logging.exception("Falha em system_health")
         return jsonify({"ok": False, "error": str(e)}), 500
 
 

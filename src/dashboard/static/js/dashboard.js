@@ -17,6 +17,14 @@ const PAGE_META = {
     title: "Automatização",
     subtitle: "Controle centralizado de envios e respostas automáticas",
   },
+  bot: {
+    title: "Monitor do Bot",
+    subtitle: "Auditoria das conversas e desempenho do assistente",
+  },
+  sistema: {
+    title: "Status do Sistema",
+    subtitle: "Saúde dos serviços integrados e logs de erro",
+  },
 };
 
 const els = {
@@ -72,6 +80,8 @@ const els = {
   views: {
     notificacoes: document.getElementById("view-notificacoes"),
     automacao: document.getElementById("view-automacao"),
+    bot: document.getElementById("view-bot"),
+    sistema: document.getElementById("view-sistema"),
   },
 };
 
@@ -824,6 +834,12 @@ function switchTab(tabName) {
 
   if (tabName === "automacao" && typeof window.refreshAutomation === "function") {
     window.refreshAutomation();
+  }
+  if (tabName === "bot" && typeof window.refreshBotMonitor === "function") {
+    window.refreshBotMonitor();
+  }
+  if (tabName === "sistema" && typeof window.refreshSystemStatus === "function") {
+    window.refreshSystemStatus();
   }
 }
 
