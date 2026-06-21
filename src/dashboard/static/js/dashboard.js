@@ -778,6 +778,20 @@ function closeMobileSidebar() {
   }
 }
 
+function isMobileViewport() {
+  return window.matchMedia("(max-width: 768px)").matches;
+}
+
+function handleViewportChange() {
+  if (!isMobileViewport()) {
+    closeMobileSidebar();
+  }
+  if (chartSourceRows.length) {
+    updateSparklines(chartSourceRows);
+  }
+  Object.values(chartInstances).forEach(chart => chart?.resize());
+}
+
 function initSidebar() {
   try {
     if (localStorage.getItem(SIDEBAR_STORAGE_KEY) === "1") {
@@ -803,8 +817,13 @@ function initSidebar() {
     els.sidebarOverlay.addEventListener("click", closeMobileSidebar);
   }
 
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > 768) closeMobileSidebar();
+  window.addEventListener("resize", handleViewportChange);
+
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Escape") return;
+    if (document.body.classList.contains("sidebar-mobile-open") && els.modal?.hidden) {
+      closeMobileSidebar();
+    }
   });
 }
 
@@ -864,12 +883,6 @@ document.addEventListener("DOMContentLoaded", () => {
   els.filterSearch?.addEventListener("input", applySearchFilter);
   els.btnLimparFiltros?.addEventListener("click", clearFilters);
   els.btnExportCsv?.addEventListener("click", exportCsv);
-
-  window.addEventListener("resize", () => {
-    if (chartSourceRows.length) {
-      updateSparklines(chartSourceRows);
-    }
-  });
 
   initSidebar();
 
