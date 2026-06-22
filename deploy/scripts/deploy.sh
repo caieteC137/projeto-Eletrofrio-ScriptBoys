@@ -25,8 +25,8 @@ case "$action" in
         echo "[deploy] Build da imagem da aplicacao (sem cache)..."
         $COMPOSE_CMD build --pull --no-cache
 
-        echo "[deploy] Subindo servicos em background..."
-        $COMPOSE_CMD up -d
+        echo "[deploy] Subindo servicos em background (forçando recriação)..."
+        $COMPOSE_CMD up -d --force-recreate
 
         echo "[deploy] Aguardando 5s para os containers inicializarem..."
         sleep 5
