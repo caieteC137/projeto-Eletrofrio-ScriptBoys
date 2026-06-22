@@ -23,7 +23,7 @@
     <div class="splash-inner">
       <div class="splash-brand">
         <video class="splash-helice" autoplay muted loop playsinline aria-hidden="true">
-          <source src="{{ url_for('static', filename='video/helice2.webm') }}" type="video/webm" />
+          <source src="{{ url_for('static', filename='video/helice.mp4') }}" type="video/mp4" />
         </video>
         <img src="{{ url_for('static', filename='img/logosemcatavento.png') }}" alt="Eletrofrio Refrigeração"
           class="splash-logo" />
@@ -228,7 +228,8 @@
           <div class="table-section-header">
             <div class="table-section-titles">
               <h2>Acionamentos e Envios Recentes</h2>
-              <p class="table-section-sub">Listagem operacional em near real time dos alarmes e disparos de WhatsApp.</p>
+              <p class="table-section-sub">Listagem operacional em near real time dos alarmes e disparos de WhatsApp.
+              </p>
             </div>
             <span class="badge" id="result-count">0 registros</span>
           </div>
@@ -240,7 +241,8 @@
                 <label for="filter-search">Pesquisar</label>
                 <div class="filter-search-wrap">
                   <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-                  <input type="text" id="filter-search" placeholder="Pesquisar ID, alarme ou loja..." autocomplete="off" />
+                  <input type="text" id="filter-search" placeholder="Pesquisar ID, alarme ou loja..."
+                    autocomplete="off" />
                 </div>
               </div>
               <div class="filter">
@@ -515,7 +517,8 @@
 
   <!-- Modal de confirmacao (substitui confirm() nativo do browser) -->
   <div class="modal modal-confirm" id="modal-confirm" hidden>
-    <div class="modal-content modal-confirm-content" role="dialog" aria-modal="true" aria-labelledby="modal-confirm-title" aria-describedby="modal-confirm-body">
+    <div class="modal-content modal-confirm-content" role="dialog" aria-modal="true"
+      aria-labelledby="modal-confirm-title" aria-describedby="modal-confirm-body">
       <div class="modal-header">
         <div class="modal-confirm-head">
           <span class="modal-confirm-icon" id="modal-confirm-icon"><i class="fa-solid fa-circle-question"></i></span>
