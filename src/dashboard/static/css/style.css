@@ -1579,7 +1579,7 @@ footer {
    ============================================================ */
 
 /* --- Desktop pequeno / iPad Pro --- */
-@media (max-width: 1280px) {
+@media (max-width: 1400px) {
   main {
     padding: 24px 24px 70px;
   }
@@ -1590,6 +1590,14 @@ footer {
 
   .kpi-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .charts-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .charts-grid article:nth-child(3) {
+    grid-column: 1 / -1;
   }
 
   .filters-panel-grid {
@@ -1614,6 +1622,10 @@ footer {
 
   .topbar {
     padding: 12px 20px;
+  }
+
+  .topbar .brand {
+    display: none;
   }
 
   .topbar-accent {
@@ -1642,6 +1654,10 @@ footer {
 
   .charts-grid {
     grid-template-columns: 1fr;
+  }
+
+  .charts-grid article:nth-child(3) {
+    grid-column: auto;
   }
 
   .filters-panel-grid {
