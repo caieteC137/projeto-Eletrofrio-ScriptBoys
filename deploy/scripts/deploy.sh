@@ -22,8 +22,8 @@ action="${1:-up}"
 
 case "$action" in
     up)
-        echo "[deploy] Build da imagem da aplicacao..."
-        $COMPOSE_CMD build --pull
+        echo "[deploy] Build da imagem da aplicacao (sem cache)..."
+        $COMPOSE_CMD build --pull --no-cache
 
         echo "[deploy] Subindo servicos em background..."
         $COMPOSE_CMD up -d
